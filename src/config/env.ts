@@ -10,5 +10,5 @@ export const env = {
   NODE_ENV:process.env.NODE_ENV || "development",
   NODEMAILER_PASS:process.env.NODEMAILER_PASS || "",
   EMAIL:process.env.EMAIL || ""
-
 };
+//hsdkhkashdf
