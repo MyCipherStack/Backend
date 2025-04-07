@@ -1,0 +1,25 @@
+import express from "express";
+import { AuthController } from "../controller/AuthController.js";
+import { UserRepository } from "../../infrastructure/repositories/UserRepository.js";
+import { HashService } from "../../services/hashing/HashService.js";
+import { BcryptHashAlgorithm } from "../../services/hashing/BcryptHashAlgorithm.js";
+import { JwtService } from "../../services/jwt/JwtService.js";
+import { env } from "../../config/env.js";
+import { PendingUserRepository } from "../../infrastructure/repositories/PendingUserRepository.js";
+import { OtpService } from "../../services/otp/OtpService.js";
+import { VerifyOtpController } from "../controller/VerifyOtpController.js";
+const userRepository = new UserRepository();
+const algorithm = new BcryptHashAlgorithm(); // dip for hashServices
+const hashService = new HashService(algorithm);
+const pendingUserRepository = new PendingUserRepository();
+const accessToken = env.ACCESS_JWT_TOKEN;
+const refreshToken = env.REFRESH_JWT_TOKEN;
+const jwtService = new JwtService(accessToken, refreshToken);
+const otpService = new OtpService(env.EMAIL, env.NODEMAILER_PASS);
+const authController = new AuthController(userRepository, hashService, jwtService, otpService, pendingUserRepository);
+const verifyOtpController = new VerifyOtpController(otpService, pendingUserRepository, userRepository);
+const router = express.Router();
+router.post("/register", authController.register);
+router.post("/login", authController.login);
+router.post("/verifyOtp", verifyOtpController.verify);
+export default router;
