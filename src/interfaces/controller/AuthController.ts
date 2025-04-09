@@ -71,7 +71,7 @@ export class AuthController {
         catch(error:any){
             res.status(400).json({status:false,message:error.message })
         } 
-            
+
     }   
 
 }

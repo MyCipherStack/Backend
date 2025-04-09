@@ -6,6 +6,7 @@ export interface IUserRepository{
     findByEmail(email:string):Promise<User | null >;
     findById(id:string):Promise<User |null >
     findByUserName(name:string):Promise<User |null >
+    updatePassword(email:string,password:string):Promise<User |null >
 }
 
 

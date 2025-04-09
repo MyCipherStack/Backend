@@ -45,7 +45,7 @@ export class OtpService implements IOtpService {
       console.log("EMAIL send successfully", info.response);
       return info;
     } catch (error: any) {
-      throw error.response;
+      throw error;
     }
   }
 

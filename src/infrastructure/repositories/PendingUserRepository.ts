@@ -5,8 +5,8 @@ import { PendingUser } from "../database/PendingUser.js";
 
 export class PendingUserRepository  implements IPendingUserRepository {
 
-    async save(name:string,email: string,password:string): Promise<string> {
-     const user=await PendingUser.create({name,email,password})
+    async save(name:string,email: string,password:string,otp?:string): Promise<string> {
+     const user=await PendingUser.create({name,email,password,otp})
      return user.email
 
     }
@@ -17,7 +17,7 @@ export class PendingUserRepository  implements IPendingUserRepository {
     async findValidUser(email: string): Promise<temUser | null> {
     const found=await PendingUser.findOne({email})
     if(!found) return null
-    return new temUser(found.name,found.email,found.password,found.otp ?? "",found.createdAt)
+    return new temUser(found.name,found.email,found.password,found.createdAt,found.otp ?? "",)
     }   
 
     async delete(email: string): Promise<void> {

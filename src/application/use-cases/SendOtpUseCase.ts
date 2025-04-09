@@ -16,13 +16,20 @@ export class SendOtpUseCase{
             otp=foundUser?.otp ?? "" 
         }else{
             otp=this.otpService.createOtp(6)
-            this.pendingUserRepository.updateOtp(email,otp)
+            const User=await this.pendingUserRepository.save("",email,"",otp)
+            // this.pendingUserRepository.updateOtp(email,otp)
             
         }
         console.log("my otp is",otp);
-        
-        await this.otpService.sendOtp(email,otp)
+        console.log(" user email",email);
+    
+        try {
+            await this.otpService.sendOtp(email, otp);
+          } catch (error) {
+            console.log(error,"err");
             
+            throw new Error("Failed to send OTP");
+          }
 
     }
 }

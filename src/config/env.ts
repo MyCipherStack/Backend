@@ -9,6 +9,8 @@ export const env = {
   REFRESH_JWT_TOKEN: process.env.REFRESH_JWT_TOKEN || "your_secret_key",
   NODE_ENV:process.env.NODE_ENV || "development",
   NODEMAILER_PASS:process.env.NODEMAILER_PASS || "",
-  EMAIL:process.env.EMAIL || ""
+  EMAIL:process.env.EMAIL || "",
+  GOOGLE_CLIENT_ID:process.env.GOOGLE_CLIENT_ID || "",
+  GOOGLE_CLIENT_SECRET:process.env.GOOGLE_CLIENT_SECRET || ""
 };
 //hsdkhkashdf
