@@ -7,6 +7,7 @@ export class temUser extends User{
         email:string,
         password:string,
         public createdAt:Date,
+        public expireAt:Date,
         public otp?:string,
     ){
         super(name,email,password)

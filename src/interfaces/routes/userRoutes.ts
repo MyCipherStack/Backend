@@ -46,8 +46,9 @@ import { ResetPassword } from "../controller/resetPassword.js";
 const router=express.Router()
 let dummy=()=>{
       console.log("dummy log");
-      
 }
+
+
 router.post("/register",authController.register)
 router.post("/login",authController.login)
 router.post("/verifyOtp",verifyOtpController.verify)
