@@ -3,11 +3,11 @@ import bcrypt from "bcryptjs";
 import { User } from "../../domain/User";
 
 export class AuthService {
-  static async hashPassword(password: string): Promise<string> {
+  static async hash(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
   }
 
-  static async comparePasswords(password: string, hash: string): Promise<boolean> {
+  static async compares(password: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }
 
@@ -23,11 +23,11 @@ export class AuthService {
 import bcrypt from "bcryptjs";
 
 export class HashService {
-  static async hashPassword(password: string): Promise<string> {
+  static async hash(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
   }
 
-  static async comparePasswords(password: string, hash: string): Promise<boolean> {
+  static async compares(password: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }
 }

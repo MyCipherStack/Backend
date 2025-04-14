@@ -17,7 +17,7 @@ export class PendingUserRepository  implements IPendingUserRepository {
     async findValidUser(email: string): Promise<temUser | null> {
     const found=await PendingUser.findOne({email})
     if(!found) return null
-    return new temUser(found.name,found.email,found.password,found.createdAt,found.otp ?? "",)
+    return new temUser(found.name,found.email,found.password,found.createdAt,found.expireAt,found.otp)
     }   
 
     async delete(email: string): Promise<void> {

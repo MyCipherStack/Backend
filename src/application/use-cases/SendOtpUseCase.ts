@@ -10,6 +10,8 @@ export class SendOtpUseCase{
     ){}
     async execute(email:string){
         const foundUser=await this.pendingUserRepository.findValidUser(email)
+           
+            if(!foundUser)  throw new Error("Code expired send again");
         let otp=""
         if(foundUser?.otp){
             console.log("user found");

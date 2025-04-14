@@ -26,13 +26,13 @@ export class LoginUserUseCase{
             throw new Error("User not found with this email or password");
         }
 
-            const passCheck=await this.hashService.comparePassword(password,foundUser.password)
+            const passCheck=await this.hashService.compare(password,foundUser.password)
 
         if(!passCheck){ throw new Error("Incorrect password. Please try again.");
         }
-       
-        const accessToken= this.JwtService.signAccessToken({emai:foundUser.email,name:foundUser.name})
-        const refreshToken= this.JwtService.signRefereshToken({emai:foundUser.email,name:foundUser.name})
+    
+        const accessToken= this.JwtService.signAccessToken({email:foundUser.email,name:foundUser.name})
+        const refreshToken= this.JwtService.signRefereshToken({email:foundUser.email,name:foundUser.name})
         console.log(accessToken,refreshToken);
 
         

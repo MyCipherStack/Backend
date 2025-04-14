@@ -3,13 +3,15 @@ import { IOtpService } from "../../domain/services/IOtpService.js";
 import { OtpDTO } from "../../application/dto/OtpDTO.js";
 import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase.js";
 import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
-import { ResetOtpUseCase } from "../../application/use-cases/resetOtpUseCase.js";
 
 
 export class ResendOtpContoller{
     constructor(
         private otpService: IOtpService,
         private PendingUserRepository:IPendingUserRepository
+                
+        
+
     ){
 
     }
@@ -20,8 +22,9 @@ export class ResendOtpContoller{
             
             // const data= new OtpDTO(req.body);
             let data=req.body
-            const resetUsecase=new ResetOtpUseCase(this.otpService)
-            await resetUsecase.execute(data.email)
+            
+            const setOtpUsecase=new SendOtpUseCase(this.otpService,this.PendingUserRepository)
+            await setOtpUsecase.execute(data.email)
             res.status(200).json({status:true,message:"OTP sented"})
 
         }catch (error:any) {   

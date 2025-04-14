@@ -9,6 +9,9 @@ export interface IUser extends Document {
     googleId:string;
     created_at:Date;
     updated_at:Date;
+    refreshToken:string
+    status:string
+    role:string
 }
 
 // create the user Schema
@@ -29,9 +32,21 @@ const UserSchema=new Schema<IUser>({
     },
     image:{
         type:String,
+        // default:"https://images.app.goo.gl/WxwYnYXooctTp8sX7"
+    },
+    refreshToken:{
+        type:String
     },
     googleId:{
         type:String,
+    },
+    status:{
+        type:String,
+        default:"active"
+    },
+    role:{
+        type:String,
+        default:"regular"
     }
 },{timestamps:true})
 

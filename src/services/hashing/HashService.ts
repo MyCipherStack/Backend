@@ -6,12 +6,11 @@ export class HashService implements IHashAlgorithm{
         private readonly algorithm:IHashAlgorithm
     ){}
 
-    async hashPassword(password: string): Promise<string> {
-        return await this.algorithm.hashPassword(password)
+    async hash(password: string): Promise<string> {
+        return await this.algorithm.hash(password)
     }
-    async comparePassword(password: string, hashedPassword: string): Promise<boolean> {
-        return await this.algorithm.comparePassword(password,hashedPassword)
+    async compare(password: string, hashedPassword: string): Promise<boolean> {
+        return await this.algorithm.compare(password,hashedPassword)
     }
 
-}   
-
+}

@@ -36,7 +36,7 @@ private userRepository: IUserRepository,
             
         }
         const dummyPassword = Date.now().toString()+Math.random();
-        const hashedPassword = await this.hashService.hashPassword(dummyPassword);
+        const hashedPassword = await this.hashService.hash(dummyPassword);
         const user=new User(name,email,hashedPassword,image,googleId)
         const createUser=await this.userRepository.create({
             name:user.name,

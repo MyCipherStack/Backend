@@ -3,6 +3,7 @@ import express from "express"
 import dotenv from "dotenv"
 import { connectDB} from "./infrastructure/database/MongoConnection.js"
 import userRoutes from "./interfaces/routes/userRoutes.js"
+import adminRoutes from "./interfaces/routes/adminRoutes.js"
 import cors from "cors"
 dotenv.config()
 import cookieParser from "cookie-parser"
@@ -21,6 +22,8 @@ app.use(passport.session());
 connectDB()
 
 app.use("/api/user",userRoutes)
+app.use("/api/admin",adminRoutes)
+
 const PORT=process.env.PORT || 5000
 app.listen(PORT,()=>{
     console.log(`server running on prot ${PORT}`);

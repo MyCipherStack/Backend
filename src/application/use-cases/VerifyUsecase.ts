@@ -11,10 +11,8 @@ export  class VerifyUseCase{
 
     async execute(email:string,otp:string){
         const userData=await this.pendingUserRepository.findValidUser(email)
+console.log(userData);
 
-        if(!userData || !userData.otp){
-            throw new Error("OTP has expired or user not found")
-        }
   
         
         const isValid=this.otpService.verifyOtp(userData?.otp,otp)

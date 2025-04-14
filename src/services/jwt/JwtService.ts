@@ -12,7 +12,7 @@ export class JwtService implements IJwtService{
         return Jwt.sign(payload,this.accessTokenSecrect,{expiresIn:"1h"})
 }
     signRefereshToken(payload: object): string {
-        return Jwt.sign(payload,this.RefreshTokenSecrect,{expiresIn:"15m"})
+        return Jwt.sign(payload,this.RefreshTokenSecrect,{expiresIn:"7d"})
     }
     varifyRefreshToken(token: string):any {
         return Jwt.verify(token,this.RefreshTokenSecrect)

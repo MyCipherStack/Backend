@@ -11,7 +11,8 @@ export class User{
         public password:string,
         public image?:string,
         public googleId?:string,
-        public _id?:Types.ObjectId
+        public _id?:Types.ObjectId,
+        public refreshToken?:string
     ){}
 
     toDTO(){

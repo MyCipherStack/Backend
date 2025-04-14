@@ -17,8 +17,11 @@ import passport from "passport";
 import { LogoutController } from "../controller/LogoutController.js";
 import { GoogleAuthController } from "../controller/GoogleAuthController.js";
 import { emitWarning } from "process";
-import { forgotPasword, forgotPaswordVerifyOtp } from "../controller/forgotPasswor.js";
-import { ResetPassword } from "../controller/resetPassword.js";
+import {ForgotPassVerifyOtpController } from "../controller/ForgotPassVerifyOtpContoller.js";
+import { ResetPassword} from "../controller/resetPassword.js";
+import { ForgotPasswordOtpController } from "../controller/ForgotPassOtpController.js";
+import { ResetPasswordContoller } from "../controller/resetPasswordController.js";
+import { Authenticate } from "../../middlewares/authenticate.js";
 
 
 
@@ -28,28 +31,33 @@ import { ResetPassword } from "../controller/resetPassword.js";
       const pendingUserRepository:IPendingUserRepository=new PendingUserRepository()
 
 
+      
       const accessToken=env.ACCESS_JWT_TOKEN
       const refreshToken=env.REFRESH_JWT_TOKEN
       const jwtService=new JwtService(accessToken,refreshToken)
       const otpService=new OtpService(env.EMAIL,env.NODEMAILER_PASS)
       
-
-
+      
+      let auth=new Authenticate(jwtService)
+      
       const authController= new AuthController(userRepository,hashService,jwtService,otpService,pendingUserRepository)
       const verifyOtpController=new VerifyOtpController(otpService,pendingUserRepository,userRepository)
       const resendOtpContoller=new ResendOtpContoller(otpService,pendingUserRepository)
       const logoutController=new LogoutController()
       const googleAuthController=new GoogleAuthController(userRepository,hashService,jwtService)
-      const forgotPasswordVerify=new forgotPaswordVerifyOtp(otpService,pendingUserRepository)
-      const resetPassword=new ResetPassword(userRepository)
-
+      const forgotPasswordVerify=new ForgotPassVerifyOtpController(pendingUserRepository,hashService)
+      const resetPassword=new ResetPasswordContoller(userRepository,hashService)
+      const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
 const router=express.Router()
+
+
+
 let dummy=()=>{
       console.log("dummy log");
 }
 
 
-router.post("/register",authController.register)
+router.post("/register",authController.register)      //auth.verify
 router.post("/login",authController.login)
 router.post("/verifyOtp",verifyOtpController.verify)
 router.post("/resendOtp",resendOtpContoller.resend)
@@ -68,6 +76,8 @@ router.get("/auth/google/callback",passport.authenticate("google",{
 }),(req,res)=>googleAuthController.handleSuccess(req,res))
 
 router.post("/logOut",logoutController.logout)
+router.post("/forgotPasswordOtp",forgotPasswordOtpController.sendOtp)
+
 router.post("/forgotPasswordVerify",forgotPasswordVerify.verify)
 router.post("/resetPassword",resetPassword.reset)
 
