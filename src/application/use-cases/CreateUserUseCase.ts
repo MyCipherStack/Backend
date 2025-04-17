@@ -21,7 +21,7 @@ export class CreateUserUseCase {
     if (existingEmail) {
       throw new Error("User with this email already exists");
     }
-    const hashedPassword = await this.hashService.hash(password);   
+    const hashedPassword = await this.hashService.hash(password);      //IS HERE WANTED TRY CATCH
     const user = new User(name, email, hashedPassword);
    const createdUserEmail= await  this.pendingUserRepository.save(user.name,user.email,user.password)
     return createdUserEmail

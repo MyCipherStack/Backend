@@ -9,7 +9,7 @@ export interface IUserRepository{
     findById(id:string):Promise<User |null >
     findByUserName(name:string):Promise<User |null >
     updatePassword(email:string,password:string):Promise<User |null >
-    updateFeildsByEmail(email:string,fielsToUpdate:Partial<{password:string,refreshToken:string}>):Promise<User | null>
+    updateFeildsById(id:string,fielsToUpdate:Partial<{password:string,refreshToken:string}>):Promise<User | null>
     getFiltersUsers(filters:{page:number,limit:number,role?: string,status?: string, search?: string;
       }):Promise<{
         users: any[];

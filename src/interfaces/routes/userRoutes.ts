@@ -11,17 +11,18 @@ import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRe
 import { PendingUserRepository } from "../../infrastructure/repositories/PendingUserRepository.js";
 import { OtpService } from "../../services/otp/OtpService.js";
 import { VerifyOtpController } from "../controller/VerifyOtpController.js";
-import { IOtpService } from "../../domain/services/IOtpService.js";
 import { ResendOtpContoller } from "../controller/ResendOtpController.js";
 import passport from "passport";
 import { LogoutController } from "../controller/LogoutController.js";
 import { GoogleAuthController } from "../controller/GoogleAuthController.js";
-import { emitWarning } from "process";
 import {ForgotPassVerifyOtpController } from "../controller/ForgotPassVerifyOtpContoller.js";
-import { ResetPassword} from "../controller/resetPassword.js";
 import { ForgotPasswordOtpController } from "../controller/ForgotPassOtpController.js";
 import { ResetPasswordContoller } from "../controller/resetPasswordController.js";
-import { Authenticate } from "../../middlewares/authenticate.js";
+import { ProblemController } from "../controller/ProblemContoller.js";
+import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js";
+import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepository.js";
+import { Authenticate } from "../../middlewares/Authenticate.js";
+import { ProfileController } from "../controller/ProfileController.js";
 
 
 
@@ -29,6 +30,7 @@ import { Authenticate } from "../../middlewares/authenticate.js";
       const algorithm=new BcryptHashAlgorithm()     // dip for hashServices
       const hashService:IHashAlgorithm=new HashService(algorithm)
       const pendingUserRepository:IPendingUserRepository=new PendingUserRepository()
+      const problemRespository:IProblemRepository=new ProblemRepository()
 
 
       
@@ -38,7 +40,7 @@ import { Authenticate } from "../../middlewares/authenticate.js";
       const otpService=new OtpService(env.EMAIL,env.NODEMAILER_PASS)
       
       
-      let auth=new Authenticate(jwtService)
+      let auth=new Authenticate(jwtService,userRepository)
       
       const authController= new AuthController(userRepository,hashService,jwtService,otpService,pendingUserRepository)
       const verifyOtpController=new VerifyOtpController(otpService,pendingUserRepository,userRepository)
@@ -48,28 +50,21 @@ import { Authenticate } from "../../middlewares/authenticate.js";
       const forgotPasswordVerify=new ForgotPassVerifyOtpController(pendingUserRepository,hashService)
       const resetPassword=new ResetPasswordContoller(userRepository,hashService)
       const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
+      const problemController=new ProblemController(problemRespository)
+      const profileController=new ProfileController()
+
+
 const router=express.Router()
 
-
-
-let dummy=()=>{
-      console.log("dummy log");
-}
 
 
 router.post("/register",authController.register)      //auth.verify
 router.post("/login",authController.login)
 router.post("/verifyOtp",verifyOtpController.verify)
 router.post("/resendOtp",resendOtpContoller.resend)
-// router.get("/auth/google",dummy)
-// router.get("/auth/google",dummy)
+
 router.get("/auth/google",passport.authenticate("google",{scope:["profile","email"]}))
 
-// router.get("/auth/google/callback",passport.authenticate("google",{
-//       failureRedirect:"/Login",session:true
-// }),(req,res)=>{
-//       res.redirect("/Home")
-// })
 
 router.get("/auth/google/callback",passport.authenticate("google",{
       failureRedirect:"/Login",session:true
@@ -80,6 +75,8 @@ router.post("/forgotPasswordOtp",forgotPasswordOtpController.sendOtp)
 
 router.post("/forgotPasswordVerify",forgotPasswordVerify.verify)
 router.post("/resetPassword",resetPassword.reset)
-
+router.get("/problems",problemController.getData)
+router.get("/validateUser",auth.verify)
+router.patch("/profile",profileController.update)
 
 export default router

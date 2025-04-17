@@ -9,10 +9,11 @@ export class User{
         public name:string,
         public email:string,
         public password:string,
+        public status?:string,
         public image?:string,
         public googleId?:string,
         public _id?:Types.ObjectId,
-        public refreshToken?:string
+        public refreshToken?:string,
     ){}
 
     toDTO(){

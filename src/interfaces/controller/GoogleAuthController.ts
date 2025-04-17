@@ -30,7 +30,13 @@ export class GoogleAuthController{
             const googleId=googleUser.googleId
             const image=googleUser.image
 
-
+            const foundUser=await this.userRepository.findByEmail(email)
+            if(foundUser?.status==="banned"){
+                console.log("user blocked");
+                
+             return   res.status(401).json({status:false,message:"This Account is banned"})
+            }
+            
             const googleUseCase=new GoogleUserUSerCase(this.userRepository,this.hashService,this.jwtService)
             const createdUser=await googleUseCase.execute(name,email,image,googleId)
 

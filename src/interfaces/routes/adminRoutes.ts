@@ -11,6 +11,9 @@ import { IAdminRepository } from "../../domain/repositories/IadminRepository.js"
 import { UsersListController } from "../controller/admin/UsersListController.js"
 import { IUserRepository } from "../../domain/repositories/IUserRepository.js"
 import { UserRepository } from "../../infrastructure/repositories/UserRepository.js"
+import { AdminProblemController } from "../controller/admin/AdminProblemContoller.js"
+import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepository.js"
+import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js"
 
 
 
@@ -18,10 +21,12 @@ const router=express.Router()
 
     const adminRepository:IAdminRepository=new AdminRepository()
     const userRepository:IUserRepository=new UserRepository()
+    const problemRespository:IProblemRepository=new ProblemRepository()
 
   const algorithm=new BcryptHashAlgorithm()     // dip for hashServices
   const hashService:IHashAlgorithm=new HashService(algorithm)
 
+console.log(problemRespository,"sdfas");
 
 
     const accessToken=env.ACCESS_JWT_TOKEN
@@ -31,9 +36,14 @@ const router=express.Router()
     const adminAuthContoller=new AdminAuthContoller(adminRepository,hashService,jwtService)
     const usersListController=new UsersListController(userRepository)
 
+    const adminProblemController=new AdminProblemController(problemRespository)
+
 router.post("/login",adminAuthContoller.login)
 router.post("/logout",adminAuthContoller.logout)
-router.get("/users",usersListController.getData)
+router.get("/users",usersListController.getData) 
+router.patch("/users/:id", usersListController.updateUser);
+router.post("/problem",adminProblemController.addProblem );
+
 
 
 

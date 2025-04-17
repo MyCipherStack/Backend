@@ -2,18 +2,21 @@ import { NextFunction, Request, Response } from "express";
 import { IJwtService } from "../domain/services/IJwtService.js";
 import { JwtService } from "../services/jwt/JwtService.js";
 import { env } from "../config/env.js";
+import { IUserRepository } from "../domain/repositories/IUserRepository.js";
 
 
 
 export class Authenticate{
     constructor(
-        private jwtService:IJwtService
+        private jwtService:IJwtService,
+        private userRepository:IUserRepository
     ){
 
     }
 
         verify=async(req:Request,res:Response,next:NextFunction)=>{
-
+            console.log("validating user");
+            
         const accessToken=req.cookies["accessToken"]
         const refreshToken=req.cookies["refreshToken"]
         console.log(accessToken,refreshToken);
@@ -23,7 +26,28 @@ export class Authenticate{
             
             return res.status(401).json({status:false,message:"No token"})
         }
+        const userPayload=this.jwtService.varifyRefreshToken(refreshToken)
 
+        const foundUser=await this.userRepository.findByUserName(userPayload.name)
+        if(foundUser?.status==="banned"){
+            console.log("user blocked");
+
+            res.clearCookie('accessToken', {
+                httpOnly: true,
+                sameSite: 'strict',
+                secure: process.env.NODE_ENV === 'production'
+            });
+            
+            res.clearCookie('refreshToken', {
+                httpOnly: true,
+                sameSite: 'strict',
+                secure: process.env.NODE_ENV === 'production'
+            });
+            
+          return   res.status(401).json({status:false,message:"This Account is banned"})
+        }
+        
+      
         try{
             if(accessToken){
                 console.log("accessToke found");

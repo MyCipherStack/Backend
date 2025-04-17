@@ -1,7 +1,7 @@
 import { FilterDTO } from "../../application/dto/FilterDto.js";
 import { User } from "../../domain/entities/User.js";
 import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import UserModel from "../database/UserModel.js";
+import UserModel, { IUser } from "../database/UserModel.js";
 
 
 
@@ -13,17 +13,17 @@ export class UserRepository implements IUserRepository{
     async findByEmail(email: string): Promise<User | null> {
         const getUser=await UserModel.findOne({email}).lean()
         if(!getUser) return null
-       return  new User(getUser.name,getUser.email,getUser.password)
+       return  new User(getUser.name,getUser.email,getUser.password,getUser.status)
     }
     async findById(id: string): Promise<User | null> {
         const getUser=await UserModel.findById(id).lean()
         if(!getUser) return null
-        return new User(getUser.name,getUser.email,getUser.password)
+        return new User(getUser.name,getUser.email,getUser.password,getUser.status)
     }
     async findByUserName(name: string): Promise<User | null> {
         const getUser=await UserModel.findOne({name}).lean()
         if(!getUser) return null
-        return new User(getUser.name,getUser.email,getUser.password)
+        return new User(getUser.name,getUser.email,getUser.password,getUser.status)
     }
     async updatePassword(email:string,password: string): Promise<User | null> {
         const updateUser=await UserModel.findOneAndUpdate({email},{password})
@@ -31,8 +31,8 @@ export class UserRepository implements IUserRepository{
         return new User(updateUser.name,updateUser.email,updateUser.password)
     }
 
-    async updateFeildsByEmail(email:string,fielsToUpdate:Partial<{password:string,refreshToken:string}>){
-        const updateUser=await UserModel.findOneAndUpdate({email}{$set:fielsToUpdate},{new:true})
+    async updateFeildsById(id:string,fielsToUpdate:Partial<IUser>){
+        const updateUser=await UserModel.findOneAndUpdate({_id:id},{$set:fielsToUpdate},{new:true})
         if(!updateUser) return null
         return new User(updateUser.name,updateUser.email,updateUser.password)
     }
