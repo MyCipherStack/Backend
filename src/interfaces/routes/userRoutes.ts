@@ -89,5 +89,7 @@ router.get("/problems",problemController.getData)
 router.get("/validateUser",auth.verify)
 router.patch("/profile",profileController.update)
 router.get("/profile",profileController.getData)
+router.patch("/profile/resetPassword",profileController.resetPassword)
+
 
 export default router

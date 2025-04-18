@@ -6,7 +6,7 @@ import { AppearanceSettings, PersonalInfo, UserPreferences } from "../interfaces
 
 export class ProfileDTO{
 
-  username: string;
+  name: string;
   displayName: string;
   email: string;
   phone: string;
@@ -20,7 +20,7 @@ export class ProfileDTO{
         constructor(personal: PersonalInfo,appearance:AppearanceSettings,preferences:UserPreferences){
 
                 this.displayName= personal.displayName,
-                this.username= personal.username,
+                this.name= personal.username,
                 this.email= personal.email,
                 this. phone= personal.phone,
                 this.bio= personal.bio,
