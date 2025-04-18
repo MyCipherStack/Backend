@@ -23,6 +23,10 @@ import { IProblemRepository } from "../../domain/repositories/IProblemRepository
 import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepository.js";
 import { Authenticate } from "../../middlewares/Authenticate.js";
 import { ProfileController } from "../controller/ProfileController.js";
+import { IUpdateUserUseCase } from "../../application/interfaces/use-cases/IUpdateUserUseCase.js";
+import { UpdateUserUseCase } from "../../application/use-cases/UpdateUserUseCase.js";
+import { GetRepositoryDataUseCase } from "../../application/use-cases/GetRepositoryDataUseCase.js";
+import { ProfileDTO } from "../../application/dto/ProfileDTO.js";
 
 
 
@@ -38,6 +42,12 @@ import { ProfileController } from "../controller/ProfileController.js";
       const refreshToken=env.REFRESH_JWT_TOKEN
       const jwtService=new JwtService(accessToken,refreshToken)
       const otpService=new OtpService(env.EMAIL,env.NODEMAILER_PASS)
+
+
+
+      const updateUserUseCase=new UpdateUserUseCase(userRepository)
+      const getRepositoryDataUseCase=new GetRepositoryDataUseCase<ProfileDTO>(userRepository)
+
       
       
       let auth=new Authenticate(jwtService,userRepository)
@@ -51,7 +61,7 @@ import { ProfileController } from "../controller/ProfileController.js";
       const resetPassword=new ResetPasswordContoller(userRepository,hashService)
       const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
       const problemController=new ProblemController(problemRespository)
-      const profileController=new ProfileController()
+      const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository)
 
 
 const router=express.Router()
@@ -78,5 +88,6 @@ router.post("/resetPassword",resetPassword.reset)
 router.get("/problems",problemController.getData)
 router.get("/validateUser",auth.verify)
 router.patch("/profile",profileController.update)
+router.get("/profile",profileController.getData)
 
 export default router

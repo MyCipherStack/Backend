@@ -1,41 +1,35 @@
-import { AppearanceSettings, PersonalInfo, SecuritySettings, UserPreferences } from "../interfaces/ProfileInterfaces.js"
+import { AppearanceSettings, PersonalInfo, UserPreferences } from "../interfaces/ProfileInterfaces.js"
 
 
 
 //  HERE IAM USING THAT POWER OF DTO
 
 export class ProfileDTO{
-    
-        personal: PersonalInfo
-        appearance: AppearanceSettings
-        security: SecuritySettings
-        preferences:UserPreferences
 
-        constructor(personal: PersonalInfo,appearance:AppearanceSettings,preferences:UserPreferences,security:SecuritySettings){
-            this.personal = {
-                displayName: personal.displayName,
-                username: personal.username,
-                email: personal.email,
-                phone: personal.phone,
-                bio: personal.bio,
-                github: personal.github,
-                twitter: personal.twitter,
-                linkedin: personal.linkedin,
-                avatar: personal.avatar,
-              };
-          
-              this.appearance = {
-                theme: appearance.theme,
-                accentColor: appearance.accentColor,
-              };
-          
-              this.security = {
-                currentPassword: security.currentPassword,
-                newPassword: security.newPassword,
-                confirmPassword: security.confirmPassword,
-                twoFactorEnabled: security.twoFactorEnabled,
-              };
-          
+  username: string;
+  displayName: string;
+  email: string;
+  phone: string;
+  bio: string;
+  github: string;
+  linkedin: string;
+  image: string;
+  theme: string;
+  preferences:UserPreferences
+
+        constructor(personal: PersonalInfo,appearance:AppearanceSettings,preferences:UserPreferences){
+
+                this.displayName= personal.displayName,
+                this.username= personal.username,
+                this.email= personal.email,
+                this. phone= personal.phone,
+                this.bio= personal.bio,
+                this.github= personal.github,
+                this.linkedin= personal.linkedin,
+                this.image= personal.avatar,
+                this.theme= appearance.theme,
+
+    
               this.preferences = {
                 emailNotifications: preferences.emailNotifications,
                 interviewReminders: preferences.interviewReminders,

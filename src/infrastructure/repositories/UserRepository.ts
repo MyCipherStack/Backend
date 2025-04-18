@@ -1,4 +1,4 @@
-import { FilterDTO } from "../../application/dto/FilterDto.js";
+import { ProfileDTO } from "../../application/dto/ProfileDTO.js";
 import { User } from "../../domain/entities/User.js";
 import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
 import UserModel, { IUser } from "../database/UserModel.js";
@@ -13,12 +13,40 @@ export class UserRepository implements IUserRepository{
     async findByEmail(email: string): Promise<User | null> {
         const getUser=await UserModel.findOne({email}).lean()
         if(!getUser) return null
-       return  new User(getUser.name,getUser.email,getUser.password,getUser.status)
+      
+        return new User(getUser.name,getUser.email,getUser.password,getUser.status,getUser._id)
+
     }
-    async findById(id: string): Promise<User | null> {
+    async findById(id: string): Promise<ProfileDTO | null> {
         const getUser=await UserModel.findById(id).lean()
         if(!getUser) return null
-        return new User(getUser.name,getUser.email,getUser.password,getUser.status)
+        const personal={
+            username: getUser.name,
+            displayName: getUser.displayName,
+            email: getUser.email,
+            phone: getUser.phone,
+            bio: getUser.bio,
+            github: getUser?.github,
+            linkedin: getUser?.linkedin,
+            avatar: getUser.image,
+            theme: getUser.theme
+        }
+        const appearance={
+            theme:getUser.theme
+        }
+
+        const preferences = {
+            emailNotifications: Boolean(getUser.preferences?.emailNotifications),
+            interviewReminders: Boolean(getUser.preferences?.interviewReminders),
+            contestReminders: Boolean(getUser.preferences?.contestReminders),
+            language: String(getUser.preferences?.language || 'en'),
+            timezone: String(getUser.preferences?.timezone || 'UTC'),
+            publicProfile: Boolean(getUser.preferences?.publicProfile),
+            showActivity: Boolean(getUser.preferences?.showActivity),
+        };
+        return new ProfileDTO(personal,appearance,preferences )
+
+
     }
     async findByUserName(name: string): Promise<User | null> {
         const getUser=await UserModel.findOne({name}).lean()
@@ -31,10 +59,12 @@ export class UserRepository implements IUserRepository{
         return new User(updateUser.name,updateUser.email,updateUser.password)
     }
 
-    async updateFeildsById(id:string,fielsToUpdate:Partial<IUser>){
-        const updateUser=await UserModel.findOneAndUpdate({_id:id},{$set:fielsToUpdate},{new:true})
+    async updateFeildsByEmail(email:string,fieldsToUpdate:Partial<ProfileDTO>):Promise<User | null>{
+        const updateUser=await UserModel.findOneAndUpdate({email},{$set:fieldsToUpdate},{new:true}).lean()
         if(!updateUser) return null
         return new User(updateUser.name,updateUser.email,updateUser.password)
+
+      
     }
 
     async getFiltersUsers(filters: {page:number,limit:number, role?: string; status?: string; search?: string; }): Promise<{

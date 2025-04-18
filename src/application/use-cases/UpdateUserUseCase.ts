@@ -9,8 +9,18 @@ export class UpdateUserUseCase{
     ){}
 
 
- async   execute(userId:string,updateData:{}){
-        const updatedUser = await this.userRepository.updateFeildsById(userId, updateData);
-        return updatedUser
+ async   execute(email:string,updateData:{}){
+        try{
+
+          const updatedUser = await this.userRepository.updateFeildsByEmail(email,updateData);
+          console.log(updatedUser,"updated useCase");
+          return updatedUser ?? null
+
+        }catch(error:any){
+          console.log(error);
+          throw new Error(error.message)
+          
+        }
+        
     }   
 }

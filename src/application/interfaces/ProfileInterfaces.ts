@@ -7,14 +7,12 @@ export interface PersonalInfo {
     phone: string;
     bio: string;
     github: string;
-    twitter: string;
     linkedin: string;
     avatar: string;
   }
   
   export interface AppearanceSettings {
     theme: string;
-    accentColor: string;
   }
   
   export interface SecuritySettings {

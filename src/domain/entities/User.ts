@@ -10,16 +10,17 @@ export class User{
         public email:string,
         public password:string,
         public status?:string,
+        public _id?:Types.ObjectId,
         public image?:string,
         public googleId?:string,
-        public _id?:Types.ObjectId,
         public refreshToken?:string,
     ){}
 
     toDTO(){
         return {
             name:this.name,
-            email:this.email
+            email:this.email,
+            status:this.status
         }
     }
 
