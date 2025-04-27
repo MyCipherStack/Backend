@@ -24,7 +24,7 @@ export class Authenticate{
         if(!accessToken && !refreshToken){
             console.log("no refresh access token");
             
-            return res.status(401).json({status:false,message:"No token"})
+            return res.status(401).json({status:false,message:"login  expired"})
         }
         const userPayload=this.jwtService.varifyRefreshToken(refreshToken)
 

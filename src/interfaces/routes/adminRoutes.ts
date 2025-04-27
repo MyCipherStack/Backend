@@ -14,6 +14,8 @@ import { UserRepository } from "../../infrastructure/repositories/UserRepository
 import { AdminProblemController } from "../controller/admin/AdminProblemContoller.js"
 import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepository.js"
 import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js"
+import { AddProblemUseCase } from "../../application/use-cases/addProblemUseCase.js"
+import { EditProblemUseCase } from "../../application/use-cases/EditProblemUseCase.js"
 
 
 
@@ -33,16 +35,23 @@ console.log(problemRespository,"sdfas");
     const refreshToken=env.REFRESH_JWT_TOKEN
     const jwtService=new JwtService(accessToken,refreshToken)
 
+
+
+
+    // const addProblemUseCase=new AddProblemUseCase(problemRespository)
+    // const editProblemUseCase=new EditProblemUseCase(problemRespository)
+
+
     const adminAuthContoller=new AdminAuthContoller(adminRepository,hashService,jwtService)
     const usersListController=new UsersListController(userRepository)
-
     const adminProblemController=new AdminProblemController(problemRespository)
 
 router.post("/login",adminAuthContoller.login)
 router.post("/logout",adminAuthContoller.logout)
 router.get("/users",usersListController.getData) 
 router.patch("/users/:id", usersListController.updateUser);
-router.post("/problem",adminProblemController.addProblem );
+router.post("/addProblem",adminProblemController.addProblem );
+router.post("/editProblem",adminProblemController.editProblem );
 
 
 

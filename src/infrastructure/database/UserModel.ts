@@ -77,8 +77,8 @@ const UserSchema=new Schema<IUser>({
         contestReminders:{type:Boolean,default:true},
         language:{type:String,default:"english"},
         timezone:{type:String,default:"gmt-8"},
-        publicProfile:{type:Boolean,default:"true"},
-        showActivity:{type:Boolean,default:"ture"},
+        publicProfile:{type:Boolean,default:true},
+        showActivity:{type:Boolean,default:true},
       },
     theme:{type:String,default:"cyberpunk"},
 

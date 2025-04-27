@@ -5,6 +5,7 @@ import { connectDB} from "./infrastructure/database/MongoConnection.js"
 import userRoutes from "./interfaces/routes/userRoutes.js"
 import adminRoutes from "./interfaces/routes/adminRoutes.js"
 import cors from "cors"
+import morgan from "morgan"
 dotenv.config()
 import cookieParser from "cookie-parser"
 import session from "express-session"
@@ -23,6 +24,8 @@ connectDB()
 
 app.use("/api/user",userRoutes)
 app.use("/api/admin",adminRoutes)
+
+app.use(morgan("dev"))
 
 const PORT=process.env.PORT || 5000
 app.listen(PORT,()=>{

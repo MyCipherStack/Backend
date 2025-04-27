@@ -31,4 +31,22 @@ export class ProblemRepository implements IProblemRepository {
     const problems= await problemModel.find(query).skip(skip).limit(filters.limit).lean()
     return {problems,totalProblems,totalPages}
 }
+
+ async  editProblem(id: string, problem: Problem): Promise<Problem | null> {
+      const problemData=await problemModel.findOneAndUpdate({_id:id},{...problem},{new:true})
+      if(problemData){
+        return problemData
+      }return null
+    }
+
+// async changeStatus(id: string, status: boolean): Promise<Problem | null> {
+    
+//   const problemData=await problemModel.findOneAndUpdate({_id:id},{status:status},{new:true})
+//   if(problemData){
+//     return problemData
+//   }return null
+
+// }
+
   }
+  

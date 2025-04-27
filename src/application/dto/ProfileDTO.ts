@@ -16,6 +16,7 @@ export class ProfileDTO{
   image: string;
   theme: string;
   preferences:UserPreferences
+  
 
         constructor(personal: PersonalInfo,appearance:AppearanceSettings,preferences:UserPreferences){
 

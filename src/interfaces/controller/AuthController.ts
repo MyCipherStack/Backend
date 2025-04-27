@@ -69,6 +69,8 @@ export class AuthController {
 
         }
         catch(error:any){
+            console.log(error.message);
+            
             res.status(400).json({status:false,message:error.message })
         } 
 

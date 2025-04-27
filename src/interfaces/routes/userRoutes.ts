@@ -28,6 +28,7 @@ import { GetRepositoryDataUseCase } from "../../application/use-cases/GetReposit
 import { ProfileDTO } from "../../application/dto/ProfileDTO.js";
 import { VerifyUserPasswordUseCase } from "../../application/use-cases/VerifyUserPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase.js";
+import { ArenaController } from "../controller/ArenaController.js";
 
 
 
@@ -65,6 +66,7 @@ import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordU
       const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
       const problemController=new ProblemController(problemRespository)
       const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository,verifyUserPasswordUseCase,resetPasswordUseCase)
+      const arenaController=new ArenaController()
 
 
 const router=express.Router()
@@ -83,7 +85,7 @@ router.get("/auth/google/callback",passport.authenticate("google",{
       failureRedirect:"/Login",session:true
 }),(req,res)=>googleAuthController.handleSuccess(req,res))
 
-router.post("/logOut",logoutController.logout)
+router.post("/logout",logoutController.logout)
 router.post("/forgotPasswordOtp",forgotPasswordOtpController.sendOtp)
 
 router.post("/forgotPasswordVerify",forgotPasswordVerify.verify)
@@ -93,6 +95,9 @@ router.get("/validateUser",auth.verify)
 router.patch("/profile",profileController.update)
 router.get("/profile",profileController.getData)
 router.patch("/profile/resetPassword",profileController.resetPassword)
+router.post("/problem/run",problemController.runProblem)
+router.post("/arena/createGroupChallenge",arenaController.createGroupChallenge)
+
 
 
 export default router

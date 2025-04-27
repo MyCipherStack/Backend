@@ -15,13 +15,23 @@ export interface IProblem extends Document {
     inputFormat: string;
     outputFormat: string;
     constraints: string;
+    hint:string;
+
     testCases: ITestCase[];
+    functionSignatureMeta:{
+      name:{type:String},
+      parameters:{name: string,
+        type: string},
+      returnType:{type:string}},
+    starterCode:{},
+    status:boolean
   }
   
   const TestCaseSchema: Schema = new Schema({
     input: { type: String, required: true },
     output: { type: String, required: true },
-    isSample: { type: Boolean, default: false }
+    isSample: { type: Boolean, default: false },
+    explanation:{ type: String }
   });
   
 
@@ -53,11 +63,22 @@ const problemsSchema=new Schema({
 
         constraints: { type: String, required: true },
 
+        hint:{type:String},
+
         testCases: { type: [TestCaseSchema], default: [] },
         
-        acceptence:{type:Number,default:100}
+        acceptence:{type:Number,default:100},
+
+        functionSignatureMeta:{
+            name:{type:String},
+            parameters:{type:Array},
+            returnType:{type:String}},
+
+        starterCode:{type:Object},
+
+        status:{type:Boolean,default:true}
         
-    }
+    },{timestamps:true}
 
 )
 
