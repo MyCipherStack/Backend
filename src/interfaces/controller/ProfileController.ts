@@ -44,19 +44,21 @@ export class ProfileController{
                     
                     const profile=await this.getRepositoryDataUseCase.execute(user._id.toString())
                     console.log(profile,"profiledata");
-                    res.status(200).json({status:true,message:"Problems fetched success",user:profile})
+                 return  res.status(200).json({status:true,message:"Problems fetched success",user:profile})
                 }else{
                  res.status(400).json({status:false,message:"Something went wrong" })
                 }
 
             }else{
-                res.status(400).json({status:false,message:"Something went wrong" })
+                return res.status(400).json({status:false,message:"Something went wrong" })
             }
             
         }catch(error){
-            res.status(400).json({status:false,message:"Something went wrong while fetching data" })
+          return   res.status(400).json({status:false,message:"Something went wrong while fetching data" })
         }
     }
+
+    
 
     resetPassword=async(req:Request,res:Response)=>{
         try{

@@ -15,52 +15,60 @@ export class Authenticate{
     }
 
         verify=async(req:Request,res:Response,next:NextFunction)=>{
+            try{
             console.log("validating user");
+            // console.log(req.cookies);
             
-        const accessToken=req.cookies["accessToken"]
-        const refreshToken=req.cookies["refreshToken"]
-        console.log(accessToken,refreshToken);
-
-        if(!accessToken && !refreshToken){
-            console.log("no refresh access token");
+            const accessToken=req.cookies["accessToken"]
+            const refreshToken=req.cookies["refreshToken"]
+            console.log(accessToken,refreshToken);
             
-            return res.status(401).json({status:false,message:"login  expired"})
-        }
-        const userPayload=this.jwtService.varifyRefreshToken(refreshToken)
-
-        const foundUser=await this.userRepository.findByUserName(userPayload.name)
-        if(foundUser?.status==="banned"){
-            console.log("user blocked");
-
-            res.clearCookie('accessToken', {
-                httpOnly: true,
-                sameSite: 'strict',
-                secure: process.env.NODE_ENV === 'production'
-            });
+            if(!accessToken && !refreshToken){
+                console.log("no refresh access token");
+                
+                return res.status(401).json({status:false,message:"login  expired"})
+            }
             
-            res.clearCookie('refreshToken', {
-                httpOnly: true,
-                sameSite: 'strict',
-                secure: process.env.NODE_ENV === 'production'
-            });
             
-          return   res.status(401).json({status:false,message:"This Account is banned"})
-        }
-        
-      
-        try{
             if(accessToken){
                 console.log("accessToke found");
-                
+            
                 const isValid=await this.jwtService.varifyAccessToken(accessToken)
-                req.user=isValid    // i can use other routes
-                next()
+                if(isValid){
+                    console.log("accessToken vaild");
+                    
+                    const userPayload=this.jwtService.varifyAccessToken(accessToken)
+                    const foundUser=await this.userRepository.findByUserName(userPayload.name)
+                    if(foundUser?.status==="banned"){
+                        console.log("user blocked");
+            
+                        res.clearCookie('accessToken', {
+                            httpOnly: true,
+                            sameSite: 'strict',
+                            secure: process.env.NODE_ENV === 'production'
+                        });
+                        
+                        res.clearCookie('refreshToken', {
+                            httpOnly: true,
+                            sameSite: 'strict',
+                            secure: process.env.NODE_ENV === 'production'
+                        });
+                        
+                      return   res.status(401).json({status:false,message:"This Account is banned"})
+                    }
+                    console.log("next()");
+                    
+                    req.user=isValid    // i can use other routes
+                
+                    return   next()
+                }
             }
             if(refreshToken){
                 console.log("refreshToken found");
                 const userPayload=this.jwtService.varifyRefreshToken(refreshToken)
+                const {exp,iat,...payload}=userPayload
                 if(userPayload){
-                    const createAccesstoken=this.jwtService.signAccessToken(userPayload)
+                    const createAccesstoken=this.jwtService.signAccessToken(payload)
                     res.cookie("accessToken",createAccesstoken,{
                         httpOnly:true,
                         secure:env.NODE_ENV === "production",

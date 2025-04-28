@@ -91,12 +91,13 @@ router.post("/forgotPasswordOtp",forgotPasswordOtpController.sendOtp)
 router.post("/forgotPasswordVerify",forgotPasswordVerify.verify)
 router.post("/resetPassword",resetPassword.reset)
 router.get("/problems",problemController.getData)
-router.get("/validateUser",auth.verify)
-router.patch("/profile",profileController.update)
-router.get("/profile",profileController.getData)
+// router.get("/validateUser",auth.verify)
+router.patch("/profile",auth.verify,profileController.update)
+router.get("/profile",auth.verify,profileController.getData)
 router.patch("/profile/resetPassword",profileController.resetPassword)
 router.post("/problem/run",problemController.runProblem)
 router.post("/arena/createGroupChallenge",arenaController.createGroupChallenge)
+
 
 
 
