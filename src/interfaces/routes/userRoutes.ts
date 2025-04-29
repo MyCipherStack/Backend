@@ -94,9 +94,9 @@ router.get("/problems",problemController.getData)
 // router.get("/validateUser",auth.verify)
 router.patch("/profile",auth.verify,profileController.update)
 router.get("/profile",auth.verify,profileController.getData)
-router.patch("/profile/resetPassword",profileController.resetPassword)
-router.post("/problem/run",problemController.runProblem)
-router.post("/arena/createGroupChallenge",arenaController.createGroupChallenge)
+router.patch("/profile/resetPassword",auth.verify,profileController.resetPassword)
+router.post("/problem/run",auth.verify,problemController.runProblem)
+router.post("/arena/createGroupChallenge",auth.verify,arenaController.createGroupChallenge)
 
 
 

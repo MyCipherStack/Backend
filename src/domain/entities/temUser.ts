@@ -1,16 +1,16 @@
 import { User } from "./User.js";
 
-
-export class temUser extends User{
+// here i extends User  
+export class temUser {
     constructor(
-        name:string,
-        email:string,
-        password:string,
-        public createdAt:Date,
-        public expireAt:Date,
-        public otp?:string,
+        public name:string | null | undefined,
+        public email:string,
+        public password?:string| null,
+        public createdAt?:Date,
+        public otp?:string| null,
+        public expireAt?:Date,
     ){
-        super(name,email,password)
+        // super(name,email,password)
     }
   
 }

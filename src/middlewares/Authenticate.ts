@@ -34,11 +34,11 @@ export class Authenticate{
                 console.log("accessToke found");
             
                 const isValid=await this.jwtService.varifyAccessToken(accessToken)
+                // const userPayload=this.jwtService.varifyAccessToken(accessToken)
                 if(isValid){
+                    const foundUser=await this.userRepository.findByUserName(isValid.name)
                     console.log("accessToken vaild");
                     
-                    const userPayload=this.jwtService.varifyAccessToken(accessToken)
-                    const foundUser=await this.userRepository.findByUserName(userPayload.name)
                     if(foundUser?.status==="banned"){
                         console.log("user blocked");
             
@@ -56,11 +56,13 @@ export class Authenticate{
                         
                       return   res.status(401).json({status:false,message:"This Account is banned"})
                     }
-                    console.log("next()");
-                    
-                    req.user=isValid    // i can use other routes
-                
-                    return   next()
+                    if(foundUser){
+                        req.user={email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
+                        return   next()
+                    }else{
+                        throw(new Error("use not found"))
+                    }
+
                 }
             }
             if(refreshToken){
@@ -76,7 +78,13 @@ export class Authenticate{
                         maxAge:1000 * 60 * 15,
                         path:"/"   
                     })
-                next()
+                    const foundUser=await this.userRepository.findByUserName(userPayload.name)
+                    if(foundUser){
+                        req.user={email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
+                        return   next()
+                    }else{
+                        throw(new Error("use not found"))
+                    }
                 }
             }
         }catch(error){

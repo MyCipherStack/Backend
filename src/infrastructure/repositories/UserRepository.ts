@@ -6,6 +6,7 @@ import UserModel, { IUser } from "../database/UserModel.js";
 
 
 export class UserRepository implements IUserRepository{
+
     async create(user: User): Promise<User> {
         const newUser=await UserModel.create({name:user.name,email:user.email,password:user.password,image:user?.image,googleId:user?.googleId});
         return new User(newUser.name,newUser.email,newUser.password)
@@ -17,7 +18,7 @@ export class UserRepository implements IUserRepository{
         return new User(getUser.name,getUser.email,getUser.password,getUser.status,getUser._id)
 
     }
-    async findById(id: string): Promise<ProfileDTO | null> {
+    async findById(id: string): Promise<User | null> {
         const getUser=await UserModel.findById(id).lean()
         if(!getUser) return null
         const personal={
@@ -44,14 +45,15 @@ export class UserRepository implements IUserRepository{
             publicProfile: Boolean(getUser.preferences?.publicProfile),
             showActivity: Boolean(getUser.preferences?.showActivity),
         };
-        return new ProfileDTO(personal,appearance,preferences )
+        return new User(getUser.name,getUser.email,"",getUser.status,getUser._id,getUser.image,getUser.googleId,getUser.refreshToken,getUser.displayName,getUser.theme,getUser.preferences)
+        // return new ProfileDTO(personal,appearance,preferences )
 
 
     }
     async findByUserName(name: string): Promise<User | null> {
         const getUser=await UserModel.findOne({name}).lean()
         if(!getUser) return null
-        return new User(getUser.name,getUser.email,getUser.password,getUser.status)
+        return new User(getUser.name,getUser.email,getUser.password,getUser.status,getUser._id)
     }
     async updatePassword(email:string,password: string): Promise<User | null> {
         const updateUser=await UserModel.findOneAndUpdate({email},{password})

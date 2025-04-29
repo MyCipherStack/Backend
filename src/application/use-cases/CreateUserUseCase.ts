@@ -4,7 +4,7 @@ import { User } from "../../domain/entities/User.js";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
 import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
 
-export class CreateUserUseCase {
+export class CreateUserUseCase  {
   constructor(
     private userRepository: IUserRepository,
     private hashService: IHashAlgorithm,

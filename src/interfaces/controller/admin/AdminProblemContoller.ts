@@ -3,11 +3,14 @@ import { AddProblemUseCase } from "../../../application/use-cases/addProblemUseC
 import { IProblemRepository } from "../../../domain/repositories/IProblemRepository.js";
 import { ProblemDTO } from "../../../application/dto/ProblemDTO.js";
 import { EditProblemUseCase } from "../../../application/use-cases/EditProblemUseCase.js";
+import { IAddProblemUseCase, IEditProblemUseCase } from "../../../application/interfaces/use-cases/IProblemUseCases.js";
 
 
 export class AdminProblemController{
   constructor(
-        private problemRespository:IProblemRepository   
+        private addProblemUseCase:IAddProblemUseCase,
+        private editProblemUseCase:IEditProblemUseCase   
+
     ){}
 
 addProblem=async(req:Request,res:Response)=>{
@@ -18,8 +21,8 @@ addProblem=async(req:Request,res:Response)=>{
         const problem=new ProblemDTO(req.body)
         console.log(problem,"problemDTO");
         
-        const problemUseCase=new AddProblemUseCase(this.problemRespository)
-        const data=await problemUseCase.execute(problem)
+        // const problemUseCase=new AddProblemUseCase(this.problemRespository)
+        const data=await this.addProblemUseCase.execute(problem)
         console.log(data);
         
         res.status(200).json({status:true,message:"problem Created success",problem:data})
@@ -42,8 +45,8 @@ addProblem=async(req:Request,res:Response)=>{
             const id=req.body._id
             console.log(id,problem);
             
-            const editProblemUseCase=new EditProblemUseCase(this.problemRespository)
-            const data=await editProblemUseCase.execute(id,problem)
+            // const editProblemUseCase=new EditProblemUseCase(this.problemRespository)
+            const data=await this.editProblemUseCase.execute(id,problem)
             console.log(data);
             
 

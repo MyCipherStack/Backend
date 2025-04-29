@@ -16,6 +16,7 @@ import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepo
 import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js"
 import { AddProblemUseCase } from "../../application/use-cases/addProblemUseCase.js"
 import { EditProblemUseCase } from "../../application/use-cases/EditProblemUseCase.js"
+import { IAddProblemUseCase } from "../../application/interfaces/use-cases/IProblemUseCases.js"
 
 
 
@@ -25,26 +26,31 @@ const router=express.Router()
     const userRepository:IUserRepository=new UserRepository()
     const problemRespository:IProblemRepository=new ProblemRepository()
 
-  const algorithm=new BcryptHashAlgorithm()     // dip for hashServices
-  const hashService:IHashAlgorithm=new HashService(algorithm)
-
-console.log(problemRespository,"sdfas");
 
 
+
+    
+    const algorithm=new BcryptHashAlgorithm()     // dip for hashServices
+    const hashService:IHashAlgorithm=new HashService(algorithm)
+    
+    
+    
+    
     const accessToken=env.ACCESS_JWT_TOKEN
     const refreshToken=env.REFRESH_JWT_TOKEN
     const jwtService=new JwtService(accessToken,refreshToken)
-
-
-
+    
+    
+    
+    const addProblemUseCase:IAddProblemUseCase=new AddProblemUseCase(problemRespository)
+    const editProblemUseCase=new EditProblemUseCase(problemRespository)
 
     // const addProblemUseCase=new AddProblemUseCase(problemRespository)
-    // const editProblemUseCase=new EditProblemUseCase(problemRespository)
 
 
     const adminAuthContoller=new AdminAuthContoller(adminRepository,hashService,jwtService)
     const usersListController=new UsersListController(userRepository)
-    const adminProblemController=new AdminProblemController(problemRespository)
+    const adminProblemController=new AdminProblemController(addProblemUseCase,editProblemUseCase)
 
 router.post("/login",adminAuthContoller.login)
 router.post("/logout",adminAuthContoller.logout)

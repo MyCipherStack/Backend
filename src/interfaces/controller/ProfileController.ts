@@ -35,23 +35,26 @@ export class ProfileController{
     getData=async(req:Request,res:Response)=>{
         try{
             console.log("getting data");
-            const email=req.query.email
-
-            if(typeof email==="string"){
-                const user=await this.userRepositroy.findByEmail(email)
+            // const email=req.query.email
+            console.log(req.user,"getData user profile");
+        
+            const user=req.user
+            
+            
+                // const user=await this.userRepositroy.findByEmail(email)
               
-                if(user && user._id){
+                if(user && user.id){
                     
-                    const profile=await this.getRepositoryDataUseCase.execute(user._id.toString())
+                    const profile=await this.getRepositoryDataUseCase.execute(user.id.toString())
                     console.log(profile,"profiledata");
                  return  res.status(200).json({status:true,message:"Problems fetched success",user:profile})
                 }else{
                  res.status(400).json({status:false,message:"Something went wrong" })
                 }
 
-            }else{
-                return res.status(400).json({status:false,message:"Something went wrong" })
-            }
+            // }else{
+            //     return res.status(400).json({status:false,message:"Something went wrong" })
+            // }
             
         }catch(error){
           return   res.status(400).json({status:false,message:"Something went wrong while fetching data" })
