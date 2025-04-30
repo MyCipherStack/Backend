@@ -2,12 +2,17 @@ import { Request, Response } from "express";
 import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js";
 import Juge0CodeExecute from "../../services/Judg0/Juge0CodeExecute.js";
 import { ProblemDTO } from "../../application/dto/ProblemDTO.js";
+import { IRunProblemUseCase } from "../../application/interfaces/use-cases/IProblemUseCases.js";
+import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase.js";
+import { Problem } from "../../domain/entities/Problem.js";
 
 
 
 export class ProblemController{
     constructor(
-           private problemRespository:IProblemRepository
+           private problemRespository:IProblemRepository,
+           private runProblemUseCase:IRunProblemUseCase,
+           private getProblemDataUseCase:IGetRepositoryDataUseCase<Problem>
      ){}
      getData=async(req:Request,res:Response)=>{
          try{
@@ -22,8 +27,13 @@ export class ProblemController{
            
              const data=await this.problemRespository.getFilterProblem({page,limit,difficulty,status,search,category})
              console.log(data,"datasss");
-             
-             res.status(200).json({status:true,message:"problems fetched success",problemData:data})
+             const problems=data.problems.map((problem)=>{
+            return   { ...problem,
+                testCases:problem.testCases.filter((tc)=>tc.isSample)}
+             })
+            const sampleTestCasesOnlyData={...data,problems}
+    
+             res.status(200).json({status:true,message:"problems fetched success",problemData:sampleTestCasesOnlyData})
              return 
          }catch(error){
              console.log(error);
@@ -39,32 +49,9 @@ export class ProblemController{
             const language=req.body.language
             let testCases=req.body.testCases
             
-            for(let test of testCases){
-                const token= await Juge0CodeExecute.submitCode(language,code,test.input,test.output,problem.memoryLimit,problem.timeLimit,problem.functionSignatureMeta)
-                const response= await Juge0CodeExecute.getResult(token)
-                if(response.output){
-
-                    const match =response.output.match(/([\s\S]*?)__RESULT__:(.*)/);
-                    
-                    const logOut = match ? match[1].trim() : '';      
-                    const actualOutput = match && match[2] ? match[2].trim() : '';  
-                    const status = test.output.trim() == actualOutput;
-                    
-                    
-                    
-                    test.status=status
-                    test.logOut=logOut
-                    test.compile_output=actualOutput
-                }else{
-                    
-                    test.status=false
-                    test.error=response.error
-                }
-                
-            }
-
-            
-            res.status(200).json({status:true,message:"test cases runned successfuly",testResult:testCases})
+          const updatedTestCases=await this.runProblemUseCase.excute(testCases,code,language,problem.memoryLimit,problem.timeLimit,problem.functionSignatureMeta,false)
+         
+            res.status(200).json({status:true,message:"test cases runned successfuly",testResult:updatedTestCases})
             
         }catch(error){
             console.log(error);
@@ -73,10 +60,21 @@ export class ProblemController{
         }
      }
 
-     submitProblet=async(req:Request,res:Response)=>{
+     submitProblem=async(req:Request,res:Response)=>{
         try{
+            const problem= new ProblemDTO(req.body.programDetails)
+            const code=req.body.code
+            const language=req.body.language
+            let testCases=req.body.testCases  //this have only sampleTestCase
+            
+        const ProblemWithAlltestCases=await this.getProblemDataUseCase.execute(problem._id)
+        const AllTestCases=ProblemWithAlltestCases?.testCases ?? []
+        const updatedTestCases=await this.runProblemUseCase.execute(AllTestCases,code,language,problem.memoryLimit,problem.timeLimit,problem.functionSignatureMeta,true)
+        
+        
 
-        }catch(error){
+        }catch(error){  
+            console.log(error);
             
         }
      }

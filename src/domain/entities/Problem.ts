@@ -14,7 +14,7 @@ export class Problem {
     public inputFormat: string,
     public outputFormat: string,
     public constraints: string,
-    public testCases: { input: string; output: string; isSample: boolean }[] = [],
+    public testCases: { testCaseNo:number,input: string; output: string; isSample: boolean }[] = [],
     public functionSignatureMeta:Object,
     public _id?: Types.ObjectId,
   ) {}

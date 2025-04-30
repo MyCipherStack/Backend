@@ -1,29 +1,30 @@
 import axios from "axios"
 import { error } from "console";
 import { generateWrapper } from "./helper/generateWrapper.js";
+import { IJuge0CodeExecute } from "../../domain/services/IJuge0CodeExecute.js";
 
 
 const JUDGE0_API_URL='http://localhost:2358/submissions';
 // const JUDGE0_API_URL='http://localhost:2358/submissions?base64_encoded=false';
 
 
-export default class Juge0CodeExecute{
+export default class Juge0CodeExecute {
     
 
 
-static async submitCode(
+ async codeSubmitToJudge0(
     language:string,
     code:string,
     stdin:string,
     expectedOutput:string,
     memoryLimit:number=128,
     timeLimit:number=1000,
-    meta
+    functionSignatureMeta:{}
         ){
             try{
-                console.log(expectedOutput,"Expeted output");
+                // console.log(expectedOutput,"Expeted output");
                 
-                console.log(stdin,expectedOutput);
+                // console.log(stdin,expectedOutput);
   
 
         // const wrappedCode = `
@@ -42,7 +43,7 @@ static async submitCode(
         // `;
                 
 
-        const wrappedCode= await generateWrapper(code,meta,language)
+        const wrappedCode= await generateWrapper(code,functionSignatureMeta,language)
 
 
         const response=await axios.post(JUDGE0_API_URL,
@@ -73,7 +74,7 @@ static async submitCode(
 
 
 
-       static async getResult(token:string){
+    async getResultFromJudge0(token:string){
             try{
 
                 while(true){
@@ -86,7 +87,7 @@ static async submitCode(
         }
     });
     const data = response.data;
-    console.log(data,"data from getResult token");
+    // console.log(data,"data from getResult token");
     
     if(data.status.id>=3){
         return{
@@ -113,7 +114,7 @@ static async submitCode(
                 throw new Error('Failed to fetch result from Judge0');
             }
         }
-        private static getLanguageId(language:string):number{
+        private  getLanguageId(language:string):number{
             const languages:{[key:string]:number}={
                 javascript: 63,
                 python: 71, 

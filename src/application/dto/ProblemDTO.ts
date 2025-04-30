@@ -1,4 +1,5 @@
 export class ProblemDTO {
+    _id:string;
     title: string;
     problemId: string;
     difficulty: string;
@@ -19,8 +20,9 @@ export class ProblemDTO {
     status:boolean
   
     constructor(data:ProblemDTO) {
+      this._id=data._id
       this.title = data.title.trim();
-      this.problemId = data.problemId?.trim();
+      this.problemId = data.problemId.trim();
       this.difficulty = data.difficulty.trim();
       this.timeLimit = data.timeLimit || 1000;
       this.memoryLimit = data.memoryLimit || 128;

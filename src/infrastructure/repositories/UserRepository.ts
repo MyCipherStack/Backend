@@ -5,7 +5,7 @@ import UserModel, { IUser } from "../database/UserModel.js";
 
 
 
-export class UserRepository implements IUserRepository{
+export class UserRepository implements IUserRepository {
 
     async create(user: User): Promise<User> {
         const newUser=await UserModel.create({name:user.name,email:user.email,password:user.password,image:user?.image,googleId:user?.googleId});
@@ -16,7 +16,6 @@ export class UserRepository implements IUserRepository{
         if(!getUser) return null
       
         return new User(getUser.name,getUser.email,getUser.password,getUser.status,getUser._id)
-
     }
     async findById(id: string): Promise<User | null> {
         const getUser=await UserModel.findById(id).lean()

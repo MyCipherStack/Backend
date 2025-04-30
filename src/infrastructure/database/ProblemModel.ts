@@ -28,22 +28,25 @@ export interface IProblem extends Document {
   }
   
   const TestCaseSchema: Schema = new Schema({
+    testCaseNo:{type:Number,require:true},
     input: { type: String, required: true },
     output: { type: String, required: true },
     isSample: { type: Boolean, default: false },
     explanation:{ type: String }
   });
   
-
   export interface ITestCase {
+    testCaseNo:number;
     input: string;
-    output: string;
+    output: string; 
     isSample: boolean;
   }
 
 const problemsSchema=new Schema({
 
         title:{ type:String, required:true},
+
+        problemId:{type:String,required:true},
 
         difficulty: {  type: String,required: true },
 

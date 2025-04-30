@@ -7,11 +7,12 @@ import { IVerifyUserPasswordUseCase } from "../../application/interfaces/use-cas
 import { ResetPasswordDTO } from "../../application/dto/ResetPasswordDTO.js";
 import { IResetPasswordUseCase } from "../../application/interfaces/use-cases/IResetPasswordUseCase.js";
 import { log } from "node:console";
+import { User } from "../../domain/entities/User.js";
 
 export class ProfileController{
     constructor(
         private updateUseCase:IUpdateUserUseCase,
-        private getRepositoryDataUseCase:IGetRepositoryDataUseCase<ProfileDTO>,
+        private getRepositoryDataUseCase:IGetRepositoryDataUseCase<User>,
         private userRepositroy:IUserRepository,
         private verifyUserPasswordUseCase:IVerifyUserPasswordUseCase,
         private resetPasswordUseCase:IResetPasswordUseCase
@@ -76,7 +77,6 @@ export class ProfileController{
 
         const isValid=await this.verifyUserPasswordUseCase.execute(data.email,data.currentPassword)
 console.log(isValid);
-        
         if(isValid){
             this.resetPasswordUseCase.execute(data.email,data.password)
             res.status(200).json({status:true,message:"password updated"})

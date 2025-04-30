@@ -16,7 +16,7 @@ export class AdminProblemController{
 addProblem=async(req:Request,res:Response)=>{
     try{
         console.log("add problem controller");
-        console.log(req.body,"Add problem da");
+        console.log(req.body,"Add problem ");
         
         const problem=new ProblemDTO(req.body)
         console.log(problem,"problemDTO");
@@ -43,11 +43,11 @@ addProblem=async(req:Request,res:Response)=>{
             
             const problem=new ProblemDTO(req.body)
             const id=req.body._id
-            console.log(id,problem);
+            console.log(id,problem,"id and problem");
             
             // const editProblemUseCase=new EditProblemUseCase(this.problemRespository)
             const data=await this.editProblemUseCase.execute(id,problem)
-            console.log(data);
+            console.log(data,"last Data");
             
 
         res.status(200).json({status:true,message:"problem edited successfully",problem:data})

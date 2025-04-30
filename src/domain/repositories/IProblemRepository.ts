@@ -10,6 +10,6 @@ export interface IProblemRepository extends BaseRepository<Problem>{
 
     editProblem(id:string,problem:Problem):Promise<Problem | null>
 
-    changeStatus(id:string,status:boolean):Promise<Problem | null>
+    // changeStatus(id:string,status:boolean):Promise<Problem | null>
 
 }

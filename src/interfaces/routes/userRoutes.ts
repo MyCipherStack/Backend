@@ -29,6 +29,12 @@ import { ProfileDTO } from "../../application/dto/ProfileDTO.js";
 import { VerifyUserPasswordUseCase } from "../../application/use-cases/VerifyUserPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase.js";
 import { ArenaController } from "../controller/ArenaController.js";
+import { problemModel } from "../../infrastructure/database/ProblemModel.js";
+import { Problem } from "../../domain/entities/Problem.js";
+import { User } from "../../domain/entities/User.js";
+import { RunProblemUseCase } from "../../application/use-cases/RunProblemUseCase.js";
+import Juge0CodeExecute from "../../services/Judg0/Juge0CodeExecute.js";
+import { IJuge0CodeExecute } from "../../domain/services/IJuge0CodeExecute.js";
 
 
 
@@ -44,13 +50,16 @@ import { ArenaController } from "../controller/ArenaController.js";
       const refreshToken=env.REFRESH_JWT_TOKEN
       const jwtService=new JwtService(accessToken,refreshToken)
       const otpService=new OtpService(env.EMAIL,env.NODEMAILER_PASS)
+      const juge0CodeExecuteService=new Juge0CodeExecute()
 
 
 
       const updateUserUseCase=new UpdateUserUseCase(userRepository)
-      const getRepositoryDataUseCase=new GetRepositoryDataUseCase<ProfileDTO>(userRepository)
+      const getRepositoryDataUseCase=new GetRepositoryDataUseCase<User>(userRepository)
       const verifyUserPasswordUseCase=new VerifyUserPasswordUseCase(userRepository,hashService)
       const resetPasswordUseCase=new ResetPasswordUseCase(userRepository,hashService)
+      const getProblemDataUseCase=new GetRepositoryDataUseCase<Problem>(problemRespository)
+      const runProblemUseCase=new RunProblemUseCase(juge0CodeExecuteService)
 
       
       
@@ -64,7 +73,7 @@ import { ArenaController } from "../controller/ArenaController.js";
       const forgotPasswordVerify=new ForgotPassVerifyOtpController(pendingUserRepository,hashService)
       const resetPassword=new ResetPasswordContoller(userRepository,hashService)
       const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
-      const problemController=new ProblemController(problemRespository)
+      const problemController=new ProblemController(problemRespository,runProblemUseCase,getProblemDataUseCase)
       const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository,verifyUserPasswordUseCase,resetPasswordUseCase)
       const arenaController=new ArenaController()
 
@@ -96,6 +105,7 @@ router.patch("/profile",auth.verify,profileController.update)
 router.get("/profile",auth.verify,profileController.getData)
 router.patch("/profile/resetPassword",auth.verify,profileController.resetPassword)
 router.post("/problem/run",auth.verify,problemController.runProblem)
+router.post("/problem/submit",auth.verify,problemController.submitProblem)
 router.post("/arena/createGroupChallenge",auth.verify,arenaController.createGroupChallenge)
 
 

@@ -1,11 +1,12 @@
 
+import { BaseRepository } from "../../infrastructure/repositories/BaseRespositroy.js";
 import { IGetRepositoryDataUseCase } from "../interfaces/use-cases/IGetRepositoryDataUseCase.js";
 
 
 
 export class GetRepositoryDataUseCase<T> implements IGetRepositoryDataUseCase<T>{
     constructor(
-        private respository:{findById(id:string):Promise<T| null>}
+        private respository:BaseRepository<T>
     ){}
 
     async execute(id: string): Promise<T| null> {

@@ -10,6 +10,12 @@ export class ProblemRepository implements IProblemRepository {
         const created=await problemModel.create(problem)
         return created
     }
+
+  async findById(Id: string): Promise<Problem | null> {
+    const problem=await problemModel.findById(Id)
+    if(!problem) return null
+    return problem
+  }
   
   async getFilterProblem(filters: { page: number;limit:number, difficulty?: string; status?: string; search?: string; category?: string; }): Promise<{ problems: any[]; totalProblems: number; totalPages: number; }> {
     let   query:any={}
