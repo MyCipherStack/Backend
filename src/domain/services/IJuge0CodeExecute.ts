@@ -13,10 +13,14 @@ export interface IJuge0CodeExecute{
 
     getResultFromJudge0(token:string):Promise<{
         success:boolean
-            output:string,
-            error:string,
+            stdout:string,
+            stderr:string,
             compile_output:string,
-            memory:string
+            memory:number,
+            runtime:number,
+            status:object,
+            message:string
+
     }>
 
 

@@ -22,12 +22,17 @@ export class ProfileController{
     update=async(req:Request,res:Response)=>{
         try{
            console.log(req.body);
+           const user=req.user as {email:string}
+           console.log(user);
+           
 
-            const profileData=new ProfileDTO(req.body.personal,req.body.appearance,req.body.preferences)
-            const data=await this.updateUseCase.execute(profileData.email,profileData)
-            res.status(200).json({status:true,message:"problems fetched success",user:data})
+                const profileData=new ProfileDTO(req.body.personal,req.body.appearance,req.body.preferences)
+                const data=await this.updateUseCase.execute(user.email,profileData)
+                res.status(200).json({status:true,message:"problems fetched success",user:data})
 
-        }catch(error){            
+
+
+        }catch(error:any){            
             res.status(400).json({status:false,message:error.message })
         }
     }
@@ -39,14 +44,14 @@ export class ProfileController{
             // const email=req.query.email
             console.log(req.user,"getData user profile");
         
-            const user=req.user
+            const user=req.user as {email:string ,id:string}
             
             
                 // const user=await this.userRepositroy.findByEmail(email)
               
-                if(user && user.id){
-                    
-                    const profile=await this.getRepositoryDataUseCase.execute(user.id.toString())
+                
+                const profile=await this.getRepositoryDataUseCase.execute(user.id.toString())
+                if(profile){
                     console.log(profile,"profiledata");
                  return  res.status(200).json({status:true,message:"Problems fetched success",user:profile})
                 }else{

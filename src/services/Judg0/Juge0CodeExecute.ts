@@ -25,6 +25,7 @@ export default class Juge0CodeExecute {
                 // console.log(expectedOutput,"Expeted output");
                 
                 // console.log(stdin,expectedOutput);
+                
   
 
         // const wrappedCode = `
@@ -45,7 +46,7 @@ export default class Juge0CodeExecute {
 
         const wrappedCode= await generateWrapper(code,functionSignatureMeta,language)
 
-
+                
         const response=await axios.post(JUDGE0_API_URL,
         {
             source_code:wrappedCode,
@@ -54,6 +55,9 @@ export default class Juge0CodeExecute {
             // expected_output:`${expectedOutput.trim()}\n`,
             // cpu_time_limit:timeLimit,
             // memory_limit:memoryLimit,
+            base64_encoded: false,
+            wait: true,
+            cache:false
         },{
             headers: {
                 'Content-Type': 'application/json',
@@ -90,12 +94,17 @@ export default class Juge0CodeExecute {
     // console.log(data,"data from getResult token");
     
     if(data.status.id>=3){
+        console.log(data);
+        
         return{
             success:data.status.id === 3,
-            output:data.stdout,
-            error:data.stderr,
+            stdout:data.stdout,
+            stderr:data.stderr,
             compile_output: data.compile_output,
-            memory:data.memory
+            memory:data.memory,
+            runtime:data.time,
+            message:data.message,
+            status:data.status
             
         
         }

@@ -12,7 +12,7 @@ export class ProblemRepository implements IProblemRepository {
     }
 
   async findById(Id: string): Promise<Problem | null> {
-    const problem=await problemModel.findById(Id)
+    const problem=await problemModel.findById(Id).lean()
     if(!problem) return null
     return problem
   }

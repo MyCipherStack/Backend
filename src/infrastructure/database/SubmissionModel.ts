@@ -5,9 +5,9 @@ import mongoose, { Types } from "mongoose";
 
 const submissionSchema=new mongoose.Schema({
 
-    user:{type:Types.ObjectId,ref:"User",required:true},
+    userId:{type:Types.ObjectId,ref:"User",required:true},
 
-    problem:{type:Types.ObjectId,ref:"Problem",required:true},
+    problemId:{type:Types.ObjectId,ref:"Problem",required:true},
 
     code:{type:String,required:true},
 
@@ -26,6 +26,10 @@ const submissionSchema=new mongoose.Schema({
     },
 
     passedTestCases:{type:Number,required:true},
+
+    totalTestCases:{type:Number,required:true},
+
+    error:{type:String}
 
 
 },{timestamps:true})

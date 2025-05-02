@@ -13,4 +13,4 @@ export class temUser {
         // super(name,email,password)
     }
   
-}
+}   

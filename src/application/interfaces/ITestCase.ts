@@ -9,4 +9,6 @@ export interface ITestCase {
     error?:string
     logOut?:string
     status?:boolean
+    runtime?:number
+    memory?:number
   }

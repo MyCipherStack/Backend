@@ -8,5 +8,5 @@
     "strict": true,
     "esModuleInterop": true
   },
-  "include": ["src", "src/application/use-cases/.ts", "src/services/Judg0/.ts"]
+  "include": ["src", "src/application/use-cases/.ts", "src/services/Judg0/.ts", "src/domain/repositories/ISubmissionRepository.ts"]
 }

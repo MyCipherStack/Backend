@@ -1,4 +1,5 @@
 import { Problem } from "../../../domain/entities/Problem.js";
+import { Submission } from "../../../domain/entities/Submission.js";
 import { ITestCase } from "../ITestCase.js";
 
 
@@ -18,5 +19,5 @@ export interface IRunProblemUseCase{
 
 
 export interface IsubmitProblemUseCase{
-    execute(testCases:ITestCase[]):Promise<ITestCase>
+    execute(testCases:ITestCase[],userId:string,problemId:string,code:string,language:string,totalTestCases:number):Promise<Submission>
 }

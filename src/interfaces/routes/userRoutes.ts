@@ -34,7 +34,11 @@ import { Problem } from "../../domain/entities/Problem.js";
 import { User } from "../../domain/entities/User.js";
 import { RunProblemUseCase } from "../../application/use-cases/RunProblemUseCase.js";
 import Juge0CodeExecute from "../../services/Judg0/Juge0CodeExecute.js";
-import { IJuge0CodeExecute } from "../../domain/services/IJuge0CodeExecute.js";
+import { SubmitProblemUseCase } from "../../application/use-cases/SubmitProblemUseCase.js";
+import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository.js";
+import { SubmissionRepository } from "../../infrastructure/repositories/SubmissionRepository.js";
+import { SubmissionController } from "../controller/SubmissionController.js";
+import { GetAllSubmissionByProblemuseCase } from "../../application/use-cases/getAllSubmissionByProblemuseCase.js";
 
 
 
@@ -43,6 +47,7 @@ import { IJuge0CodeExecute } from "../../domain/services/IJuge0CodeExecute.js";
       const hashService:IHashAlgorithm=new HashService(algorithm)
       const pendingUserRepository:IPendingUserRepository=new PendingUserRepository()
       const problemRespository:IProblemRepository=new ProblemRepository()
+      const submissionRespository:ISubmissionRepository=new SubmissionRepository()
 
 
       
@@ -60,7 +65,8 @@ import { IJuge0CodeExecute } from "../../domain/services/IJuge0CodeExecute.js";
       const resetPasswordUseCase=new ResetPasswordUseCase(userRepository,hashService)
       const getProblemDataUseCase=new GetRepositoryDataUseCase<Problem>(problemRespository)
       const runProblemUseCase=new RunProblemUseCase(juge0CodeExecuteService)
-
+      const submitProblemUseCase=new SubmitProblemUseCase(submissionRespository)
+      const getAllSubmissionByProblemuseCase=new GetAllSubmissionByProblemuseCase(submissionRespository)
       
       
       let auth=new Authenticate(jwtService,userRepository)
@@ -73,9 +79,10 @@ import { IJuge0CodeExecute } from "../../domain/services/IJuge0CodeExecute.js";
       const forgotPasswordVerify=new ForgotPassVerifyOtpController(pendingUserRepository,hashService)
       const resetPassword=new ResetPasswordContoller(userRepository,hashService)
       const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
-      const problemController=new ProblemController(problemRespository,runProblemUseCase,getProblemDataUseCase)
+      const problemController=new ProblemController(problemRespository,runProblemUseCase,getProblemDataUseCase,submitProblemUseCase)
       const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository,verifyUserPasswordUseCase,resetPasswordUseCase)
       const arenaController=new ArenaController()
+      const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
 
 
 const router=express.Router()
@@ -107,6 +114,8 @@ router.patch("/profile/resetPassword",auth.verify,profileController.resetPasswor
 router.post("/problem/run",auth.verify,problemController.runProblem)
 router.post("/problem/submit",auth.verify,problemController.submitProblem)
 router.post("/arena/createGroupChallenge",auth.verify,arenaController.createGroupChallenge)
+
+router.get("/submissions",auth.verify,submissionController.getSubmissionData)
 
 
 

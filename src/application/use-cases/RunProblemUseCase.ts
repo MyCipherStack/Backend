@@ -7,24 +7,29 @@ export class RunProblemUseCase implements IRunProblemUseCase {
         private juge0CodeExecute:IJuge0CodeExecute
     ){}
     async execute(testCases: ITestCase[],code:string,language:string,memoryLimit:number,timeLimit:number,functionSignatureMeta:{},stopFailTestCase:boolean): Promise<ITestCase[]> {
-        const result:ITestCase[]=[]
+        let result:ITestCase[]=[]
+        
         for(let test of testCases){
-            console.log(test);
             
             const updatedTestCases={...test}
+            
             const token= await this.juge0CodeExecute.codeSubmitToJudge0(language,code,test.input,test.output,memoryLimit,timeLimit,functionSignatureMeta)
             if(!token){
-                updatedTestCases.error="Compailation Error"
+                updatedTestCases.error="Compilation Error"
                 updatedTestCases.status=false
+                updatedTestCases.memory=0
+                updatedTestCases.runtime=0
                 result.push(updatedTestCases)
                 console.log("1break");
 
                 break;
             } 
-            const response= await this.juge0CodeExecute.getResultFromJudge0(token)
-            if(response.output){
+            const response= await this.juge0CodeExecute.getResultFromJudge0(token)  
+            console.log(response);
+            
+            if(response.stdout){
 
-                const match =response.output.match(/([\s\S]*?)__RESULT__:(.*)/);
+                const match =response.stdout.match(/([\s\S]*?)__RESULT__:(.*)/);
                 
                 const logOut = match ? match[1].trim() : '';      
                 const actualOutput = match && match[2] ? match[2].trim() : '';  
@@ -33,12 +38,16 @@ export class RunProblemUseCase implements IRunProblemUseCase {
                 updatedTestCases.status=status   //accept or not 
                 updatedTestCases.logOut=logOut
                 updatedTestCases.compile_output=actualOutput
+                updatedTestCases.memory=response.memory
+                updatedTestCases.runtime=response.runtime
+                updatedTestCases.error=response.stderr
+                updatedTestCases.runtime=response.runtime
+                
                 if(!status && stopFailTestCase){
 
                  result.push(updatedTestCases)
                  console.log("2break");
                  
-                    
                     break
                 } 
                 
@@ -46,7 +55,11 @@ export class RunProblemUseCase implements IRunProblemUseCase {
             }else{
                 
                 updatedTestCases.status=false
-                updatedTestCases.error=response.error
+                updatedTestCases.error=response.stderr
+                updatedTestCases.memory=0
+                updatedTestCases.runtime=0
+                console.log(response.stderr,"thisi is the err in the ouput");
+                
                 if(stopFailTestCase){
                  console.log("3break");
                     
@@ -59,6 +72,7 @@ export class RunProblemUseCase implements IRunProblemUseCase {
             result.push(updatedTestCases)
             
         }
+        
         return result
     }
 }
