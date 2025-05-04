@@ -113,11 +113,11 @@ router.get("/profile",auth.verify,profileController.getData)
 router.patch("/profile/resetPassword",auth.verify,profileController.resetPassword)
 router.post("/problem/run",auth.verify,problemController.runProblem)
 router.post("/problem/submit",auth.verify,problemController.submitProblem)
-router.post("/arena/createGroupChallenge",auth.verify,arenaController.createGroupChallenge)
 
 router.get("/submissions",auth.verify,submissionController.getSubmissionData)
 
 
+router.post("/arena/createGroupChallenge",auth.verify,arenaController.createGroupChallenge)
 
 
 export default router
