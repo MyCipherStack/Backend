@@ -1,6 +1,13 @@
+import { ObjectId } from "mongoose";
+import { GroupChallenge } from "../../../domain/entities/GroupChallenge.js";
+import { IGroupChallenge } from "../IChallengeInterfaces.js";
 
 
 
 export interface ICreateChallengeUseCase{
-    execute()
+    execute(challengeData:IGroupChallenge):Promise<string|null>
+}
+
+export interface IJoinChallengeUseCase{
+    execute(joinCode:string,userId:ObjectId):Promise<GroupChallenge>
 }

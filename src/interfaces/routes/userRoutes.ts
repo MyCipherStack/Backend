@@ -39,6 +39,12 @@ import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepo
 import { SubmissionRepository } from "../../infrastructure/repositories/SubmissionRepository.js";
 import { SubmissionController } from "../controller/SubmissionController.js";
 import { GetAllSubmissionByProblemuseCase } from "../../application/use-cases/getAllSubmissionByProblemuseCase.js";
+import { CreateChallengeUseCase } from "../../application/use-cases/CreateChallengeUseCase.js";
+import { ChallengeRepository } from "../../infrastructure/repositories/ChallengeRespository.js";
+import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository.js";
+import { JoinChallengeUseCase } from "../../application/use-cases/JoinChallengeUseCase.js";
+import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRespository.js";
+import { LeaderBoardRespository } from "../../infrastructure/repositories/LeaderBoardRepository.js";
 
 
 
@@ -48,6 +54,8 @@ import { GetAllSubmissionByProblemuseCase } from "../../application/use-cases/ge
       const pendingUserRepository:IPendingUserRepository=new PendingUserRepository()
       const problemRespository:IProblemRepository=new ProblemRepository()
       const submissionRespository:ISubmissionRepository=new SubmissionRepository()
+      const challengeRepository:IChallengeRepository=new ChallengeRepository()
+      const leaderBoardRespository:ILeaderBoardRespository=new LeaderBoardRespository()
 
 
       
@@ -67,6 +75,8 @@ import { GetAllSubmissionByProblemuseCase } from "../../application/use-cases/ge
       const runProblemUseCase=new RunProblemUseCase(juge0CodeExecuteService)
       const submitProblemUseCase=new SubmitProblemUseCase(submissionRespository)
       const getAllSubmissionByProblemuseCase=new GetAllSubmissionByProblemuseCase(submissionRespository)
+      const createChallengeUseCase=new CreateChallengeUseCase(challengeRepository)
+      const joinChallengeUseCase=new JoinChallengeUseCase(challengeRepository,leaderBoardRespository)
       
       
       let auth=new Authenticate(jwtService,userRepository)
@@ -81,7 +91,7 @@ import { GetAllSubmissionByProblemuseCase } from "../../application/use-cases/ge
       const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
       const problemController=new ProblemController(problemRespository,runProblemUseCase,getProblemDataUseCase,submitProblemUseCase)
       const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository,verifyUserPasswordUseCase,resetPasswordUseCase)
-      const arenaController=new ArenaController()
+      const arenaController=new ArenaController(createChallengeUseCase,joinChallengeUseCase)
       const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
 
 
@@ -118,6 +128,7 @@ router.get("/submissions",auth.verify,submissionController.getSubmissionData)
 
 
 router.post("/arena/createGroupChallenge",auth.verify,arenaController.createGroupChallenge)
+router.post("/joinGroupChallenge",auth.verify,arenaController.joinGroupChallenge)
 
 
 export default router

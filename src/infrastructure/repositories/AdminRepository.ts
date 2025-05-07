@@ -11,8 +11,8 @@ export class AdminRepository implements IAdminRepository{
      return new Admin(admin.name,admin.password,admin.id)
     }
 
-   async findByIdAndUpdate(id: string, fielsToUpdate: Partial<{ refreshToken: string; }>): Promise<Admin | null> {
-        const admin =await adminModel.findByIdAndUpdate(id,{$set:fielsToUpdate},{new:true}).lean()
+   async findByIdAndUpdate(id: string, fiedlsToUpdate: Partial<{ refreshToken: string; }>): Promise<Admin | null> {
+        const admin =await adminModel.findByIdAndUpdate(id,{$set:fiedlsToUpdate},{new:true}).lean()
         if(!admin) return null
          return new Admin(admin.name,admin.password,admin.id)
     }
