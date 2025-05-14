@@ -3,14 +3,14 @@ import mongoose, { ObjectId, Types } from "mongoose";
 interface ILeaderBoard{
     challengeId:ObjectId
     userId:ObjectId
-    score:number
+    totalScore:number
     rank:number
-    solvedProblems:[{time:Date,problemId:ObjectId,submissionId:ObjectId}]
+    solvedProblems:[{time:Date,problemId:ObjectId,submissionId:ObjectId,score:number}]
 }
 
 
 const solvedProblemSchema=new mongoose.Schema({
-    time:{type:Date},problemId:{type:Types.ObjectId},submissionId:{type:Types.ObjectId}
+    time:{type:Number},problemId:{type:Types.ObjectId},submissionId:{type:Types.ObjectId},score:{type:Number}
 })
 
 const LeaderBoardSchmea=new mongoose.Schema<ILeaderBoard>({
@@ -19,7 +19,7 @@ const LeaderBoardSchmea=new mongoose.Schema<ILeaderBoard>({
 
     userId:{type:Types.ObjectId,ref:"User",required:true},
 
-    score :{type:Number,default:0},
+    totalScore :{type:Number,default:0},
 
     rank:{type:Number},
 

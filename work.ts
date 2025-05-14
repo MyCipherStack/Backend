@@ -142,3 +142,34 @@ public class Main {
       return code;
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { ObjectId } from "mongoose";
+
+export interface IsolvedProblem{
+    time:Date,problemId:string,submissionId:string}
+
+
+export class leaderBoard{
+
+     challengeId:ObjectId
+     userId:ObjectId
+     score?:number
+     rank?:number
+     solvedProblems?:[IsolvedProblem]
+
+    constructor(data:Partial<leaderBoard){Object.assign(this,data)}
+}

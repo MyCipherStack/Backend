@@ -4,6 +4,8 @@ import { IsolvedProblem, leaderBoard } from "../entities/LeaderBoard.js";
 
 
 export interface ILeaderBoardRespository extends BaseRepository<Partial<leaderBoard>>{
-        findByChallengeId(id:string):Promise<leaderBoard[]>
-        findOneAndUpdateLeaderBoard(filter:{userId:string,challengeId:string},data:IsolvedProblem):Promise<leaderBoard | null>
+        findOne(filter:Partial<leaderBoard>):Promise<leaderBoard| null>
+        findAll(filter:Partial<leaderBoard>):Promise<leaderBoard| null>
+        // findByChallengeId(challegeID:string):Promise<leaderBoard| null>
+        findOneAndUpdateLeaderBoard(filter:{userId:string,challengeId:string},updateData:IsolvedProblem):Promise<leaderBoard | null>
 }

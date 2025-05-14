@@ -16,6 +16,8 @@ import { UpdateLeaderBoardUseCase } from "./application/use-cases/UpdateLeaderBo
 import { LeaderBoardRespository } from "./infrastructure/repositories/LeaderBoardRepository.js"
 import {Server} from "socket.io"
 import http from "http"
+import { SubmissionRepository } from "./infrastructure/repositories/SubmissionRepository.js"
+import { ChallengeRepository } from "./infrastructure/repositories/ChallengeRespository.js"
 
 
 
@@ -23,7 +25,7 @@ const app=express();
 const httpServer=http.createServer(app)
 const io=new Server(httpServer,{
     cors:{
-        origin:"*"
+        origin:"http://localhost:3000",credentials:true
     }
 })
 app.use(cookieParser())
@@ -35,8 +37,10 @@ app.use(passport.session());
 
 
 const leaderBoardRepository=new LeaderBoardRespository()
-const updateLeaderBoardUseCase=new UpdateLeaderBoardUseCase(leaderBoardRepository)
-const leaderBoardSocketHandler=new LeaderBoardSocketHandler(updateLeaderBoardUseCase)
+const submissionRepository=new SubmissionRepository()
+const challengeReposiotry=new ChallengeRepository()
+const updateLeaderBoardUseCase=new UpdateLeaderBoardUseCase(leaderBoardRepository,challengeReposiotry)
+const leaderBoardSocketHandler=new LeaderBoardSocketHandler(updateLeaderBoardUseCase,submissionRepository,leaderBoardRepository)
 leaderBoardSocketHandler.register(io)
 connectDB()
 

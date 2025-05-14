@@ -14,7 +14,8 @@ export type IGroupChallenge = {
     joinCode:string
     currentStatus:Object
     startTime:Date,
-    endTime:Date
+    endTime:Date,
+    
   };
 
 
@@ -32,7 +33,7 @@ const groupChallengeSchema=new mongoose.Schema<IGroupChallenge>({
 
         problems:[{type:Types.ObjectId,ref:"problem",required:true}],
 
-        startTime:{type:Date,required:true,default:()=>new Date(Date.now()+3*60*10000)},
+        startTime:{type:Date,required:true,default:()=>new Date(Date.now()+3*60*1000)},
 
         endTime:{type:Date},
 

@@ -28,7 +28,7 @@ export class ProblemController{
  
            
              const data=await this.problemRespository.getFilterProblem({page,limit,difficulty,status,search,category})
-             console.log(data,"datasss");
+            //  console.log(data,"datasss");
              const problems=data.problems.map((problem)=>{
             return   { ...problem,
                 testCases:problem.testCases.filter((tc)=>tc.isSample)}

@@ -29,7 +29,6 @@ import { ProfileDTO } from "../../application/dto/ProfileDTO.js";
 import { VerifyUserPasswordUseCase } from "../../application/use-cases/VerifyUserPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase.js";
 import { ArenaController } from "../controller/ArenaController.js";
-import { problemModel } from "../../infrastructure/database/ProblemModel.js";
 import { Problem } from "../../domain/entities/Problem.js";
 import { User } from "../../domain/entities/User.js";
 import { RunProblemUseCase } from "../../application/use-cases/RunProblemUseCase.js";

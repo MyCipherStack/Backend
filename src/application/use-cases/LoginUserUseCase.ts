@@ -38,7 +38,7 @@ export class LoginUserUseCase{
         console.log(accessToken,refreshToken);
 
         
-         const user = new User(foundUser.name, foundUser.email,foundUser.password);
+         const user = new User(foundUser.name, foundUser.email,foundUser.password,foundUser.status,foundUser._id);
         return {user:user.toDTO(),refreshToken,accessToken}
     }
 }

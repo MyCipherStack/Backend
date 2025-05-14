@@ -8,6 +8,7 @@ export class GroupChallenge{
         public problems:string[],
         public type:string,
         public joinCode?:string,
-
+        public startTime?:string,
+        public endTime?:string,
     ){}
 }

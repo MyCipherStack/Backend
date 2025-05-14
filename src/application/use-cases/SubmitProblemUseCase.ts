@@ -12,7 +12,6 @@ export class SubmitProblemUseCase implements IsubmitProblemUseCase{
     constructor(
         private submissionRespository:ISubmissionRepository
     ){}
-
     async execute(updatedTestCases:Partial<ITestCase[]>,userId:string,problemId:string,code:string,language:string,totalTestCases:number): Promise<Submission> {
         
         console.log(updatedTestCases);

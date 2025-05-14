@@ -6,13 +6,13 @@ import { groupChallengeModel } from "../database/GroupChallengeModel.js";
 export class ChallengeRepository implements IChallengeRepository{
     async  create(data: GroupChallenge): Promise<GroupChallenge> {
         const challengeData= await groupChallengeModel.create(data)
-        return new GroupChallenge(challengeData.challengeName,challengeData.participants,challengeData.duration,challengeData.problems,challengeData.type,challengeData.joinCode)
+        return new GroupChallenge(challengeData.challengeName,challengeData.maxParticipants,challengeData.duration,challengeData.problems,challengeData.type,challengeData.joinCode,challengeData.startTime,challengeData.endTime)
     }
 
     async findById(Id: string): Promise<GroupChallenge | null> {
         const challengeData=await groupChallengeModel.findById(Id)
         if(!challengeData)return null
-        return new GroupChallenge(challengeData.challengeName,challengeData.participants,challengeData.duration,challengeData.problems,challengeData.type)
+        return new GroupChallenge(challengeData.challengeName,challengeData.maxParticipants,challengeData.duration,challengeData.problems,challengeData.type,challengeData.startTime,challengeData.endTime)
 
     }
 

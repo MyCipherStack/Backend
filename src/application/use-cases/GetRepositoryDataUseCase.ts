@@ -15,5 +15,4 @@ export class GetRepositoryDataUseCase<T> implements IGetRepositoryDataUseCase<T>
         if(!data)return null
         return data
     }
- 
 }

@@ -31,6 +31,8 @@ export class Submission{
         } | null,
         
 
-        public createdAt?: string    
+        public createdAt?: string,
+        
+        public id?:string
     ){}
 }
