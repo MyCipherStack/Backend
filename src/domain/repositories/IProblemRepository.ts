@@ -12,4 +12,6 @@ export interface IProblemRepository extends BaseRepository<Problem>{
 
     // changeStatus(id:string,status:boolean):Promise<Problem | null>
 
+
+
 }

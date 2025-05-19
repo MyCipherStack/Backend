@@ -44,6 +44,9 @@ import { IChallengeRepository } from "../../domain/repositories/IchallengeReposi
 import { JoinChallengeUseCase } from "../../application/use-cases/JoinChallengeUseCase.js";
 import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRespository.js";
 import { LeaderBoardRespository } from "../../infrastructure/repositories/LeaderBoardRepository.js";
+import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepsitory.js";
+import { CreatePairProgrammingUseCase } from "../../application/use-cases/CreatePairProgrammingUseCase.js";
+import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces.js";
 
 
 
@@ -55,6 +58,7 @@ import { LeaderBoardRespository } from "../../infrastructure/repositories/Leader
       const submissionRespository:ISubmissionRepository=new SubmissionRepository()
       const challengeRepository:IChallengeRepository=new ChallengeRepository()
       const leaderBoardRespository:ILeaderBoardRespository=new LeaderBoardRespository()
+      const pairProgrammingRepository=new PairProgrammingRepository()
 
 
       
@@ -75,7 +79,9 @@ import { LeaderBoardRespository } from "../../infrastructure/repositories/Leader
       const submitProblemUseCase=new SubmitProblemUseCase(submissionRespository)
       const getAllSubmissionByProblemuseCase=new GetAllSubmissionByProblemuseCase(submissionRespository)
       const createChallengeUseCase=new CreateChallengeUseCase(challengeRepository)
-      const joinChallengeUseCase=new JoinChallengeUseCase(challengeRepository,leaderBoardRespository)
+      const joinChallengeUseCase=new JoinChallengeUseCase<IGroupChallenge>(challengeRepository,leaderBoardRespository)
+      const createPairProgrammingUseCase=new CreatePairProgrammingUseCase(pairProgrammingRepository)
+      const joinPairProgarmmingUseCase=new JoinChallengeUseCase<IPairProgramming>(pairProgrammingRepository,leaderBoardRespository)
       
       
       let auth=new Authenticate(jwtService,userRepository)
@@ -90,7 +96,7 @@ import { LeaderBoardRespository } from "../../infrastructure/repositories/Leader
       const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
       const problemController=new ProblemController(problemRespository,runProblemUseCase,getProblemDataUseCase,submitProblemUseCase)
       const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository,verifyUserPasswordUseCase,resetPasswordUseCase)
-      const arenaController=new ArenaController(createChallengeUseCase,joinChallengeUseCase)
+      const arenaController=new ArenaController(createChallengeUseCase,joinChallengeUseCase,createPairProgrammingUseCase,joinPairProgarmmingUseCase)
       const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
 
 
@@ -128,6 +134,10 @@ router.get("/submissions",auth.verify,submissionController.getSubmissionData)
 
 router.post("/arena/createGroupChallenge",auth.verify,arenaController.createGroupChallenge)
 router.post("/joinGroupChallenge",auth.verify,arenaController.joinGroupChallenge)
+
+
+router.post("/createPairProgramming",auth.verify,arenaController.createPairPramming)
+router.post("/joinPairProgramming",auth.verify,arenaController.joinPairProgramming)
 
 
 export default router

@@ -6,11 +6,14 @@ import { problemModel } from "../database/ProblemModel.js";
 
 export class ProblemRepository implements IProblemRepository {
 
+  
   async  create(problem: Problem): Promise<Problem> {
-        const created=await problemModel.create(problem)
-        return created
-    }
+    const created=await problemModel.create(problem)
+    return created
+  }
+  
 
+  
   async findById(Id: string): Promise<Problem | null> {
     const problem=await problemModel.findById(Id).lean()
     if(!problem) return null
@@ -23,7 +26,8 @@ export class ProblemRepository implements IProblemRepository {
         query.difficulty=filters.difficulty
     }
     if(filters.status) query.status=filters.status
-    if(filters.category) query.tags=`${filters.category}`
+    // if(filters.category) query.tags=`${filters.category}`
+    if(filters.category) query.tags={$regex:new RegExp(`\\b${filters.category}\\b`,'i')}
     if(filters.search){
         query.$or=[
             {title:{$regex:filters.search,$options:"i"}},

@@ -8,3 +8,15 @@ export type IGroupChallenge = {
     type:string
 
   };
+
+
+
+  export type IPairProgramming = {
+    challengeName: string;
+    problems: string[],
+    duration:number
+    problemsName: string[],
+    type: string,
+    invitedFriends:string[]
+
+  };

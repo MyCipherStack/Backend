@@ -121,8 +121,9 @@ export class LeaderBoardSocketHandler {
             })
 // ------------------------------------------------------------------------------------------------------
 
-                    socket.on("join-pairProgramming",(roomId)=>{
+                    socket.on("join-pairProgramming",({roomId,userName})=>{
                         socket.join(roomId)
+                        socket.to(roomId).emit("pairProgram-update",{userName})
                     })
 
                     socket.on("code-change",({roomId,code})=>{
@@ -132,6 +133,25 @@ export class LeaderBoardSocketHandler {
                     socket.on("cursor-change",({roomId,userId,posision})=>{
                         socket.to(roomId).emit("cursor-change",{userId,posision})
                     })
+
+                    socket.on("send-message",({roomId,userName,text,time})=>{
+                        console.log(roomId,text);
+                        
+                        socket.to(roomId).emit("receive-message",{userName,text,time})
+                    })
+
+                    socket.on("signal",({roomId,data})=>{
+                        console.log(roomId,data);
+                        
+                        socket.to(roomId).emit("signal",data)
+                    })
+
+                    socket.on('mute-status-changed',({roomId,userId,isMuted})=>{
+                        console.log(roomId,userId,isMuted);
+                        
+                        socket.to(roomId).emit("mute-status-changed",{userId,isMuted})
+                    });
+
 
             })
 

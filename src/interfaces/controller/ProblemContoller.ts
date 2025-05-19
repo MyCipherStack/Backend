@@ -5,7 +5,6 @@ import { ProblemDTO } from "../../application/dto/ProblemDTO.js";
 import { IRunProblemUseCase, IsubmitProblemUseCase } from "../../application/interfaces/use-cases/IProblemUseCases.js";
 import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase.js";
 import { Problem } from "../../domain/entities/Problem.js";
-import { ObjectId } from "mongoose";
 
 
 
@@ -25,7 +24,9 @@ export class ProblemController{
                  const category = req.query.category as string;
                  const status = req.query.status as string;
                  const search = req.query.search as string;
- 
+
+                 console.log(category,difficulty);
+                 
            
              const data=await this.problemRespository.getFilterProblem({page,limit,difficulty,status,search,category})
             //  console.log(data,"datasss");

@@ -17,6 +17,7 @@ import { IProblemRepository } from "../../domain/repositories/IProblemRepository
 import { AddProblemUseCase } from "../../application/use-cases/addProblemUseCase.js"
 import { EditProblemUseCase } from "../../application/use-cases/EditProblemUseCase.js"
 import { IAddProblemUseCase } from "../../application/interfaces/use-cases/IProblemUseCases.js"
+import { AdminPremiumPlanController } from "../controller/admin/AdminPremiumPlanController.js"
 
 
 
@@ -51,6 +52,7 @@ const router=express.Router()
     const adminAuthContoller=new AdminAuthContoller(adminRepository,hashService,jwtService)
     const usersListController=new UsersListController(userRepository)
     const adminProblemController=new AdminProblemController(addProblemUseCase,editProblemUseCase)
+    const adminPremiumPlanController=new AdminPremiumPlanController()
 
 router.post("/login",adminAuthContoller.login)
 router.post("/logout",adminAuthContoller.logout)
@@ -58,6 +60,7 @@ router.get("/users",usersListController.getData)
 router.patch("/users/:id", usersListController.updateUser);
 router.post("/addProblem",adminProblemController.addProblem );
 router.post("/editProblem",adminProblemController.editProblem );
+router.post("/createPremiumPlan",adminPremiumPlanController.createNewPlan)
 
 
 

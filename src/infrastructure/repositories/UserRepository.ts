@@ -7,6 +7,10 @@ import UserModel, { IUser } from "../database/UserModel.js";
 
 export class UserRepository implements IUserRepository {
 
+
+
+    
+
     async create(user: User): Promise<User> {
         const newUser=await UserModel.create({name:user.name,email:user.email,password:user.password,image:user?.image,googleId:user?.googleId});
         return new User(newUser.name,newUser.email,newUser.password)
