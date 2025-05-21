@@ -36,7 +36,7 @@ export class AdminPremiumPlanController{
             const data=new PremiumPlanDTO(req.body)
             const premiumPlanRepostiroy=new PremiumPlanRepostiroy()
 
-            const response=await premiumPlanRepostiroy.findOneAndUpdatePlan(data.id,data)
+            const response=await premiumPlanRepostiroy.updateOneById(data.id,data)
 
             console.log(data);
             res.status(200).json({status:true,message:"new premium plan created",response})

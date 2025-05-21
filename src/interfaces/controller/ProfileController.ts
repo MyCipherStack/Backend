@@ -16,7 +16,6 @@ export class ProfileController{
         private userRepositroy:IUserRepository,
         private verifyUserPasswordUseCase:IVerifyUserPasswordUseCase,
         private resetPasswordUseCase:IResetPasswordUseCase
-        
     ){}
 
     update=async(req:Request,res:Response)=>{
@@ -28,10 +27,8 @@ export class ProfileController{
 
                 const profileData=new ProfileDTO(req.body.personal,req.body.appearance,req.body.preferences)
                 const data=await this.updateUseCase.execute(user.email,profileData)
-                res.status(200).json({status:true,message:"problems fetched success",user:data})
-
-
-
+                if(data)
+                res.status(200).json({status:true,message:"problems fetched success",user:{name:data.name,email:data.email,image:data.image}})
         }catch(error:any){            
             res.status(400).json({status:false,message:error.message })
         }

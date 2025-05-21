@@ -21,7 +21,9 @@ export class LoginUserUseCase{
              foundUser=await this.userRepository.findByEmail(identifier)
         }else{
              foundUser=await this.userRepository.findByUserName(identifier)
-        }   
+        } 
+        console.log(foundUser,"founduser");
+          
         if(!foundUser){
             throw new Error("User not found with this email or password");
         }
@@ -36,9 +38,7 @@ export class LoginUserUseCase{
         const accessToken= this.JwtService.signAccessToken({email:foundUser.email,name:foundUser.name})
         const refreshToken= this.JwtService.signRefereshToken({email:foundUser.email,name:foundUser.name})
         console.log(accessToken,refreshToken);
-
-        
          const user = new User(foundUser.name, foundUser.email,foundUser.password,foundUser.status,foundUser._id);
-        return {user:user.toDTO(),refreshToken,accessToken}
+        return {user:{name:user.name,email:user.email,image:user.image},refreshToken,accessToken}
     }
 }

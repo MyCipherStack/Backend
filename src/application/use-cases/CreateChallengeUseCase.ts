@@ -3,7 +3,7 @@ import { IChallengeRepository } from "../../domain/repositories/IchallengeReposi
 import { IGroupChallenge } from "../interfaces/IChallengeInterfaces.js";
 import { ICreateChallengeUseCase } from "../interfaces/use-cases/IChallengeUseCases.js";
 import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js";
-import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepsotory.js";
+import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository.js";
 
 
 

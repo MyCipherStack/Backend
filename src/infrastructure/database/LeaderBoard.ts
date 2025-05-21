@@ -1,16 +1,16 @@
 import mongoose, { ObjectId, Types } from "mongoose";
 
-interface ILeaderBoard{
+export interface ILeaderBoard{
     challengeId:ObjectId
     userId:ObjectId
     totalScore:number
     rank:number
-    solvedProblems:[{time:Date,problemId:ObjectId,submissionId:ObjectId,score:number}]
+    solvedProblems:[{time:string,problemId:ObjectId,submissionId:ObjectId,score:number}]
 }
 
 
 const solvedProblemSchema=new mongoose.Schema({
-    time:{type:Number},problemId:{type:Types.ObjectId},submissionId:{type:Types.ObjectId},score:{type:Number}
+    time:{type:String},problemId:{type:Types.ObjectId},submissionId:{type:Types.ObjectId},score:{type:Number}
 })
 
 const LeaderBoardSchmea=new mongoose.Schema<ILeaderBoard>({

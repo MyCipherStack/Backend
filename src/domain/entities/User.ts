@@ -6,6 +6,8 @@ import { Types } from "mongoose";
 import { UserPreferences } from "../../application/interfaces/ProfileInterfaces.js";
 
 export class    User{
+
+
     constructor(
         public name:string,
         public email:string,
@@ -17,19 +19,13 @@ export class    User{
         public refreshToken?:string,
         public displayName?: string,
         public theme?:string,
-        public preferences?:UserPreferences
-        
+        public preferences?:UserPreferences,
+        public bio?:String,
+        public github?:String,
+        public linkedin?:String,
+        public role?:string,    
+        public created_at?:Date,
+        public updated_at?:Date,
+       
     ){}
-
-    toDTO(){
-        return {
-            name:this.name,
-            email:this.email,
-            status:this.status,
-            Image:this?.image,
-            _id:this?._id
-
-        }
-    }
-
 };

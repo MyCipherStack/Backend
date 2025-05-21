@@ -10,6 +10,7 @@ export class SendOtpUseCase{
     ){}
     async execute(email:string){
         const foundUser=await this.pendingUserRepository.findValidUser(email)
+           console.log(foundUser,"pengind user data");
            
             if(!foundUser)  throw new Error("Code expired send again");
         let otp=""

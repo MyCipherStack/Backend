@@ -3,9 +3,9 @@
 
 
 
-export  interface IBaseRepository<T>{
-    create(data:T):Promise<T| null>;
-    findById(Id:string):Promise<T|null>
-    updateOneById(id:string,updatedData:Partial<T>):Promise<T| null>
+export  interface IBaseRepository<Entity>{
+    create(data:Entity):Promise<Entity| null>;
+    findById(Id:string):Promise<Entity|null>
+    updateOneById(id:string,updatedData:Partial<Entity>):Promise<Entity| null>
 
 }

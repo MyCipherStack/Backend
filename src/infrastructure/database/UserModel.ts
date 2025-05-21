@@ -19,12 +19,12 @@ export interface IUser extends Document {
     role:string
     theme:string
     preferences: {
-        emailNotifications: Boolean,
-        interviewReminders: Boolean,
-        contestReminders: Boolean,
+        emailNotifications: boolean,
+        interviewReminders: boolean,
+        contestReminders: boolean,
         language:string
         timezone:string
-        publicProfile: Boolean,
+        publicProfile: boolean,
         showActivity: false,
       },
 }

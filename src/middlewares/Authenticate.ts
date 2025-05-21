@@ -10,10 +10,7 @@ export class Authenticate{
     constructor(
         private jwtService:IJwtService,
         private userRepository:IUserRepository
-    ){
-
-    }
-
+    ){}
         verify=async(req:Request,res:Response,next:NextFunction)=>{
             try{
             console.log("validating user");
@@ -36,7 +33,7 @@ export class Authenticate{
                 const isValid=await this.jwtService.varifyAccessToken(accessToken)
                 // const userPayload=this.jwtService.varifyAccessToken(accessToken)
                 if(isValid){
-                    const foundUser=await this.userRepository.findByUserName(isValid.name)
+                    const foundUser=await this.userRepository.findByEmail(isValid.email)
                     console.log("accessToken vaild");
                     
                     if(foundUser?.status==="banned"){
@@ -78,20 +75,18 @@ export class Authenticate{
                         maxAge:1000 * 60 * 15,
                         path:"/"   
                     })
-                    const foundUser=await this.userRepository.findByUserName(userPayload.name)
+                    const foundUser=await this.userRepository.findByEmail(userPayload.email)
                     if(foundUser){
                         req.user={email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
                         return   next()
                     }else{
-                        throw(new Error("use not found"))
+                        throw(new Error("user not found"))
                     }
                 }
             }
         }catch(error){
             console.log(error);
-            
             return res.status(401).json({status:false,message:"No token"})
-            
         }
         }
 

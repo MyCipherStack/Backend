@@ -4,7 +4,7 @@ import { Server } from "socket.io"
 
 import { IUpdateLeaderBoardUsecase } from "../../application/interfaces/use-cases/ILeaderBoadrUseCase.js";
 import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository.js";
-import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRespository.js";
+import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRepository.js";
 
 
 export class LeaderBoardSocketHandler {

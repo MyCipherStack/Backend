@@ -8,7 +8,7 @@ export type IPairProgramming = {
     hostId:ObjectId
     challengeName: string;
     duration:number
-    problems:string,
+    problems:string[],
     type:string
     joinCode:string
     currentStatus:Object

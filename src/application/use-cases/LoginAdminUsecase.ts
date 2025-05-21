@@ -34,7 +34,7 @@ export class LoginAdminUsecase{
         
         const accessToken= this.JwtService.signAccessToken({name:foundAdmin.name,role:"admin"})
         const refreshToken= this.JwtService.signRefereshToken({name:foundAdmin.name,role:"admin"})
-        const storeToken=await this.adminRepository.findByIdAndUpdate(foundAdmin.id,{refreshToken})
+        const storeToken=await this.adminRepository.updateOneById(foundAdmin.id,{refreshToken})
         console.log(accessToken,refreshToken);
         
         

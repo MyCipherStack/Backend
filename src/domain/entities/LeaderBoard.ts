@@ -1,7 +1,7 @@
 import { ObjectId } from "mongoose";
 
 export interface IsolvedProblem{
-    time:number,problemId:string,submissionId:string,score:number}
+    time:string,problemId:ObjectId,submissionId:ObjectId,score:number}
 
 
 export class leaderBoard{

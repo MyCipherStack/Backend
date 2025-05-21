@@ -9,7 +9,7 @@ export type IGroupChallenge = {
     challengeName: string;
     maxParticipants:number
     duration:number
-    problems:string,
+    problems:string[],
     type:string
     joinCode:string
     currentStatus:Object

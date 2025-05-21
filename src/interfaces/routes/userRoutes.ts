@@ -42,7 +42,7 @@ import { CreateChallengeUseCase } from "../../application/use-cases/CreateChalle
 import { ChallengeRepository } from "../../infrastructure/repositories/ChallengeRespository.js";
 import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository.js";
 import { JoinChallengeUseCase } from "../../application/use-cases/JoinChallengeUseCase.js";
-import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRespository.js";
+import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRepository.js";
 import { LeaderBoardRespository } from "../../infrastructure/repositories/LeaderBoardRepository.js";
 import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepsitory.js";
 import { CreatePairProgrammingUseCase } from "../../application/use-cases/CreatePairProgrammingUseCase.js";

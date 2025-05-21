@@ -5,17 +5,17 @@ import { Schema } from "mongoose";
 
 
 
-interface IPlan {
+export interface IPlanDocument extends Document {
     name: string;
     price: number;
     cycle: string;
     features: string[];
     trial: number;
-    status: string;
+    status: boolean;
   }
 
 
-const PremiumPlanSchema=new Schema({
+const PremiumPlanSchema=new Schema<IPlanDocument>({
 
     name:{ type:String, required:true},
 
@@ -27,10 +27,10 @@ const PremiumPlanSchema=new Schema({
 
     trial: { type: Number, required: true },
 
-    status:{type:String,default:true}
+    status:{type:Boolean,default:true}
     
 },{timestamps:true}
 
 )
 
-export const premiumPlanModel=mongoose.model<IPlan>("premiumPlan",PremiumPlanSchema)
+export const premiumPlanModel=mongoose.model<IPlanDocument>("premiumPlan",PremiumPlanSchema)

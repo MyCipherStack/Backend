@@ -1,13 +1,40 @@
-import mongoose, { Types } from "mongoose";
+import mongoose, { Document, SchemaTypes, Types } from "mongoose";
+
+
+
+export  interface ISubmissionDocument extends Document{
+    userId:Types.ObjectId,
+    problemId:Types.ObjectId,
+    code:string,
+    language:string,
+    status:string,
+    runTime:number,
+    memory:number,
+    failingTestCaseResult:{
+        input:string,
+        output:string,
+        compile_output:string
+    },
+    passedTestCases:number,
+    totalTestCases:number,
+    error:string
+
+    createdAt?:Date
+    updatedAt?:Date
+    _id:string
+
+
+}
 
 
 
 
-const submissionSchema=new mongoose.Schema({
 
-    userId:{type:Types.ObjectId,ref:"User",required:true},
+const submissionSchema=new mongoose.Schema<ISubmissionDocument>({
 
-    problemId:{type:Types.ObjectId,ref:"Problem",required:true},
+    userId:{type:SchemaTypes.ObjectId,ref:"User",required:true},
+
+    problemId:{type:SchemaTypes.ObjectId,ref:"Problem",required:true},
 
     code:{type:String,required:true},
 
@@ -37,4 +64,4 @@ const submissionSchema=new mongoose.Schema({
 submissionSchema.index({user:1,createdAt:-1})
 
 
-export const submissionModel=mongoose.model("submission",submissionSchema)
+export const submissionModel=mongoose.model<ISubmissionDocument>("submission",submissionSchema)

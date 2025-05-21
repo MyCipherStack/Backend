@@ -1,4 +1,4 @@
-import { IJuge0CodeExecute } from "../../domain/services/IJuge0CodeExecute.js";
+import { IJuge0CodeExecute } from "../../domain/services/IJudge0CodeExecute.js";
 import { ITestCase } from "../interfaces/ITestCase.js";
 import { IRunProblemUseCase } from "../interfaces/use-cases/IProblemUseCases.js";
 

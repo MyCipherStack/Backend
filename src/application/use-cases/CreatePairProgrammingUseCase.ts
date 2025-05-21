@@ -8,7 +8,7 @@
 import { customAlphabet } from "nanoid";
 import { IPairProgramming } from "../interfaces/IChallengeInterfaces.js";
 import {ICreatePairProgrammingUseCase } from "../interfaces/use-cases/IChallengeUseCases.js";
-import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepsotory.js";
+import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository.js";
 
 
 

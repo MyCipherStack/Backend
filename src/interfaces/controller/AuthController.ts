@@ -31,8 +31,12 @@ export class AuthController {
             const createUser = new CreateUserUseCase(this.userRepository, this.hashService,this.PendingUserRepository);
             const createdUserEmail = await createUser.execute(userData.name, userData.email, userData.password)
             const setOtpUsecase=new SendOtpUseCase(this.otpService,this.PendingUserRepository)
-            await setOtpUsecase.execute(createdUserEmail)
-            res.status(201).json({status:true,message:"OTP sented"})
+            if(createdUserEmail){
+                await setOtpUsecase.execute(createdUserEmail)
+                res.status(201).json({status:true,message:"OTP sented"})
+            }else{
+            res.status(400).json({status:false,message:"Something wentwrong"})
+            }
         } catch (error:any) {
             console.log(error.message,"backe end err in auth controller");
             console.log(error);

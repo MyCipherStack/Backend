@@ -33,7 +33,7 @@ export class ResetPassswordOtpUseCase{
             await this.otpService.sendOtp(email, otp);
 
       //  let hashedOtp = await this.hashService.hash(otp)
-        let pendingUser= await this.pendingUserRepository.save(user.name,user.email,user.password,otp,)
+        let pendingUser= await this.pendingUserRepository.create({name:user.name,email:user.email,password:user.password,otp})
             return {pendingUser}
           } catch (error) {
             console.log(error,"err");

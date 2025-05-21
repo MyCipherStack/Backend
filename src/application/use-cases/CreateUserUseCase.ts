@@ -11,7 +11,7 @@ export class CreateUserUseCase  {
     private pendingUserRepository:IPendingUserRepository
   ) {}
 
-  async execute(name: string, email: string, password: string): Promise<string > {
+  async execute(name: string, email: string, password: string): Promise<string| null > {
     const existingEmail = await this.userRepository.findByEmail(email);
     const existingUsername = await this.userRepository.findByUserName(name);    
 
@@ -23,7 +23,8 @@ export class CreateUserUseCase  {
     }
     const hashedPassword = await this.hashService.hash(password);      //IS HERE WANTED TRY CATCH
     const user = new User(name, email, hashedPassword);
-   const createdUserEmail= await  this.pendingUserRepository.save(user.name,user.email,user.password)
-    return createdUserEmail
+   const createdUserEmail= await  this.pendingUserRepository.create({name:user.name,email:user.email,password:user.password})
+   if(!createdUserEmail)return null
+    return createdUserEmail.email
   }
 }

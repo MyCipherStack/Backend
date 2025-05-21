@@ -1,7 +1,7 @@
 import { User } from "./User.js";
 
 // here i extends User  
-export class temUser {
+export class PendingUser {
     constructor(
         public name:string | null | undefined,
         public email:string,
