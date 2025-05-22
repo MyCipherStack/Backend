@@ -1,13 +1,13 @@
 import { PremiumPlan } from "../../domain/entities/PremiumPlan.js"
-import { IpremiumPlanRepostiroy } from "../../domain/repositories/IPremiumPlanRepositroy.js"
-import { IPlan, premiumPlanModel } from "../database/PremiumPlanModel.js"
+import { IpremiumPlanRepository } from "../../domain/repositories/IPremiumPlanRepositroy.js"
+import { IPlanDocument, premiumPlanModel } from "../database/PremiumPlanModel.js"
 import { BaseRepository } from "./BaseRespositroy.js"
 
 
 
 
 
-export class PremiumPlanRepostiroy extends BaseRepository<PremiumPlan,IPlan> implements IpremiumPlanRepostiroy{
+export class PremiumPlanRepository extends BaseRepository<PremiumPlan,IPlanDocument> implements IpremiumPlanRepository{
     // async  create(data: PremiumPlan): Promise<PremiumPlan> {
     //     const createdData= await premiumPlanModel.updateOne({},data,{upsert:true})
     //     return createdData
@@ -17,9 +17,19 @@ export class PremiumPlanRepostiroy extends BaseRepository<PremiumPlan,IPlan> imp
     //     const updatedPlan=await premiumPlanModel.findOneAndUpdate({id},{data})
     //     return updatedPlan
     // }
+    constructor(){
+        super(
+            premiumPlanModel
+        )
+    }
 
-
-    
+    async findAllPlans(): Promise<PremiumPlan[]> {
+        const allPlans=await premiumPlanModel.find()
+        console.log(allPlans);
+        
+        return allPlans.map(doc=>this.toEntity(doc)).filter(doc=>doc!=null)
+    }
+        
     protected toEntity(data: any): PremiumPlan | null {
         if(!data) return null
         return new PremiumPlan(

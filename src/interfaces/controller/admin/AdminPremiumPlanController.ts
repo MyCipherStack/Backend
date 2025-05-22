@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PremiumPlanDTO } from "../../../application/dto/PremiumPlanDTO.js";
-import { PremiumPlanRepostiroy } from "../../../infrastructure/repositories/premiumPlanRepostiroy.js";
+import { IpremiumPlanRepository } from "../../../domain/repositories/IPremiumPlanRepositroy.js";
 
 
 
@@ -9,20 +9,23 @@ import { PremiumPlanRepostiroy } from "../../../infrastructure/repositories/prem
 
 export class AdminPremiumPlanController{
     constructor(
+      private  premiumPlanRepository:IpremiumPlanRepository 
+
     ){}
 
     createNewPlan=async(req:Request,res:Response)=>{
         try{
             const data=new PremiumPlanDTO(req.body)
-            const premiumPlanRepostiroy=new PremiumPlanRepostiroy()
+            console.log(data,"create");
+            // const premiumPlanRepository=new premiumPlanRepository()
+            const response=await this.premiumPlanRepository.create(data)
 
-            const response=await premiumPlanRepostiroy.create(data)
-
-            console.log(data);
             res.status(200).json({status:true,message:"new premium plan created",response})
 
             
         }catch(error){
+            console.log(error);
+            
             res.status(400).json({status:false,message:error})
 
             
@@ -34,19 +37,31 @@ export class AdminPremiumPlanController{
     editPlan=async(req:Request,res:Response)=>{
         try{
             const data=new PremiumPlanDTO(req.body)
-            const premiumPlanRepostiroy=new PremiumPlanRepostiroy()
+            // const premiumPlanRepository=new PremiumPlanRepository()
+            console.log(data,"edit");
 
-            const response=await premiumPlanRepostiroy.updateOneById(data.id,data)
+            const response=await this.premiumPlanRepository.updateOneById(data._id,data)
 
-            console.log(data);
             res.status(200).json({status:true,message:"new premium plan created",response})
 
             
+        }catch(error){  
+            res.status(400).json({status:false,message:error})
+        }
+    }
+
+    
+    getPlans=async(req:Request,res:Response)=>{
+        try{
+            const response=await this.premiumPlanRepository.findAllPlans()
+            console.log(response);
+            
+            res.status(200).json({status:true,message:" fetched all Plans",plans:response})
         }catch(error){
             res.status(400).json({status:false,message:error})
-
-            
         }
     }
 }
+
+
 

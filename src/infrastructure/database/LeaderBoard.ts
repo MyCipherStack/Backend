@@ -1,6 +1,6 @@
-import mongoose, { ObjectId, Types } from "mongoose";
+import mongoose, { Document, ObjectId, Types } from "mongoose";
 
-export interface ILeaderBoard{
+export interface ILeaderBoard extends Document{
     challengeId:ObjectId
     userId:ObjectId
     totalScore:number

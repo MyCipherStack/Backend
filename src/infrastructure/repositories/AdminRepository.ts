@@ -6,6 +6,10 @@ import { BaseRepository } from "./BaseRespositroy.js";
 
 export class AdminRepository extends BaseRepository<Admin,IAdmin> implements IAdminRepository{
 
+
+    constructor(){
+        super(adminModel)
+    }
     async findByAdminName(name: string): Promise<Admin | null> {
      const admin =await adminModel.findOne({name}).lean()
      if(!admin) return null

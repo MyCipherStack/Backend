@@ -1,21 +1,23 @@
 import { Document } from "mongoose";
 import { IsolvedProblem, leaderBoard } from "../../domain/entities/LeaderBoard.js";
-import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRepository.js";
+import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository.js";
 import { ILeaderBoard, leaderBoardModel } from "../database/LeaderBoard.js";
 import { BaseRepository } from "./BaseRespositroy.js";
 
 
-export class LeaderBoardRespository extends BaseRepository<leaderBoard,ILeaderBoard> implements ILeaderBoardRespository {
+export class LeaderBoardRepository extends BaseRepository<leaderBoard,ILeaderBoard> implements ILeaderBoardRepository {
 
     // async create(data: leaderBoard): Promise<leaderBoard> {
     //     const leaderBoardData = await leaderBoardModel.create(data)
     //     return new leaderBoard(leaderBoardData.challengeId, leaderBoardData.userId, leaderBoardData.totalScore, leaderBoardData.rank, leaderBoardData.solvedProblems)
     // }
 
+    constructor(){
+        super(leaderBoardModel)
+    }
    async findOne(filter: Partial<leaderBoard>): Promise<leaderBoard | null> {
        const leaderBoardData=await leaderBoardModel.findOne(filter)
-       if(!leaderBoardData) return null
-    return new leaderBoard(leaderBoardData.challengeId, leaderBoardData.userId, leaderBoardData.totalScore, leaderBoardData.rank, leaderBoardData.solvedProblems)
+       return this.toEntity(leaderBoardData)
 
    }
 
@@ -28,8 +30,7 @@ export class LeaderBoardRespository extends BaseRepository<leaderBoard,ILeaderBo
         console.log("in Repo",filter);
         
         let leaderBoardData = await leaderBoardModel.findOneAndUpdate({ userId: filter.userId, challengeId: filter.challengeId },{$push:{solvedProblems:updateData},$inc:{totalScore:updateData.score}},{new:true})
-        if (!leaderBoardData) return null
-        return new leaderBoard(leaderBoardData.challengeId, leaderBoardData.userId, leaderBoardData.totalScore, leaderBoardData.rank, leaderBoardData.solvedProblems)
+        return this.toEntity(leaderBoardData)
     }
 
 

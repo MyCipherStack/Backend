@@ -1,10 +1,9 @@
-import { BaseRepository } from "../../infrastructure/repositories/BaseRespositroy.js";
 import { IsolvedProblem, leaderBoard } from "../entities/LeaderBoard.js";
 import { IBaseRepository } from "./IBaseRepository.js";
 
 
 
-export interface ILeaderBoardRespository extends IBaseRepository<leaderBoard>{
+export interface ILeaderBoardRepository extends IBaseRepository<leaderBoard>{
         findOne(filter:Partial<leaderBoard>):Promise<leaderBoard| null>
         findAll(filter:Partial<leaderBoard>):Promise<leaderBoard[]>
         // findByChallengeId(challegeID:string):Promise<leaderBoard| null>

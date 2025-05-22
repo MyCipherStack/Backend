@@ -22,6 +22,10 @@ export class ProblemRepository extends BaseRepository<Problem,IProblem> implemen
   //   if(!problem) return null
   //   return problem
   // }
+
+  constructor(){
+    super(problemModel)
+  }
   
   async getFilterProblem(filters: { page: number;limit:number, difficulty?: string; status?: string; search?: string; category?: string; }): Promise<{ problems: any[]; totalProblems: number; totalPages: number; }> {
     let   query:any={}

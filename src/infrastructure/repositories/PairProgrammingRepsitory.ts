@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 import { PairProgramming } from "../../domain/entities/PairProgramming.js";
 import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository.js";
-import { IPairProgramming, PairProgramingModel } from "../database/PairProgrammingModel.js";
+import { IPairProgramming, PairProgrammingModel } from "../database/PairProgrammingModel.js";
 import { BaseRepository } from "./BaseRespositroy.js";
 
 
@@ -20,8 +20,12 @@ export class PairProgrammingRepository extends BaseRepository<PairProgramming,IP
 
        
     // }
+
+    constructor(){
+        super(PairProgrammingModel)
+    }
     async findOneChallenge(findData: Partial<PairProgramming>): Promise<PairProgramming | null> {
-        const data=await PairProgramingModel.findOne(findData).populate("problems")
+        const data=await PairProgrammingModel.findOne(findData).populate("problems")
         if(!data) return null
        return this.toEntity(data)
 

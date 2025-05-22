@@ -4,6 +4,8 @@ import { IBaseRepository } from "./IBaseRepository.js";
 
 
 
-export  interface IpremiumPlanRepostiroy extends IBaseRepository<PremiumPlan>{
+export  interface IpremiumPlanRepository extends IBaseRepository<PremiumPlan>{
+
+    findAllPlans():Promise<PremiumPlan[]>
     
 }

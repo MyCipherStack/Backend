@@ -19,6 +19,9 @@ export class ChallengeRepository extends BaseRepository<GroupChallenge,IGroupCha
 
     // }
 
+    constructor(){
+        super(groupChallengeModel)
+    }
     async findOneChallenge(data: Partial<GroupChallenge>): Promise<GroupChallenge | null> {
         const challengeData=await groupChallengeModel.findOne(data).populate("problems")
         return this.toEntity(challengeData)

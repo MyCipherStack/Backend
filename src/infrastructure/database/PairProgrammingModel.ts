@@ -1,10 +1,10 @@
-import mongoose, { ObjectId, Types } from "mongoose";
+import mongoose, { Document, ObjectId, Types } from "mongoose";
 import {customAlphabet} from "nanoid"
 
 const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6);
 
 
-export type IPairProgramming = {
+export interface IPairProgramming  extends Document{
     hostId:ObjectId
     challengeName: string;
     duration:number
@@ -49,4 +49,4 @@ PairProgramingSchema.pre("save",function(next){
 })
 
 
-export const PairProgramingModel=mongoose.model<IPairProgramming>("pairProgramming",PairProgramingSchema)
+export const PairProgrammingModel=mongoose.model<IPairProgramming>("pairProgramming",PairProgramingSchema)

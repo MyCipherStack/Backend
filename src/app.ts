@@ -13,7 +13,7 @@ import passport from "passport"
 import "./infrastructure/strategies/GoogleStrategy.js"
 import { LeaderBoardSocketHandler } from "./services/websocket/leaderBoardHandler.js"
 import { UpdateLeaderBoardUseCase } from "./application/use-cases/UpdateLeaderBoardUseCase.js"
-import { LeaderBoardRespository } from "./infrastructure/repositories/LeaderBoardRepository.js"
+import { LeaderBoardRepository } from "./infrastructure/repositories/LeaderBoardRepository.js"
 import {Server} from "socket.io"
 import http from "http"
 import { SubmissionRepository } from "./infrastructure/repositories/SubmissionRepository.js"
@@ -36,7 +36,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-const leaderBoardRepository=new LeaderBoardRespository()
+const leaderBoardRepository=new LeaderBoardRepository()
 const submissionRepository=new SubmissionRepository()
 const challengeReposiotry=new ChallengeRepository()
 const updateLeaderBoardUseCase=new UpdateLeaderBoardUseCase(leaderBoardRepository,challengeReposiotry)

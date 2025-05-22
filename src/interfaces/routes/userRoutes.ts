@@ -11,7 +11,7 @@ import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRe
 import { PendingUserRepository } from "../../infrastructure/repositories/PendingUserRepository.js";
 import { OtpService } from "../../services/otp/OtpService.js";
 import { VerifyOtpController } from "../controller/VerifyOtpController.js";
-import { ResendOtpContoller } from "../controller/ResendOtpController.js";
+import { ResendOtpController } from "../controller/ResendOtpController.js";
 import passport from "passport";
 import { LogoutController } from "../controller/LogoutController.js";
 import { GoogleAuthController } from "../controller/GoogleAuthController.js";
@@ -25,7 +25,7 @@ import { Authenticate } from "../../middlewares/Authenticate.js";
 import { ProfileController } from "../controller/ProfileController.js";
 import { UpdateUserUseCase } from "../../application/use-cases/UpdateUserUseCase.js";
 import { GetRepositoryDataUseCase } from "../../application/use-cases/GetRepositoryDataUseCase.js";
-import { ProfileDTO } from "../../application/dto/ProfileDTO.js";
+
 import { VerifyUserPasswordUseCase } from "../../application/use-cases/VerifyUserPasswordUseCase.js";
 import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase.js";
 import { ArenaController } from "../controller/ArenaController.js";
@@ -42,8 +42,8 @@ import { CreateChallengeUseCase } from "../../application/use-cases/CreateChalle
 import { ChallengeRepository } from "../../infrastructure/repositories/ChallengeRespository.js";
 import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository.js";
 import { JoinChallengeUseCase } from "../../application/use-cases/JoinChallengeUseCase.js";
-import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRepository.js";
-import { LeaderBoardRespository } from "../../infrastructure/repositories/LeaderBoardRepository.js";
+import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository.js";
+import { LeaderBoardRepository } from "../../infrastructure/repositories/LeaderBoardRepository.js";
 import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepsitory.js";
 import { CreatePairProgrammingUseCase } from "../../application/use-cases/CreatePairProgrammingUseCase.js";
 import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces.js";
@@ -57,7 +57,7 @@ import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/
       const problemRespository:IProblemRepository=new ProblemRepository()
       const submissionRespository:ISubmissionRepository=new SubmissionRepository()
       const challengeRepository:IChallengeRepository=new ChallengeRepository()
-      const leaderBoardRespository:ILeaderBoardRespository=new LeaderBoardRespository()
+      const leaderBoardRespository:ILeaderBoardRepository=new LeaderBoardRepository()
       const pairProgrammingRepository=new PairProgrammingRepository()
 
 
@@ -88,7 +88,7 @@ import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/
       
       const authController= new AuthController(userRepository,hashService,jwtService,otpService,pendingUserRepository)
       const verifyOtpController=new VerifyOtpController(otpService,pendingUserRepository,userRepository)
-      const resendOtpContoller=new ResendOtpContoller(otpService,pendingUserRepository)
+      const resendOtpController=new ResendOtpController(otpService,pendingUserRepository)
       const logoutController=new LogoutController()
       const googleAuthController=new GoogleAuthController(userRepository,hashService,jwtService)
       const forgotPasswordVerify=new ForgotPassVerifyOtpController(pendingUserRepository,hashService)
@@ -107,7 +107,7 @@ const router=express.Router()
 router.post("/register",authController.register)      //auth.verify
 router.post("/login",authController.login)
 router.post("/verifyOtp",verifyOtpController.verify)
-router.post("/resendOtp",resendOtpContoller.resend)
+router.post("/resendOtp",resendOtpController.resend)
 
 router.get("/auth/google",passport.authenticate("google",{scope:["profile","email"]}))
 
@@ -136,7 +136,7 @@ router.post("/arena/createGroupChallenge",auth.verify,arenaController.createGrou
 router.post("/joinGroupChallenge",auth.verify,arenaController.joinGroupChallenge)
 
 
-router.post("/createPairProgramming",auth.verify,arenaController.createPairPramming)
+router.post("/createPairProgramming",auth.verify,arenaController.createPairProgramming)
 router.post("/joinPairProgramming",auth.verify,arenaController.joinPairProgramming)
 
 

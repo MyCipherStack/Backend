@@ -1,10 +1,10 @@
-import mongoose, { ObjectId, Types } from "mongoose";
+import mongoose, { Document, ObjectId, Types } from "mongoose";
 import {customAlphabet} from "nanoid"
 
 const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6);
 
 
-export type IGroupChallenge = {
+export interface IGroupChallenge extends Document{
     hostId:ObjectId
     challengeName: string;
     maxParticipants:number

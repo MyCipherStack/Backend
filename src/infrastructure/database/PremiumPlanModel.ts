@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Document } from "mongoose";
 import { Schema } from "mongoose";
 
 
@@ -9,7 +10,7 @@ export interface IPlanDocument extends Document {
     name: string;
     price: number;
     cycle: string;
-    features: string[];
+    features: {text:String,enabled:Boolean}[];
     trial: number;
     status: boolean;
   }
@@ -21,11 +22,12 @@ const PremiumPlanSchema=new Schema<IPlanDocument>({
 
     price:{type:Number,required:true},
 
-    cycle: {  type: String,required: true },
+    cycle: {  type: String,default:"monthly" },
+    
+    // features: { type: [String], required: true },
+    features:{type:[{text:String,enabled:Boolean}],default:[]}, 
 
-    features: { type: [String], required: true },
-
-    trial: { type: Number, required: true },
+    trial: { type: Number,default:7 },
 
     status:{type:Boolean,default:true}
     

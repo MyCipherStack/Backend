@@ -30,6 +30,9 @@ export class SubmissionRepository extends BaseRepository<Submission,ISubmissionD
         // return  new Submission(res.userId.toString(),res.problemId.toString(),res.code,res.language,res.status,res.runTime  ?? 0,res.memory ?? 0,res.passedTestCases,res.totalTestCases,res.error ?? "",res.failingTestCaseResult,res.createdAt.toString(),res._id.toString() )
         // }
         
+        constructor(){
+            super(submissionModel)
+        }
         async getSubmissionsByProblem(userId:string,problemId: string): Promise<Submission[]> {
             const res=await submissionModel.find({userId,problemId})
             return res.map(doc=>this.toEntity(doc)).filter(doc=>doc!=null)                                                 

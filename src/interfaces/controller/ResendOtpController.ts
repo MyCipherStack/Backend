@@ -5,7 +5,7 @@ import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase.js";
 import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
 
 
-export class ResendOtpContoller{
+export class ResendOtpController{
     constructor(
         private otpService: IOtpService,
         private PendingUserRepository:IPendingUserRepository

@@ -57,7 +57,7 @@ export class ArenaController{
         }
     }
 
-    createPairPramming=async(req:Request,res:Response)=>{
+    createPairProgramming=async(req:Request,res:Response)=>{
         try{
         const data=new PairProgramingDTO(req.body)
         const userId=req.user as {id:string}
