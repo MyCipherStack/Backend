@@ -12,7 +12,7 @@ export interface IPlanDocument extends Document {
     cycle: string;
     features: {text:String,enabled:Boolean}[];
     trial: number;
-    status: boolean;
+    status:string;
   }
 
 
@@ -23,13 +23,13 @@ const PremiumPlanSchema=new Schema<IPlanDocument>({
     price:{type:Number,required:true},
 
     cycle: {  type: String,default:"monthly" },
-    
+
     // features: { type: [String], required: true },
     features:{type:[{text:String,enabled:Boolean}],default:[]}, 
 
     trial: { type: Number,default:7 },
 
-    status:{type:Boolean,default:true}
+    status:{type:String, enum:["active","hidden","deleted"]}
     
 },{timestamps:true}
 
