@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { IUserRepository } from "../../../domain/repositories/IUserRepository.js";
-import { User } from "../../../domain/entities/User.js";
 import { UpdateUserUseCase } from "../../../application/use-cases/UpdateUserUseCase.js";
 import { UpdateUserDTO } from "../../../application/dto/UpdateUserDTO.js";
 
@@ -25,7 +24,6 @@ export class UsersListController{
             console.log(req.body);
 
             const data=await this.userRepository.getFiltersUsers({page,limit,role,status,search})
-            console.log(data);
             
             res.status(200).json({status:true,message:"user data fetched success",usersData:data})
             return 

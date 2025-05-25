@@ -27,6 +27,7 @@ export interface IUser extends Document {
         publicProfile: boolean,
         showActivity: false,
       },
+    streak:{lastActiveDate:Date,currentStreak:number,higestStreak:number}
 }
 
 // create the user Schema
@@ -82,7 +83,7 @@ const UserSchema=new Schema<IUser>({
       },
     theme:{type:String,default:"cyberpunk"},
 
-
+    streak:{lastActiveDate:Date,currentStreak:Number,higestStreak:Number}
 
 },{timestamps:true})
 

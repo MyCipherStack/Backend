@@ -47,6 +47,9 @@ import { LeaderBoardRepository } from "../../infrastructure/repositories/LeaderB
 import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepsitory.js";
 import { CreatePairProgrammingUseCase } from "../../application/use-cases/CreatePairProgrammingUseCase.js";
 import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces.js";
+import { UsersController } from "../controller/UsersController.js";
+import { InterviewController } from "../controller/InterviewContolller.js";
+import { CreateRepoUseCase } from "../../application/use-cases/createRepoUseCase.js";
 
 
 
@@ -59,6 +62,7 @@ import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/
       const challengeRepository:IChallengeRepository=new ChallengeRepository()
       const leaderBoardRespository:ILeaderBoardRepository=new LeaderBoardRepository()
       const pairProgrammingRepository=new PairProgrammingRepository()
+      const InvterViewRespository=new InterViewRes
 
 
       
@@ -82,6 +86,9 @@ import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/
       const joinChallengeUseCase=new JoinChallengeUseCase<IGroupChallenge>(challengeRepository,leaderBoardRespository)
       const createPairProgrammingUseCase=new CreatePairProgrammingUseCase(pairProgrammingRepository)
       const joinPairProgarmmingUseCase=new JoinChallengeUseCase<IPairProgramming>(pairProgrammingRepository,leaderBoardRespository)
+
+      // COMMON USECASES
+      const createRepoUseCase=new CreateRepoUseCase()
       
       
       let auth=new Authenticate(jwtService,userRepository)
@@ -98,7 +105,9 @@ import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/
       const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository,verifyUserPasswordUseCase,resetPasswordUseCase)
       const arenaController=new ArenaController(createChallengeUseCase,joinChallengeUseCase,createPairProgrammingUseCase,joinPairProgarmmingUseCase)
       const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
-
+      const usersController=new UsersController(userRepository)
+      const interviewController=new InterviewController(cre)
+ 
 
 const router=express.Router()
 
@@ -122,10 +131,16 @@ router.post("/forgotPasswordOtp",forgotPasswordOtpController.sendOtp)
 router.post("/forgotPasswordVerify",forgotPasswordVerify.verify)
 router.post("/resetPassword",resetPassword.reset)
 router.get("/problems",problemController.getData)
-// router.get("/validateUser",auth.verify)
+
+
+//USERS
+router.get("/users",auth.verify,usersController.getData)
+
 router.patch("/profile",auth.verify,profileController.update)
 router.get("/profile",auth.verify,profileController.getData)
 router.patch("/profile/resetPassword",auth.verify,profileController.resetPassword)
+
+
 router.post("/problem/run",auth.verify,problemController.runProblem)
 router.post("/problem/submit",auth.verify,problemController.submitProblem)
 
@@ -138,6 +153,8 @@ router.post("/joinGroupChallenge",auth.verify,arenaController.joinGroupChallenge
 
 router.post("/createPairProgramming",auth.verify,arenaController.createPairProgramming)
 router.post("/joinPairProgramming",auth.verify,arenaController.joinPairProgramming)
+
+router.post("/scheduleInterview",auth.verify)
 
 
 export default router

@@ -85,8 +85,11 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
         const skip=(filters.page-1)*filters.limit
         const totalUsers = await UserModel.countDocuments(query);
         const totalPages = Math.ceil(totalUsers / filters.limit);
-        const users= await UserModel.find(query).skip(skip).limit(filters.limit).lean()
-        return {users,totalUsers,totalPages}
+        let users= await UserModel.find(query).skip(skip).limit(filters.limit).lean()
+        let updatedUser=users.map(data=>{
+            return new User(data.name,data.email,data.image,data.displayName,data.theme,data.bio,data.github,data.linkedin,data.created_at,data.status,data.role)
+        })
+        return {users:updatedUser,totalUsers,totalPages}
     }
     
 
@@ -95,7 +98,10 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
 
     protected toEntity(data: (IUser & Document<unknown, any, any>) | null): User | null {
         if(!data)return null
-        return new User(data.name,data.email,data.password,data.status,data._id,data.image,data.googleId,data.refreshToken,data.displayName,data.theme,data.preferences)
+
+        return new User(data.name,data.email,data.image,data.displayName,data.theme,data.bio,data.github,data.linkedin,data.created_at,data.status,data.role,data.streak,data.preferences,data.refreshToken,data._id,data.googleId,data.password,data.updated_at)
+
+        // return new User(data.name,data.email,data.password,data.status,data._id,data.image,data.googleId,data.refreshToken,data.displayName,data.theme,data.preferences,data.bio,data.github,data.linkedin,data.role,data.streak,data.created_at,data.updated_at)
     }
 }
 
