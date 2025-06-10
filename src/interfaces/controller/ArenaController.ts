@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { GroupChallengeDTO } from "../../application/dto/GroupChallengeDTO.js";
 import { ICreateChallengeUseCase, ICreatePairProgrammingUseCase, IJoinChallengeUseCase } from "../../application/interfaces/use-cases/IChallengeUseCases.js";
-import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase.js";
-import { GroupChallenge } from "../../domain/entities/GroupChallenge.js";
 import { PairProgramingDTO } from "../../application/dto/PairProgammingDTO.js";
 import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces.js";
 

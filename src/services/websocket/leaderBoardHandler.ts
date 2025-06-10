@@ -124,6 +124,9 @@ export class LeaderBoardSocketHandler {
             })
             // ------------------------------------------------------------------------------------------------------
 
+
+
+            
             socket.on("join-pairProgramming", ({ roomId, userName }) => {
                 socket.join(roomId)
                 socket.to(roomId).emit("pairProgram-update", { userName })
@@ -156,7 +159,16 @@ export class LeaderBoardSocketHandler {
             });
 
 
+
+
+
             //Best Implimetation for WEBTRC 
+
+            socket.on("join-interview",({roomId})=>{
+                console.log(roomId,"joinedInterview");
+                
+                socket.join(roomId)
+            })
 
             socket.on("offer",({roomId,data})=>{
                 socket.to(roomId).emit('offer',data)
@@ -165,6 +177,8 @@ export class LeaderBoardSocketHandler {
                 socket.to(roomId).emit('answer',data)
             })
             socket.on("candidate",({roomId,data})=>{
+                console.log(data);
+                
                 socket.to(roomId).emit('candidate',data)
             })
 

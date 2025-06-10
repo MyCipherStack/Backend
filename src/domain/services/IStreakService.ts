@@ -2,5 +2,5 @@
 
 
 export interface IStreakService{
-    updateUserStreak(email:string):Promise<string>
+    updateUserStreak(email:string):Promise<boolean>
 }

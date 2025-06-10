@@ -8,9 +8,34 @@ export class  StreakService implements IStreakService{
         private userRepository:IUserRepository
     ){}
 
-    async updateUserStreak(email:string): Promise<string> {
-      const userData=await this.userRepository.findByEmail(email)
-        userData.streak
+    async updateUserStreak(id:string): Promise<boolean> {
+      const userData=await this.userRepository.findById(id)
+       if(userData?.streak?.currentStreak){
+
+   let currentDate=new Date()
+   let lastActiveDate=userData.streak.lastActiveDate
+
+   let diff=currentDate.getTime()-lastActiveDate.getTime()
+   let diffInHours=diff/(1000*60*60)
+   if(diffInHours>24){
+
+    this.userRepository.updateFieldsByEmail(userData.email,{streak:{ lastActiveDate:new Date(),currentStreak:1,higestStreak:userData.streak.higestStreak}})
+
+   }else if(userData.streak.lastActiveDate.getDate()!=new Date().getDate()){
+    console.log("updated today Streak");
+
+       let currentStreak=userData.streak.currentStreak+1
+       let higestStreak=userData.streak.higestStreak <currentStreak ?  currentStreak :userData.streak.higestStreak
+       this.userRepository.updateFieldsByEmail(userData.email,{streak:{ lastActiveDate:new Date(),currentStreak,higestStreak}})
+    }
+}
+       else{
+        console.log("not started Streak");
+        
+     this.userRepository.updateFieldsByEmail(userData.email,{streak:{ lastActiveDate:new Date(),currentStreak:1,higestStreak:1}})
+
+       }
+       return true
 
     }
 } 

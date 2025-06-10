@@ -2,13 +2,8 @@
 
 
 import { Request, Response } from "express";
-import { IOtpService } from "../../domain/services/IOtpService.js";
-import { OtpDTO } from "../../application/dto/OtpDTO.js";
-import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase.js";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
 import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase.js";
 import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { IJwtService } from "../../domain/services/IJwtService.js";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
 
 

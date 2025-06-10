@@ -2,7 +2,6 @@ import { OtpDTO } from "../../application/dto/OtpDTO.js";
 
 import { Request, Response } from "express"
 import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
-import { IJwtService } from "../../domain/services/IJwtService.js";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
 import { ResetPassverifyOtpUseCase } from "../../application/use-cases/ResetPassverifyOtpUseCase.js";
 import { env } from "process";
@@ -34,7 +33,7 @@ export class ForgotPassVerifyOtpController{
     } catch (error:any) {
       console.log(error);
       
-      return res.status(400).json({ status: false, message:error.message});
+      return res.status(400).json({ status: false, message:error.message}); 
     }
   };
 }

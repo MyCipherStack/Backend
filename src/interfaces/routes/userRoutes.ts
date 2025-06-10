@@ -48,12 +48,19 @@ import { PairProgrammingRepository } from "../../infrastructure/repositories/Pai
 import { CreatePairProgrammingUseCase } from "../../application/use-cases/CreatePairProgrammingUseCase.js";
 import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces.js";
 import { UsersController } from "../controller/UsersController.js";
-import { InterviewController } from "../controller/InterviewContolller.js";
-import { CreateRepoUseCase } from "../../application/use-cases/createRepoUseCase.js";
+import { InterviewController } from "../controller/InterviewController.js";
+import { CreateRepoUseCase } from "../../application/use-cases/CreateRepoUseCase.js";
+import { InterViewRepository } from "../../infrastructure/repositories/InterviewRepostory.js";
+import { ScheduleInterviewUseCase } from "../../application/use-cases/ScheduleInterviewUseCase.js";
+import { GetFilteredUsersUseCase } from "../../application/use-cases/GetFilteredUsers.js";
+import { joinInterViewUseCase } from "../../application/use-cases/JoinInterviewUsecase.js";
+import { StreakService } from "../../services/streak/Streak.js";
+import { PremiumController } from "../controller/PremiumController.js";
+import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepostiroy.js";
 
 
 
-      const userRepository:IUserRepository=new UserRepository()
+      export const userRepository:IUserRepository=new UserRepository()
       const algorithm=new BcryptHashAlgorithm()     // dip for hashServices
       const hashService:IHashAlgorithm=new HashService(algorithm)
       const pendingUserRepository:IPendingUserRepository=new PendingUserRepository()
@@ -62,7 +69,8 @@ import { CreateRepoUseCase } from "../../application/use-cases/createRepoUseCase
       const challengeRepository:IChallengeRepository=new ChallengeRepository()
       const leaderBoardRespository:ILeaderBoardRepository=new LeaderBoardRepository()
       const pairProgrammingRepository=new PairProgrammingRepository()
-      const InvterViewRespository=new InterViewRes
+      const interViewRespository=new InterViewRepository()
+      const premiumPlanRepository=new PremiumPlanRepository()
 
 
       
@@ -71,6 +79,7 @@ import { CreateRepoUseCase } from "../../application/use-cases/createRepoUseCase
       const jwtService=new JwtService(accessToken,refreshToken)
       const otpService=new OtpService(env.EMAIL,env.NODEMAILER_PASS)
       const juge0CodeExecuteService=new Juge0CodeExecute()
+      const streakService=new StreakService(userRepository)
 
 
 
@@ -80,16 +89,21 @@ import { CreateRepoUseCase } from "../../application/use-cases/createRepoUseCase
       const resetPasswordUseCase=new ResetPasswordUseCase(userRepository,hashService)
       const getProblemDataUseCase=new GetRepositoryDataUseCase<Problem>(problemRespository)
       const runProblemUseCase=new RunProblemUseCase(juge0CodeExecuteService)
-      const submitProblemUseCase=new SubmitProblemUseCase(submissionRespository)
+      const submitProblemUseCase=new SubmitProblemUseCase(submissionRespository,streakService)
       const getAllSubmissionByProblemuseCase=new GetAllSubmissionByProblemuseCase(submissionRespository)
       const createChallengeUseCase=new CreateChallengeUseCase(challengeRepository)
       const joinChallengeUseCase=new JoinChallengeUseCase<IGroupChallenge>(challengeRepository,leaderBoardRespository)
       const createPairProgrammingUseCase=new CreatePairProgrammingUseCase(pairProgrammingRepository)
       const joinPairProgarmmingUseCase=new JoinChallengeUseCase<IPairProgramming>(pairProgrammingRepository,leaderBoardRespository)
-
-      // COMMON USECASES
-      const createRepoUseCase=new CreateRepoUseCase()
+      const scheduleInterviewUsecase=new ScheduleInterviewUseCase(userRepository)
+      const joiinInterviewUsecase=new joinInterViewUseCase(interViewRespository)
       
+      // COMMON USECASES
+      const getFilteredUsersUseCase=new GetFilteredUsersUseCase(userRepository)
+      
+      
+      const createRepoUseCase=new CreateRepoUseCase(interViewRespository)
+
       
       let auth=new Authenticate(jwtService,userRepository)
       
@@ -105,8 +119,9 @@ import { CreateRepoUseCase } from "../../application/use-cases/createRepoUseCase
       const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository,verifyUserPasswordUseCase,resetPasswordUseCase)
       const arenaController=new ArenaController(createChallengeUseCase,joinChallengeUseCase,createPairProgrammingUseCase,joinPairProgarmmingUseCase)
       const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
-      const usersController=new UsersController(userRepository)
-      const interviewController=new InterviewController(cre)
+      const usersController=new UsersController(getFilteredUsersUseCase)
+      const interviewController=new InterviewController(createRepoUseCase,scheduleInterviewUsecase,interViewRespository,joiinInterviewUsecase)
+      const premiumController=new PremiumController(premiumPlanRepository)
  
 
 const router=express.Router()
@@ -154,7 +169,13 @@ router.post("/joinGroupChallenge",auth.verify,arenaController.joinGroupChallenge
 router.post("/createPairProgramming",auth.verify,arenaController.createPairProgramming)
 router.post("/joinPairProgramming",auth.verify,arenaController.joinPairProgramming)
 
-router.post("/scheduleInterview",auth.verify)
+//INTERVIEW
+router.post("/scheduleInterview",auth.verify,interviewController.schedule)
+router.get("/getUserInteviews",auth.verify,interviewController.getUserInterviews)
+router.post("/joinInterView",auth.verify,interviewController.joinInterview)
+
+//PREMIUM
+router.get("/getAllPlans",premiumController.getPlans)
 
 
 export default router

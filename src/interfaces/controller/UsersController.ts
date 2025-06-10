@@ -2,7 +2,7 @@
 
 
 import { Request, Response } from "express";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js"; 
+import { IGetFilteredUsersUseCase } from "../../application/interfaces/use-cases/IGetFilteredUsersUseCase.js";
 
 
 
@@ -10,7 +10,7 @@ import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
 
 export class UsersController{
    constructor(
-    private userRepository: IUserRepository,
+    private getFilteredUsersUseCase:IGetFilteredUsersUseCase
 
     ){}
     getData=async(req:Request,res:Response)=>{
@@ -24,8 +24,8 @@ export class UsersController{
 
             console.log("getting data contoller");
             console.log(req.body);
-
-            const data=await this.userRepository.getFiltersUsers({page,limit,role,status,search})
+            const data =await this.getFilteredUsersUseCase.execute({page,limit,role,status,search})
+            // const data1=await this.userRepository.getFiltersUsers({page,limit,role,status,search})
             
             res.status(200).json({status:true,message:"user data fetched success",usersData:data})
             return 

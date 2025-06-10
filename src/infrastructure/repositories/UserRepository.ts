@@ -99,7 +99,16 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
     protected toEntity(data: (IUser & Document<unknown, any, any>) | null): User | null {
         if(!data)return null
 
-        return new User(data.name,data.email,data.image,data.displayName,data.theme,data.bio,data.github,data.linkedin,data.created_at,data.status,data.role,data.streak,data.preferences,data.refreshToken,data._id,data.googleId,data.password,data.updated_at)
+        return new User(data.name,
+            data.email,
+            data.image,
+            data.displayName,
+            data.theme,data.bio,data.github,
+            data.linkedin,data.created_at,
+            data.status,data.role,data.streak,
+            data.preferences,data.refreshToken,
+            data._id,data.googleId,data.password,
+            data.updated_at)
 
         // return new User(data.name,data.email,data.password,data.status,data._id,data.image,data.googleId,data.refreshToken,data.displayName,data.theme,data.preferences,data.bio,data.github,data.linkedin,data.role,data.streak,data.created_at,data.updated_at)
     }

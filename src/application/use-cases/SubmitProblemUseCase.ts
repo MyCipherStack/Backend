@@ -1,5 +1,6 @@
 import { Submission } from "../../domain/entities/Submission.js";
 import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository.js";
+import { IStreakService } from "../../domain/services/IStreakService.js";
 import { ITestCase } from "../interfaces/ITestCase.js";
 import { IsubmitProblemUseCase } from "../interfaces/use-cases/IProblemUseCases.js";
 
@@ -10,7 +11,8 @@ import { IsubmitProblemUseCase } from "../interfaces/use-cases/IProblemUseCases.
 
 export class SubmitProblemUseCase implements IsubmitProblemUseCase{
     constructor(
-        private submissionRespository:ISubmissionRepository
+        private submissionRespository:ISubmissionRepository,
+        private streakService:IStreakService
     ){}
     async execute(updatedTestCases:Partial<ITestCase[]>,userId:string,problemId:string,code:string,language:string,totalTestCases:number): Promise<Submission> {
         
@@ -59,7 +61,7 @@ export class SubmitProblemUseCase implements IsubmitProblemUseCase{
         
            
            
-           
+        this.streakService.updateUserStreak(userId)
    
     const submission=await this.submissionRespository.create({
             userId:userId,

@@ -1,19 +1,39 @@
 
+type typeInterviewDTO ={
+    formData:{
+    position:string,
+    interviewType:string,
+    date:string,
+    time:string,
+    duration:string,
+    notes:string,
+    isInvite:boolean
+  },
+  sessionType: 'invite',
+  invitedUsers: [ 'dummy8' ]
+}
+
 
 export class InterviewDTO{
     position: string
     interviewType:string
-    date:Date
+    date:string
     time:string
     duration: string
     notes:string
-
-    constructor(data:InterviewDTO){
-        this.position=data.position
-        this.interviewType=data.interviewType
-        this.date=data.date
-        this.time=data.time
-        this.duration=data.duration
-        this.notes=data.notes
+    isInvite:boolean
+    sessionType:string
+    invitedUsers:string[]
+    
+    constructor(data:typeInterviewDTO){
+        this.position=data.formData.position
+        this.interviewType=data.formData.interviewType
+        this.date=data.formData.date
+        this.time=data.formData.time
+        this.duration=data.formData.duration
+        this.notes=data.formData.notes
+        this.isInvite=data.formData.isInvite
+        this.sessionType=data.sessionType
+        this.invitedUsers=data.invitedUsers
     }
 }

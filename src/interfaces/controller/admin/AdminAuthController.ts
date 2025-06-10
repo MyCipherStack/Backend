@@ -7,7 +7,7 @@ import { LoginDTO } from "../../../application/dto/LoginDTO.js";
 import { env } from "../../../config/env.js";
 
 
-export class AdminAuthContoller{
+export class AdminAuthController{
 
  constructor(
         private adminRepository:IAdminRepository,

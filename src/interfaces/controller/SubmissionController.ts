@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase.js";
 import { IGetAllSubmissionByProblemuseCase } from "../../application/interfaces/use-cases/IGetAllSubmissionByProblemuseCase.js";
 
 

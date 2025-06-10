@@ -1,19 +1,21 @@
 import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { FilterDTO } from "../dto/FilterDto.js";
+import { FilterDTO } from "../dto/FilterDTO.js";
+
+import { IGetFilteredUsersUseCase } from "../interfaces/use-cases/IGetFilteredUsersUseCase.js";
 
 
 
-export class GetFilteredUsers{
+/// WANT to rewrite this
+export class GetFilteredUsersUseCase implements IGetFilteredUsersUseCase{
     constructor(
     private userRepository: IUserRepository,
 
     ){}
 
-   async exicute(filters:FilterDTO){
+   async execute(filters:FilterDTO){
 
-  const users= await this.userRepository.getFiltersUsers(filters)
-    console.log(users);
-    
+     const users= await this.userRepository.getFiltersUsers(filters)
+      return users
 
    }
 }

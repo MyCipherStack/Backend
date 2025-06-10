@@ -1,6 +1,6 @@
 
 import express from  "express"
-import { AdminAuthContoller } from "../controller/admin/AdminAuthContoller.js"
+import { AdminAuthController } from "../controller/admin/AdminAuthController.js"
 import { AdminRepository } from "../../infrastructure/repositories/AdminRepository.js"
 import { BcryptHashAlgorithm } from "../../services/hashing/BcryptHashAlgorithm.js"
 import { HashService } from "../../services/hashing/HashService.js"
@@ -20,6 +20,8 @@ import { IAddProblemUseCase } from "../../application/interfaces/use-cases/IProb
 import { AdminPremiumPlanController } from "../controller/admin/AdminPremiumPlanController.js"
 import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepostiroy.js"
 import { IpremiumPlanRepository } from "../../domain/repositories/IPremiumPlanRepositroy.js"
+import { userRepository } from "./userRoutes.js"
+import { GetFilteredUsersUseCase } from "../../application/use-cases/GetFilteredUsers.js"
 
 
 
@@ -49,17 +51,19 @@ const router=express.Router()
     
     const addProblemUseCase:IAddProblemUseCase=new AddProblemUseCase(problemRespository)
     const editProblemUseCase=new EditProblemUseCase(problemRespository)
+    const getFilteredUsersUseCase=new GetFilteredUsersUseCase(userRepository)
+
 
     // const addProblemUseCase=new AddProblemUseCase(problemRespository)
 
 
-    const adminAuthContoller=new AdminAuthContoller(adminRepository,hashService,jwtService)
-    const usersListController=new UsersListController(userRepository)
+    const adminAuthController=new AdminAuthController(adminRepository,hashService,jwtService)
+    const usersListController=new UsersListController(userRepository,getFilteredUsersUseCase)
     const adminProblemController=new AdminProblemController(addProblemUseCase,editProblemUseCase)
     const adminPremiumPlanController=new AdminPremiumPlanController(premiumPlanRepository)
 
-router.post("/login",adminAuthContoller.login)
-router.post("/logout",adminAuthContoller.logout)
+router.post("/login",adminAuthController.login)
+router.post("/logout",adminAuthController.logout)
 router.get("/users",usersListController.getData) 
 router.patch("/users/:id", usersListController.updateUser);
 router.post("/addProblem",adminProblemController.addProblem );

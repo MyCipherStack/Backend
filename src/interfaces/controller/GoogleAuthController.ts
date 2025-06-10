@@ -3,7 +3,6 @@ import { GoogleDto } from "../../application/dto/GoogleUseDto.js";
 import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
 import { GoogleUserUSerCase } from "../../application/use-cases/GoogleUserUSerCase.js";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
-import { JwtService } from "../../services/jwt/JwtService.js";
 import { IJwtService } from "../../domain/services/IJwtService.js";
 import { env } from "../../config/env.js";
 
