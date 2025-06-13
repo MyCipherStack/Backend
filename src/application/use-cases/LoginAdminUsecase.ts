@@ -1,8 +1,7 @@
-import { Admin } from "../../domain/entities/admin.js";
-import { IAdminRepository } from "../../domain/repositories/IadminRepository.js";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
-import { IJwtService } from "../../domain/services/IJwtService.js";
-import adminModel from "../../infrastructure/database/AdminModel.js";
+import { Admin } from "../../domain/entities/Admin";
+import { IAdminRepository } from "../../domain/repositories/IAdminRepository";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
+import { IJwtService } from "../../domain/services/IJwtService";
 
 
 export class LoginAdminUsecase{

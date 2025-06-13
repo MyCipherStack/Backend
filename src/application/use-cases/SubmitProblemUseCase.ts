@@ -1,8 +1,8 @@
-import { Submission } from "../../domain/entities/Submission.js";
-import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository.js";
-import { IStreakService } from "../../domain/services/IStreakService.js";
-import { ITestCase } from "../interfaces/ITestCase.js";
-import { IsubmitProblemUseCase } from "../interfaces/use-cases/IProblemUseCases.js";
+import { Submission } from "../../domain/entities/Submission";
+import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
+import { IStreakService } from "../../domain/services/IStreakService";
+import { ITestCase } from "../interfaces/ITestCase";
+import { IsubmitProblemUseCase } from "../interfaces/use-cases/IProblemUseCases";
 
 
 

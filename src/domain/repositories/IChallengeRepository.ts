@@ -1,4 +1,5 @@
-import { IGroupChallenge } from "../../application/interfaces/IChallengeInterfaces.js";
+
+import { IGroupChallenge } from "@/infrastructure/database/GroupChallengeModel.js";
 import { BaseRepository } from "../../infrastructure/repositories/BaseRespositroy.js";
 import { GroupChallenge } from "../entities/GroupChallenge.js";
 

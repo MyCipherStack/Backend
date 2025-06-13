@@ -1,12 +1,23 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "target": "ES2020",
+    "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "types": ["node"],
+    "sourceMap": false,
+    "declaration": false
   },
-  "include": ["src", "src/application/use-cases/.ts", "src/services/Judg0/.ts", "src/domain/repositories/ISubmissionRepository.ts", "src/domain/repositories/.ts", "src/application/dto/.ts", "src/infrastructure/repositories/.ts", "src/interfaces/controller/.ts"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist",]
 }

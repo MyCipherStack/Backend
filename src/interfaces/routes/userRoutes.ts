@@ -1,62 +1,63 @@
 import express from "express";
-import { AuthController } from "../controller/AuthController.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { UserRepository } from "../../infrastructure/repositories/UserRepository.js";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
-import { HashService } from "../../services/hashing/HashService.js";
-import { BcryptHashAlgorithm } from "../../services/hashing/BcryptHashAlgorithm.js";
-import { JwtService } from "../../services/jwt/JwtService.js";
-import { env } from "../../config/env.js";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
-import { PendingUserRepository } from "../../infrastructure/repositories/PendingUserRepository.js";
-import { OtpService } from "../../services/otp/OtpService.js";
-import { VerifyOtpController } from "../controller/VerifyOtpController.js";
-import { ResendOtpController } from "../controller/ResendOtpController.js";
+import { AuthController } from "../controller/AuthController";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
+import { HashService } from "../../services/hashing/HashService";
+import { BcryptHashAlgorithm } from "../../services/hashing/BcryptHashAlgorithm";
+import { JwtService } from "../../services/jwt/JwtService";
+import { env } from "../../config/env";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
+import { PendingUserRepository } from "../../infrastructure/repositories/PendingUserRepository";
+import { OtpService } from "../../services/otp/OtpService";
+import { VerifyOtpController } from "../controller/VerifyOtpController";
+import { ResendOtpController } from "../controller/ResendOtpController";
 import passport from "passport";
-import { LogoutController } from "../controller/LogoutController.js";
-import { GoogleAuthController } from "../controller/GoogleAuthController.js";
-import {ForgotPassVerifyOtpController } from "../controller/ForgotPassVerifyOtpContoller.js";
-import { ForgotPasswordOtpController } from "../controller/ForgotPassOtpController.js";
-import { ResetPasswordContoller } from "../controller/resetPasswordController.js";
-import { ProblemController } from "../controller/ProblemContoller.js";
-import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js";
-import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepository.js";
-import { Authenticate } from "../../middlewares/Authenticate.js";
-import { ProfileController } from "../controller/ProfileController.js";
-import { UpdateUserUseCase } from "../../application/use-cases/UpdateUserUseCase.js";
-import { GetRepositoryDataUseCase } from "../../application/use-cases/GetRepositoryDataUseCase.js";
+import { LogoutController } from "../controller/LogoutController";
+import { GoogleAuthController } from "../controller/GoogleAuthController";
+import {ForgotPassVerifyOtpController } from "../controller/ForgotPassVerifyOtpContoller";
+import { ForgotPasswordOtpController } from "../controller/ForgotPassOtpController";
+import { ResetPasswordContoller } from "../controller/resetPasswordController";
+import { ProblemController } from "../controller/ProblemContoller";
+import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
+import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepository";
+import { Authenticate } from "../../middlewares/Authenticate";
+import { ProfileController } from "../controller/ProfileController";
+import { UpdateUserUseCase } from "../../application/use-cases/UpdateUserUseCase";
+import { GetRepositoryDataUseCase } from "../../application/use-cases/GetRepositoryDataUseCase";
 
-import { VerifyUserPasswordUseCase } from "../../application/use-cases/VerifyUserPasswordUseCase.js";
-import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase.js";
-import { ArenaController } from "../controller/ArenaController.js";
-import { Problem } from "../../domain/entities/Problem.js";
-import { User } from "../../domain/entities/User.js";
-import { RunProblemUseCase } from "../../application/use-cases/RunProblemUseCase.js";
-import Juge0CodeExecute from "../../services/Judg0/Juge0CodeExecute.js";
-import { SubmitProblemUseCase } from "../../application/use-cases/SubmitProblemUseCase.js";
-import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository.js";
-import { SubmissionRepository } from "../../infrastructure/repositories/SubmissionRepository.js";
-import { SubmissionController } from "../controller/SubmissionController.js";
-import { GetAllSubmissionByProblemuseCase } from "../../application/use-cases/getAllSubmissionByProblemuseCase.js";
-import { CreateChallengeUseCase } from "../../application/use-cases/CreateChallengeUseCase.js";
-import { ChallengeRepository } from "../../infrastructure/repositories/ChallengeRespository.js";
-import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository.js";
-import { JoinChallengeUseCase } from "../../application/use-cases/JoinChallengeUseCase.js";
-import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository.js";
-import { LeaderBoardRepository } from "../../infrastructure/repositories/LeaderBoardRepository.js";
-import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepsitory.js";
-import { CreatePairProgrammingUseCase } from "../../application/use-cases/CreatePairProgrammingUseCase.js";
-import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces.js";
-import { UsersController } from "../controller/UsersController.js";
-import { InterviewController } from "../controller/InterviewController.js";
-import { CreateRepoUseCase } from "../../application/use-cases/CreateRepoUseCase.js";
-import { InterViewRepository } from "../../infrastructure/repositories/InterviewRepostory.js";
-import { ScheduleInterviewUseCase } from "../../application/use-cases/ScheduleInterviewUseCase.js";
-import { GetFilteredUsersUseCase } from "../../application/use-cases/GetFilteredUsers.js";
-import { joinInterViewUseCase } from "../../application/use-cases/JoinInterviewUsecase.js";
-import { StreakService } from "../../services/streak/Streak.js";
-import { PremiumController } from "../controller/PremiumController.js";
-import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepostiroy.js";
+import { VerifyUserPasswordUseCase } from "../../application/use-cases/VerifyUserPasswordUseCase";
+import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase";
+import { ArenaController } from "../controller/ArenaController";
+import { Problem } from "../../domain/entities/Problem";
+import { User } from "../../domain/entities/User";
+import { RunProblemUseCase } from "../../application/use-cases/RunProblemUseCase";
+import Juge0CodeExecute from "../../services/Judg0/Juge0CodeExecute";
+import { SubmitProblemUseCase } from "../../application/use-cases/SubmitProblemUseCase";
+import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
+import { SubmissionRepository } from "../../infrastructure/repositories/SubmissionRepository";
+import { SubmissionController } from "../controller/SubmissionController";
+import { GetAllSubmissionByProblemuseCase } from "../../application/use-cases/getAllSubmissionByProblemuseCase";
+import { CreateChallengeUseCase } from "../../application/use-cases/CreateChallengeUseCase";
+import { ChallengeRepository } from "../../infrastructure/repositories/ChallengeRespository";
+import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository";
+import { JoinChallengeUseCase } from "../../application/use-cases/JoinChallengeUseCase";
+import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository";
+import { LeaderBoardRepository } from "../../infrastructure/repositories/LeaderBoardRepository";
+import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepsitory";
+import { CreatePairProgrammingUseCase } from "../../application/use-cases/CreatePairProgrammingUseCase";
+import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces";
+import { UsersController } from "../controller/UsersController";
+import { InterviewController } from "../controller/InterviewController";
+import { CreateRepoUseCase } from "../../application/use-cases/CreateRepoUseCase";
+import { InterViewRepository } from "../../infrastructure/repositories/InterviewRepostory";
+import { ScheduleInterviewUseCase } from "../../application/use-cases/ScheduleInterviewUseCase";
+import { GetFilteredUsersUseCase } from "../../application/use-cases/GetFilteredUsers";
+import { joinInterViewUseCase } from "../../application/use-cases/JoinInterviewUsecase";
+import { StreakService } from "../../services/streak/Streak";
+import { PremiumController } from "../controller/PremiumController";
+import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepostiroy";
+import { PremiumPlan } from "@/domain/entities/PremiumPlan";
 
 
 
@@ -84,10 +85,15 @@ import { PremiumPlanRepository } from "../../infrastructure/repositories/premium
 
 
       const updateUserUseCase=new UpdateUserUseCase(userRepository)
+
+      // REUSABLE USECASES - GetRepositoryDataUseCase
       const getRepositoryDataUseCase=new GetRepositoryDataUseCase<User>(userRepository)
+      const getProblemDataUseCase=new GetRepositoryDataUseCase<Problem>(problemRespository)
+      const getPremiumPlanUseCase=new GetRepositoryDataUseCase<PremiumPlan>(premiumPlanRepository)
+
+
       const verifyUserPasswordUseCase=new VerifyUserPasswordUseCase(userRepository,hashService)
       const resetPasswordUseCase=new ResetPasswordUseCase(userRepository,hashService)
-      const getProblemDataUseCase=new GetRepositoryDataUseCase<Problem>(problemRespository)
       const runProblemUseCase=new RunProblemUseCase(juge0CodeExecuteService)
       const submitProblemUseCase=new SubmitProblemUseCase(submissionRespository,streakService)
       const getAllSubmissionByProblemuseCase=new GetAllSubmissionByProblemuseCase(submissionRespository)
@@ -121,7 +127,7 @@ import { PremiumPlanRepository } from "../../infrastructure/repositories/premium
       const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
       const usersController=new UsersController(getFilteredUsersUseCase)
       const interviewController=new InterviewController(createRepoUseCase,scheduleInterviewUsecase,interViewRespository,joiinInterviewUsecase)
-      const premiumController=new PremiumController(premiumPlanRepository)
+      const premiumController=new PremiumController(getPremiumPlanUseCase)
  
 
 const router=express.Router()
@@ -175,7 +181,10 @@ router.get("/getUserInteviews",auth.verify,interviewController.getUserInterviews
 router.post("/joinInterView",auth.verify,interviewController.joinInterview)
 
 //PREMIUM
-router.get("/getAllPlans",premiumController.getPlans)
+router.get("/allPlans",premiumController.getPlans)
+router.post("/subscribePlan",premiumController.subscribePlan)
+
+
 
 
 export default router

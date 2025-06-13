@@ -1,8 +1,5 @@
-import e from "express";
-import { PendingUser } from "../../domain/entities/PendingUser.js";
-import { User } from "../../domain/entities/User.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { ProfileDTO } from "../dto/ProfileDTO.js";
+import { User } from "../../domain/entities/User";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
 
 
 

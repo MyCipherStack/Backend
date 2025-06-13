@@ -1,5 +1,5 @@
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js"
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js"
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository"
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm"
 
 
 

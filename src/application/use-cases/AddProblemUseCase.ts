@@ -1,6 +1,6 @@
-import { Problem } from "../../domain/entities/Problem.js";
-import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js";
-import { IAddProblemUseCase } from "../interfaces/use-cases/IProblemUseCases.js";
+import { Problem } from "../../domain/entities/Problem";
+import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
+import { IAddProblemUseCase } from "../interfaces/use-cases/IProblemUseCases";
 
 
 

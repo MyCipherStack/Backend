@@ -1,9 +1,9 @@
 import { customAlphabet } from "nanoid";
  
-import { IGroupChallenge } from "../interfaces/IChallengeInterfaces.js";
-import { ICreateChallengeUseCase } from "../interfaces/use-cases/IChallengeUseCases.js";
+import { IGroupChallenge } from "../interfaces/IChallengeInterfaces";
+import { ICreateChallengeUseCase } from "../interfaces/use-cases/IChallengeUseCases";
  
-import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository.js";
+import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository";
 
 
 

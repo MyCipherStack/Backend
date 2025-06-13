@@ -1,15 +1,15 @@
 import { error } from "console";
-import { leaderBoard } from "../../domain/entities/LeaderBoard.js";
-import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository.js";
-import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRepository.js";
-import { IUpdateLeaderBoardUsecase } from "../interfaces/use-cases/ILeaderBoadrUseCase.js";
+import { leaderBoard } from "../../domain/entities/LeaderBoard";
+import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository";
+import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository";
+import { IUpdateLeaderBoardUsecase } from "../interfaces/use-cases/ILeaderBoadrUseCase";
 
 
 
 
 export class UpdateLeaderBoardUseCase implements IUpdateLeaderBoardUsecase {
     constructor(
-        private leaderBoardRepository: ILeaderBoardRespository,
+        private leaderBoardRepository: ILeaderBoardRepository,
         private challengeReposiotry: IChallengeRepository
     ) { }
 

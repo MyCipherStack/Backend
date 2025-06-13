@@ -1,5 +1,5 @@
-import { IBaseRepository } from "../../domain/repositories/IBaseRepository.js";
-import { ICreateRepoUseCase } from "../interfaces/use-cases/ICreateRepoUseCase.js";
+import { IBaseRepository } from "../../domain/repositories/IBaseRepository";
+import { ICreateRepoUseCase } from "../interfaces/use-cases/ICreateRepoUseCase";
 
 
 

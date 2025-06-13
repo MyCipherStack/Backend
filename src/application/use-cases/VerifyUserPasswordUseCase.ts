@@ -1,6 +1,6 @@
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
-import { IVerifyUserPasswordUseCase } from "../interfaces/use-cases/IVerifyUserPasswordUseCase.js";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
+import { IVerifyUserPasswordUseCase } from "../interfaces/use-cases/IVerifyUserPasswordUseCase";
 
 
 
@@ -21,4 +21,5 @@ export class VerifyUserPasswordUseCase implements IVerifyUserPasswordUseCase  {
         return false
    }
         
+   
 }

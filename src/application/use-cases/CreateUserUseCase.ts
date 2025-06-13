@@ -1,8 +1,8 @@
 
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { User } from "../../domain/entities/User.js";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { User } from "../../domain/entities/User";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
 
 export class CreateUserUseCase  {
   constructor(

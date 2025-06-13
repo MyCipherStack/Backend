@@ -1,4 +1,4 @@
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
 import bcrypt from "bcryptjs";
 
 export class BcryptHashAlgorithm implements IHashAlgorithm {

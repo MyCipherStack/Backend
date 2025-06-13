@@ -1,6 +1,6 @@
-import { IJuge0CodeExecute } from "../../domain/services/IJudge0CodeExecute.js";
-import { ITestCase } from "../interfaces/ITestCase.js";
-import { IRunProblemUseCase } from "../interfaces/use-cases/IProblemUseCases.js";
+import { IJuge0CodeExecute } from "../../domain/services/IJudge0CodeExecute";
+import { ITestCase } from "../interfaces/ITestCase";
+import { IRunProblemUseCase } from "../interfaces/use-cases/IProblemUseCases";
 
 export class RunProblemUseCase implements IRunProblemUseCase {
     constructor(

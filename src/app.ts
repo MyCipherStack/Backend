@@ -1,23 +1,23 @@
 
 import express from "express"
 import dotenv from "dotenv"
-import { connectDB} from "./infrastructure/database/MongoConnection.js"
-import userRoutes from "./interfaces/routes/userRoutes.js"
-import adminRoutes from "./interfaces/routes/adminRoutes.js"
+import { connectDB} from "./infrastructure/database/MongoConnection"
+import userRoutes from "./interfaces/routes/userRoutes"
+import adminRoutes from "./interfaces/routes/adminRoutes"
 import cors from "cors"
 import morgan from "morgan"
 dotenv.config()
 import cookieParser from "cookie-parser"
 import session from "express-session"
 import passport from "passport"
-import "./infrastructure/strategies/GoogleStrategy.js"
-import { LeaderBoardSocketHandler } from "./services/websocket/leaderBoardHandler.js"
-import { UpdateLeaderBoardUseCase } from "./application/use-cases/UpdateLeaderBoardUseCase.js"
-import { LeaderBoardRepository } from "./infrastructure/repositories/LeaderBoardRepository.js"
+import "./infrastructure/strategies/GoogleStrategy"
+import { LeaderBoardSocketHandler } from "./services/websocket/leaderBoardHandler"
+import { UpdateLeaderBoardUseCase } from "./application/use-cases/UpdateLeaderBoardUseCase"
+import { LeaderBoardRepository } from "./infrastructure/repositories/LeaderBoardRepository"
 import {Server} from "socket.io"
 import http from "http"
-import { SubmissionRepository } from "./infrastructure/repositories/SubmissionRepository.js"
-import { ChallengeRepository } from "./infrastructure/repositories/ChallengeRespository.js"
+import { SubmissionRepository } from "./infrastructure/repositories/SubmissionRepository"
+import { ChallengeRepository } from "./infrastructure/repositories/ChallengeRespository"
 
 
 

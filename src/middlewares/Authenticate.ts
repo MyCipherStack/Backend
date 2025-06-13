@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { IJwtService } from "../domain/services/IJwtService.js";
-import { JwtService } from "../services/jwt/JwtService.js";
+import { IJwtService } from "../domain/services/IJwtService";
 import { env } from "../config/env.js";
-import { IUserRepository } from "../domain/repositories/IUserRepository.js";
+import { IUserRepository } from "../domain/repositories/IUserRepository";
 
 
 

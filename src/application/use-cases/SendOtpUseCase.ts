@@ -1,5 +1,5 @@
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
-import { IOtpService } from "../../domain/services/IOtpService.js";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
+import { IOtpService } from "../../domain/services/IOtpService";
 
 
 export class SendOtpUseCase{

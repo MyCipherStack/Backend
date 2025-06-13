@@ -1,6 +1,6 @@
-import { Submission } from "../../domain/entities/Submission.js";
-import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository.js";
-import { IGetAllSubmissionByProblemuseCase } from "../interfaces/use-cases/IGetAllSubmissionByProblemuseCase.js";
+import { Submission } from "../../domain/entities/Submission";
+import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
+import { IGetAllSubmissionByProblemuseCase } from "../interfaces/use-cases/IGetAllSubmissionByProblemuseCase";
 
 export  class GetAllSubmissionByProblemuseCase implements IGetAllSubmissionByProblemuseCase{
     constructor(

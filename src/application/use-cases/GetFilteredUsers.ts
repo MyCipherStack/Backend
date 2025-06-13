@@ -1,7 +1,7 @@
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { FilterDTO } from "../dto/FilterDTO.js";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { FilterDTO } from "../dto/FilterDTO";
 
-import { IGetFilteredUsersUseCase } from "../interfaces/use-cases/IGetFilteredUsersUseCase.js";
+import { IGetFilteredUsersUseCase } from "../interfaces/use-cases/IGetFilteredUsersUseCase";
 
 
 

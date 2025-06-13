@@ -1,6 +1,5 @@
-import { User } from "../../domain/entities/User.js";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
 
 
 export interface CreateUserInput {

@@ -1,8 +1,8 @@
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
-import { IJwtService } from "../../domain/services/IJwtService.js";
-import { IOtpService } from "../../domain/services/IOtpService.js";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
+import { IJwtService } from "../../domain/services/IJwtService";
+import { IOtpService } from "../../domain/services/IOtpService";
 
 
 

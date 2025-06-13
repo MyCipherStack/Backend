@@ -1,7 +1,5 @@
 import axios from "axios"
-import { error } from "console";
-import { generateWrapper } from "./helper/generateWrapper.js";
-import { IJuge0CodeExecute } from "../../domain/services/IJudge0CodeExecute.js";
+import { generateWrapper } from "./helper/generateWrapper";
 
 
 const JUDGE0_API_URL='http://localhost:2358/submissions';

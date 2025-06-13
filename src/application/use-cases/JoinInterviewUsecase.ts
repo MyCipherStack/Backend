@@ -1,6 +1,6 @@
-import { Interview } from "../../domain/entities/Interview.js";
-import { IInterViewRepository } from "../../domain/repositories/IInterViewRepository.js";
-import { IjoinInterViewUseCase } from "../../domain/repositories/IjoinInterViewUseCase.js";
+import { Interview } from "../../domain/entities/Interview";
+import { IInterViewRepository } from "../../domain/repositories/IInterViewRepository";
+import { IjoinInterViewUseCase } from "../../domain/repositories/IjoinInterViewUseCase";
 
 
 export class joinInterViewUseCase implements IjoinInterViewUseCase{

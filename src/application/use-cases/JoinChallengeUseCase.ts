@@ -1,10 +1,8 @@
 import { ObjectId } from "mongoose";
-import { GroupChallenge } from "../../domain/entities/GroupChallenge.js";
-import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository.js";
-import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRepository.js";
-import { ChallengeRepository } from "../../infrastructure/repositories/ChallengeRespository.js";
-import { IJoinChallengeUseCase } from "../interfaces/use-cases/IChallengeUseCases.js";
-import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository.js";
+import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository";
+import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRepository";
+import { IJoinChallengeUseCase } from "../interfaces/use-cases/IChallengeUseCases";
+import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository";
 
 
 export class JoinChallengeUseCase<joinType> implements IJoinChallengeUseCase<joinType>{

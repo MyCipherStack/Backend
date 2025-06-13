@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
-import { CreateUserUseCase } from "../../application/use-cases/CreateUserUseCase.js";
-import { CreateUserDTO } from "../../application/dto/CreateUserDTO.js";
+import { CreateUserUseCase } from "../../application/use-cases/CreateUserUseCase";
+import { CreateUserDTO } from "../../application/dto/CreateUserDTO";
 
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase.js";
-import { LoginDTO } from "../../application/dto/LoginDTO.js";
-import { IJwtService } from "../../domain/services/IJwtService.js";
-import { env } from "../../config/env.js";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
-import { IOtpService } from "../../domain/services/IOtpService.js";
-import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase.js";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
+import { LoginDTO } from "../../application/dto/LoginDTO";
+import { IJwtService } from "../../domain/services/IJwtService";
+import { env } from "../../config/env";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
+import { IOtpService } from "../../domain/services/IOtpService";
+import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase";
 
 
 // CreateUserUseCase, something like RegisterUserUseCase may better express intent (since it includes OTP logic right after).

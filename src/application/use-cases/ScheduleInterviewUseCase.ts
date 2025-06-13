@@ -1,9 +1,8 @@
 import { customAlphabet } from "nanoid";
-import { Interview } from "../../domain/entities/Interview.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { IInterview } from "../../infrastructure/database/InterviewModel.js";
-import { InterviewDTO } from "../dto/InterviewDTO.js";
-import { IScheduleInterviewUseCase } from "../interfaces/use-cases/IScheduleInterviewUseCase.js";
+import { Interview } from "../../domain/entities/Interview";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { InterviewDTO } from "../dto/InterviewDTO";
+import { IScheduleInterviewUseCase } from "../interfaces/use-cases/IScheduleInterviewUseCase";
 
 
 

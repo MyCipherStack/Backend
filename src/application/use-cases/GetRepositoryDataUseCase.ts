@@ -1,6 +1,6 @@
 
-import { IBaseRepository } from "../../domain/repositories/IBaseRepository.js";
-import { IGetRepositoryDataUseCase } from "../interfaces/use-cases/IGetRepositoryDataUseCase.js";
+import { IBaseRepository } from "../../domain/repositories/IBaseRepository";
+import { IGetRepositoryDataUseCase } from "../interfaces/use-cases/IGetRepositoryDataUseCase";
 
 
 
