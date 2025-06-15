@@ -1,10 +1,9 @@
 import { Document, ObjectId } from "mongoose";
-import { Submission } from "../../domain/entities/Submission.js";
-import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository.js";
-import { ISubmissionDocument, submissionModel } from "../database/SubmissionModel.js";
-import { BaseRepository } from "./BaseRespositroy.js";
-import { User } from "../../domain/entities/User.js";
-import { IUser } from "../database/UserModel.js";
+import { Submission } from "../../domain/entities/Submission";
+import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
+import { ISubmissionDocument, submissionModel } from "../database/SubmissionModel";
+import { BaseRepository } from "./BaseRespositroy";
+
 
 
 

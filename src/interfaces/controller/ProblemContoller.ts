@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js";
-import Juge0CodeExecute from "../../services/Judg0/Juge0CodeExecute.js";
-import { ProblemDTO } from "../../application/dto/ProblemDTO.js";
-import { IRunProblemUseCase, IsubmitProblemUseCase } from "../../application/interfaces/use-cases/IProblemUseCases.js";
-import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase.js";
+import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
+import { ProblemDTO } from "../../application/dto/ProblemDTO";
+import { IRunProblemUseCase, IsubmitProblemUseCase } from "../../application/interfaces/use-cases/IProblemUseCases";
+import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase";
 import { Problem } from "../../domain/entities/Problem.js";
 
 

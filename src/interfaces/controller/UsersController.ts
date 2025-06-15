@@ -2,7 +2,7 @@
 
 
 import { Request, Response } from "express";
-import { IGetFilteredUsersUseCase } from "../../application/interfaces/use-cases/IGetFilteredUsersUseCase.js";
+import { IGetFilteredUsersUseCase } from "../../application/interfaces/use-cases/IGetFilteredUsersUseCase";
 
 
 

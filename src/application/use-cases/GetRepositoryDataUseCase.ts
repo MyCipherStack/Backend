@@ -7,11 +7,15 @@ import { IGetRepositoryDataUseCase } from "../interfaces/use-cases/IGetRepositor
 export class GetRepositoryDataUseCase<T> implements IGetRepositoryDataUseCase<T>{
     constructor(
         private respository:IBaseRepository<T>
-
     ){}
 
-    async execute(id: string): Promise<T| null> {
+    async OneDocumentByid(id: string): Promise<T| null> {
         const data= await this.respository.findById(id)
+        return data ?? null
+    }
+
+    async allDoucuments():Promise<T[]|null>{
+        const data=await this.respository.findAll()
         return data ?? null
     }
 }

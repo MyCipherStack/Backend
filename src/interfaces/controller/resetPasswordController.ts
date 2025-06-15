@@ -2,9 +2,9 @@
 
 
 import { Request, Response } from "express";
-import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
+import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
 
 
 export class ResetPasswordContoller{

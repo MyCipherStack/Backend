@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { IJwtService } from "../domain/services/IJwtService";
-import { env } from "../config/env.js";
+import { env } from "../config/env";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 
 

@@ -1,8 +1,8 @@
-import { SignPrivateKeyInput } from "crypto";
-import { PendingUser } from "../../domain/entities/PendingUser.js";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
-import { IPendingUser, PendingUserModel } from "../database/PendingUser.js";
-import { BaseRepository } from "./BaseRespositroy.js";
+
+import { PendingUser } from "../../domain/entities/PendingUser";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
+import { IPendingUser, PendingUserModel } from "../database/PendingUser";
+import { BaseRepository } from "./BaseRespositroy";
 import { Document } from "mongoose";
 
 export class PendingUserRepository  extends BaseRepository<PendingUser,IPendingUser> implements IPendingUserRepository {

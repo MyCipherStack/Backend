@@ -1,4 +1,4 @@
-import { User } from "../../domain/entities/User.js";
+import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
 import { IJwtService } from "../../domain/services/IJwtService";

@@ -1,4 +1,4 @@
-import { IGroupChallenge } from "../interfaces/IChallengeInterfaces.js";
+import { IGroupChallenge } from "../interfaces/IChallengeInterfaces";
 
 
 export class GroupChallengeDTO{

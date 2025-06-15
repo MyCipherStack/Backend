@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { GoogleDto } from "../../application/dto/GoogleUseDto.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { GoogleUserUSerCase } from "../../application/use-cases/GoogleUserUSerCase.js";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm.js";
-import { IJwtService } from "../../domain/services/IJwtService.js";
-import { env } from "../../config/env.js";
+import { GoogleDto } from "../../application/dto/GoogleUseDto";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { GoogleUserUSerCase } from "../../application/use-cases/GoogleUserUSerCase";
+import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
+import { IJwtService } from "../../domain/services/IJwtService";
+import { env } from "../../config/env";
 
 
 

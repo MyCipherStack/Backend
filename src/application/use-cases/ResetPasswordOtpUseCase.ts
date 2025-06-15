@@ -36,9 +36,11 @@ export class ResetPassswordOtpUseCase{
         let pendingUser= await this.pendingUserRepository.create({name:user.name,email:user.email,password:user.password,otp})
             return {pendingUser}
           } catch (error) {
-            console.log(error,"err");
-            
-            throw new Error(error);
+            if(error instanceof Error){
+              throw new Error(error.message);
+            }else{
+              throw new Error("an unknown error during user creation")
+            }
           }
 
     }

@@ -1,5 +1,7 @@
 
 
 export interface IGetRepositoryDataUseCase<T>{
-    execute(id:string):Promise< T| null>
+    OneDocumentByid(id:string):Promise< T| null>
+    allDoucuments():Promise<T[]|null>
+
 }

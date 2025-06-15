@@ -1,5 +1,5 @@
 import { Document, FilterQuery, Model, UpdateQuery } from "mongoose";
-import { IBaseRepository } from "../../domain/repositories/IBaseRepository.js";
+import { IBaseRepository } from "../../domain/repositories/IBaseRepository";
 
 
 
@@ -30,8 +30,13 @@ export abstract class BaseRepository<Entity,ModelSchema> implements IBaseReposit
 
 
     async updateOneById(id:string,updatedData:Partial<Entity>):Promise<Entity | null>{
-        const updated=await this.model.findByIdAndUpdate(id,updatedData as any,{new:true})
+        const updated=await this.model.findByIdAndUpdate(id,updatedData as any,{upsert:true})
         return this.toEntity(updated)
+    }
+
+    async findAll(): Promise<Entity[] | null> {
+        const allDoucuments=await this.model.find()
+        return allDoucuments.map(data=>this.toEntity(data)).filter(data=>data!=null)
     }
 
 

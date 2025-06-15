@@ -1,8 +1,8 @@
 import { Document } from "mongoose";
-import { GroupChallenge } from "../../domain/entities/GroupChallenge.js";
-import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository.js";
-import { groupChallengeModel, IGroupChallenge } from "../database/GroupChallengeModel.js";
-import { BaseRepository } from "./BaseRespositroy.js";
+import { GroupChallenge } from "../../domain/entities/GroupChallenge";
+import { IChallengeRepository } from "../../domain/repositories/IchallengeRepository";
+import { groupChallengeModel, IGroupChallenge } from "../database/GroupChallengeModel";
+import { BaseRepository } from "./BaseRespositroy";
 
 
 export class ChallengeRepository extends BaseRepository<GroupChallenge,IGroupChallenge> implements IChallengeRepository{

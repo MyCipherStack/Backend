@@ -1,8 +1,8 @@
 import { Document } from "mongoose";
-import { PairProgramming } from "../../domain/entities/PairProgramming.js";
-import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository.js";
-import { IPairProgramming, PairProgrammingModel } from "../database/PairProgrammingModel.js";
-import { BaseRepository } from "./BaseRespositroy.js";
+import { PairProgramming } from "../../domain/entities/PairProgramming";
+import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository";
+import { IPairProgramming, PairProgrammingModel } from "../database/PairProgrammingModel";
+import { BaseRepository } from "./BaseRespositroy";
 
 
 

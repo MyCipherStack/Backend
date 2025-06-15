@@ -1,9 +1,8 @@
 import { Document } from "mongoose";
-import { ProfileDTO } from "../../application/dto/ProfileDTO.js";
-import { User } from "../../domain/entities/User.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import UserModel, { IUser } from "../database/UserModel.js";
-import { BaseRepository } from "./BaseRespositroy.js";
+import { User } from "../../domain/entities/User";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import UserModel, { IUser } from "../database/UserModel";
+import { BaseRepository } from "./BaseRespositroy";
 
 
 

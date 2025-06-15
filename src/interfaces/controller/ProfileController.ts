@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { ProfileDTO } from "../../application/dto/ProfileDTO.js";
-import { IUpdateUserUseCase } from "../../application/interfaces/use-cases/IUpdateUserUseCase.js";
-import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { IVerifyUserPasswordUseCase } from "../../application/interfaces/use-cases/IVerifyUserPasswordUseCase.js";
-import { ResetPasswordDTO } from "../../application/dto/ResetPasswordDTO.js";
-import { IResetPasswordUseCase } from "../../application/interfaces/use-cases/IResetPasswordUseCase.js";
+import { ProfileDTO } from "../../application/dto/ProfileDTO";
+import { IUpdateUserUseCase } from "../../application/interfaces/use-cases/IUpdateUserUseCase";
+import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { IVerifyUserPasswordUseCase } from "../../application/interfaces/use-cases/IVerifyUserPasswordUseCase";
+import { ResetPasswordDTO } from "../../application/dto/ResetPasswordDTO";
+import { IResetPasswordUseCase } from "../../application/interfaces/use-cases/IResetPasswordUseCase";
 import { log } from "node:console";
 import { User } from "../../domain/entities/User.js";
 

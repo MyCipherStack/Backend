@@ -1,4 +1,3 @@
-import { User } from "./User.js";
 
 // here i extends User  
 export class PendingUser {

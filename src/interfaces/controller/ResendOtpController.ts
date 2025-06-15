@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { IOtpService } from "../../domain/services/IOtpService.js";
-import { OtpDTO } from "../../application/dto/OtpDTO.js";
-import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase.js";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
+import { IOtpService } from "../../domain/services/IOtpService";
+import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
 
 
 export class ResendOtpController{

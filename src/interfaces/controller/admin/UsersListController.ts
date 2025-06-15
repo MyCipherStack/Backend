@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { IUserRepository } from "../../../domain/repositories/IUserRepository.js";
-import { UpdateUserUseCase } from "../../../application/use-cases/UpdateUserUseCase.js";
-import { UpdateUserDTO } from "../../../application/dto/UpdateUserDTO.js";
-import { IGetFilteredUsersUseCase } from "../../../application/interfaces/use-cases/IGetFilteredUsersUseCase.js";
+import { IUserRepository } from "../../../domain/repositories/IUserRepository";
+import { UpdateUserUseCase } from "../../../application/use-cases/UpdateUserUseCase";
+import { UpdateUserDTO } from "../../../application/dto/UpdateUserDTO";
+import { IGetFilteredUsersUseCase } from "../../../application/interfaces/use-cases/IGetFilteredUsersUseCase";
 
 
 

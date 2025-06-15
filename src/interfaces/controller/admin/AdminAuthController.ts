@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { LoginAdminUsecase } from "../../../application/use-cases/LoginAdminUsecase.js";
-import { IAdminRepository } from "../../../domain/repositories/IadminRepository.js";
-import { IHashAlgorithm } from "../../../domain/services/IHashAlgorithm.js";
-import { IJwtService } from "../../../domain/services/IJwtService.js";
-import { LoginDTO } from "../../../application/dto/LoginDTO.js";
-import { env } from "../../../config/env.js";
+import { LoginAdminUsecase } from "../../../application/use-cases/LoginAdminUsecase";
+import { IAdminRepository } from "../../../domain/repositories/IadminRepository";
+import { IHashAlgorithm } from "../../../domain/services/IHashAlgorithm";
+import { IJwtService } from "../../../domain/services/IJwtService";
+import { LoginDTO } from "../../../application/dto/LoginDTO";
+import { env } from "../../../config/env";
 
 
 export class AdminAuthController{

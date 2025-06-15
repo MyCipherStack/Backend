@@ -55,7 +55,7 @@ import { ScheduleInterviewUseCase } from "../../application/use-cases/ScheduleIn
 import { GetFilteredUsersUseCase } from "../../application/use-cases/GetFilteredUsers";
 import { joinInterViewUseCase } from "../../application/use-cases/JoinInterviewUsecase";
 import { StreakService } from "../../services/streak/Streak";
-import { PremiumController } from "../controller/PremiumController";
+import { SubscriptionController } from "../controller/SubscriptionController";
 import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepostiroy";
 import { PremiumPlan } from "@/domain/entities/PremiumPlan";
 
@@ -127,7 +127,7 @@ import { PremiumPlan } from "@/domain/entities/PremiumPlan";
       const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
       const usersController=new UsersController(getFilteredUsersUseCase)
       const interviewController=new InterviewController(createRepoUseCase,scheduleInterviewUsecase,interViewRespository,joiinInterviewUsecase)
-      const premiumController=new PremiumController(getPremiumPlanUseCase)
+      const subscriptionController=new SubscriptionController(getPremiumPlanUseCase)
  
 
 const router=express.Router()
@@ -181,8 +181,8 @@ router.get("/getUserInteviews",auth.verify,interviewController.getUserInterviews
 router.post("/joinInterView",auth.verify,interviewController.joinInterview)
 
 //PREMIUM
-router.get("/allPlans",premiumController.getPlans)
-router.post("/subscribePlan",premiumController.subscribePlan)
+router.get("/allPlans",subscriptionController.getPlans)
+router.post("/subscribePlan",subscriptionController.subscribePlan)
 
 
 

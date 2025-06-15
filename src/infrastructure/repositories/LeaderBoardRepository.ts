@@ -1,8 +1,8 @@
 import { Document } from "mongoose";
-import { IsolvedProblem, leaderBoard } from "../../domain/entities/LeaderBoard.js";
-import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository.js";
-import { ILeaderBoard, leaderBoardModel } from "../database/LeaderBoard.js";
-import { BaseRepository } from "./BaseRespositroy.js";
+import { IsolvedProblem, leaderBoard } from "../../domain/entities/LeaderBoard";
+import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository";
+import { ILeaderBoard, leaderBoardModel } from "../database/LeaderBoard";
+import { BaseRepository } from "./BaseRespositroy";
 
 
 export class LeaderBoardRepository extends BaseRepository<leaderBoard,ILeaderBoard> implements ILeaderBoardRepository {

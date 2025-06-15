@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { PremiumPlanDTO } from "../../../application/dto/PremiumPlanDTO.js";
-import { IpremiumPlanRepository } from "../../../domain/repositories/IPremiumPlanRepositroy.js";
+import { PremiumPlanDTO } from "../../../application/dto/PremiumPlanDTO";
+import { IpremiumPlanRepository } from "../../../domain/repositories/IPremiumPlanRepositroy";
 
 
 

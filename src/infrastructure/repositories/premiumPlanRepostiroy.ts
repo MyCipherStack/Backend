@@ -1,7 +1,7 @@
-import { PremiumPlan } from "../../domain/entities/PremiumPlan.js"
-import { IpremiumPlanRepository } from "../../domain/repositories/IPremiumPlanRepositroy.js"
-import { IPlanDocument, premiumPlanModel } from "../database/PremiumPlanModel.js"
-import { BaseRepository } from "./BaseRespositroy.js"
+import { PremiumPlan } from "../../domain/entities/PremiumPlan"
+import { IpremiumPlanRepository } from "../../domain/repositories/IPremiumPlanRepositroy"
+import { IPlanDocument, premiumPlanModel } from "../database/PremiumPlanModel"
+import { BaseRepository } from "./BaseRespositroy"
 
 
 

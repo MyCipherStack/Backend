@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
-import { AddProblemUseCase } from "../../../application/use-cases/addProblemUseCase.js";
-import { IProblemRepository } from "../../../domain/repositories/IProblemRepository.js";
-import { ProblemDTO } from "../../../application/dto/ProblemDTO.js";
-import { EditProblemUseCase } from "../../../application/use-cases/EditProblemUseCase.js";
-import { IAddProblemUseCase, IEditProblemUseCase } from "../../../application/interfaces/use-cases/IProblemUseCases.js";
+
+import { ProblemDTO } from "../../../application/dto/ProblemDTO";
+import { IAddProblemUseCase, IEditProblemUseCase } from "../../../application/interfaces/use-cases/IProblemUseCases";
 
 
 export class AdminProblemController{

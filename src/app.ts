@@ -18,6 +18,9 @@ import {Server} from "socket.io"
 import http from "http"
 import { SubmissionRepository } from "./infrastructure/repositories/SubmissionRepository"
 import { ChallengeRepository } from "./infrastructure/repositories/ChallengeRespository"
+import { logger } from "./logger"
+import { ErrorHandler } from "./middlewares/ErrorHandler"
+
 
 
 
@@ -46,11 +49,13 @@ connectDB()
 
 app.use("/api/user",userRoutes)
 app.use("/api/admin",adminRoutes)
-
 app.use(morgan("dev"))
 
+app.use(ErrorHandler)
+
+
 const PORT=process.env.PORT || 5000
+
 httpServer.listen(PORT,()=>{
-    console.log(`server running on prot ${PORT}`);
-    
+    logger.info(`server running on prot ${PORT}`)
 })

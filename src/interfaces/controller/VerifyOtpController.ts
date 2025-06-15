@@ -1,10 +1,11 @@
 import { Request, Response } from "express"
-import { OtpDTO } from "../../application/dto/OtpDTO.js"
-import { VerifyUseCase } from "../../application/use-cases/VerifyUsecase.js";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository.js";
+import { OtpDTO } from "../../application/dto/OtpDTO"
+import { VerifyUseCase } from "../../application/use-cases/VerifyUsecase";
+import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
 import { IOtpService } from "../../domain/services/IOtpService.js";
-import { RegisterUserFromPendingUseCase } from "../../application/use-cases/RegisterUserFromPendingUseCase .js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
+// import { RegisterUserFromPendingUseCase } from "../../application/use-cases/RegisterUserFromPendingUseCase";
+import { IUserRepository } from "../../domain/repositories/IUserRepository";
+import { RegisterUserFromPendingUseCase } from "../../application/use-cases/RegisterUserFromPendingUseCase ";
 
 
 

@@ -1,9 +1,8 @@
 import { Document } from "mongoose";
-import { Problem } from "../../domain/entities/Problem.js";
-import { IProblemRepository } from "../../domain/repositories/IProblemRepository.js";
-import { IProblem, problemModel } from "../database/ProblemModel.js";
-import { BaseRepository } from "./BaseRespositroy.js";
-import e from "express";
+import { Problem } from "../../domain/entities/Problem";
+import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
+import { IProblem, problemModel } from "../database/ProblemModel";
+import { BaseRepository } from "./BaseRespositroy";
 
 
 

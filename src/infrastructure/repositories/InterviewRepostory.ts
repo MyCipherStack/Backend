@@ -1,8 +1,8 @@
 import { Document } from "mongoose";
-import { Interview } from "../../domain/entities/Interview.js";
-import { IInterview, interviewModel } from "../database/InterviewModel.js";
-import { BaseRepository } from "./BaseRespositroy.js";
-import { IInterViewRepository } from "../../domain/repositories/IInterViewRepository.js";
+import { Interview } from "../../domain/entities/Interview";
+import { IInterview, interviewModel } from "../database/InterviewModel";
+import { BaseRepository } from "./BaseRespositroy";
+import { IInterViewRepository } from "../../domain/repositories/IInterViewRepository";
 
 
 
