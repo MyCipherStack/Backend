@@ -1,9 +1,9 @@
-import { OtpDTO } from "../../application/dto/OtpDTO";
+import { OtpDTO } from "@/application/dto/OtpDTO";
 
 import { Request, Response } from "express"
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
-import { ResetPassverifyOtpUseCase } from "../../application/use-cases/ResetPassverifyOtpUseCase";
+import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository";
+import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm"; 
+import { ResetPassverifyOtpUseCase } from "@/application/use-cases/ResetPassverifyOtpUseCase"; 
 import { env } from "process";
 
 export class ForgotPassVerifyOtpController{

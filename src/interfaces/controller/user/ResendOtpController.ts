@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { IOtpService } from "../../domain/services/IOtpService";
-import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
+import { IOtpService } from "@/domain/services/IOtpService"; 
+import { SendOtpUseCase } from "@/application/use-cases/SendOtpUseCase";
+import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository"; 
 
 
 export class ResendOtpController{

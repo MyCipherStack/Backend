@@ -1,3 +1,4 @@
+import { logger } from "@/logger";
 import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
@@ -35,9 +36,9 @@ export class LoginUserUseCase{
         if(!passCheck){ throw new Error("Incorrect password. Please try again.");
         }
     
-        const accessToken= this.JwtService.signAccessToken({email:foundUser.email,name:foundUser.name})
-        const refreshToken= this.JwtService.signRefereshToken({email:foundUser.email,name:foundUser.name})
-        console.log(accessToken,refreshToken);
+        const accessToken= this.JwtService.signAccessToken({userId:foundUser._id,name:foundUser.name,role:"user"})
+        const refreshToken= this.JwtService.signRefereshToken({userId:foundUser._id,name:foundUser.name,role:"user"})
+        logger.info(accessToken,refreshToken);
          const user = new User(foundUser.name, foundUser.email,foundUser.password,foundUser.status,foundUser._id);
         return {user:{name:user.name,email:user.email,image:user.image},refreshToken,accessToken}
     }

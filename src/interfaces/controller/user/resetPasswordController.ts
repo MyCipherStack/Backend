@@ -2,13 +2,14 @@
 
 
 import { Request, Response } from "express";
-import { ResetPasswordUseCase } from "../../application/use-cases/ResetPasswordUsecase";
-import { IUserRepository } from "../../domain/repositories/IUserRepository";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
+import { ResetPasswordUseCase } from "../../../application/use-cases/ResetPasswordUsecase";
+import { IUserRepository } from "../../../domain/repositories/IUserRepository";
+import { IHashAlgorithm } from "../../../domain/services/IHashAlgorithm";
 
 
 export class ResetPasswordContoller{
     constructor(
+        
             private UserRepository:IUserRepository,
             private hashService:IHashAlgorithm
     ){}

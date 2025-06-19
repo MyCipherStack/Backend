@@ -1,12 +1,11 @@
 import { Request, Response } from "express";
-import { ResetPassswordOtpUseCase } from "../../application/use-cases/ResetPasswordOtpUseCase";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
-import { IJwtService } from "../../domain/services/IJwtService";
-import { IOtpService } from "../../domain/services/IOtpService";
-import { env } from "../../config/env";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
-import { IUserRepository } from "../../domain/repositories/IUserRepository";
-
+import { ResetPassswordOtpUseCase } from "@/application/use-cases/ResetPasswordOtpUseCase";
+import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm"; 
+import { IJwtService } from "@/domain/services/IJwtService"; 
+import { IOtpService } from "@/domain/services/IOtpService"; 
+import { env } from "@/config/env"; 
+import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository"; 
+import { IUserRepository } from "@/domain/repositories/IUserRepository"; 
 
 
 
@@ -15,8 +14,8 @@ export class ForgotPasswordOtpController{
         private otpService:IOtpService,
         private jwtService:IJwtService,
         private hashService:IHashAlgorithm,
-             private pendingUserRepository:IPendingUserRepository,
-                  private userRepository:IUserRepository,
+        private pendingUserRepository:IPendingUserRepository,
+        private userRepository:IUserRepository,
         
     ){}
     sendOtp=async(req:Request,res:Response)=>{

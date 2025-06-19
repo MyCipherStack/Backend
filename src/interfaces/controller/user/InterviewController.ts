@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { InterviewDTO } from "../../application/dto/InterviewDTO";
-import { ICreateRepoUseCase } from "../../application/interfaces/use-cases/ICreateRepoUseCase";
-import { Interview } from "../../domain/entities/Interview";
-import { IScheduleInterviewUseCase } from "../../application/interfaces/use-cases/IScheduleInterviewUseCase";
-import { IInterViewRepository } from "../../domain/repositories/IInterViewRepository";
-import { IjoinInterViewUseCase } from "../../domain/repositories/IjoinInterViewUseCase";
+import { InterviewDTO } from "@/application/dto/InterviewDTO"; 
+import { ICreateRepoUseCase } from "@/application/interfaces/use-cases/ICreateRepoUseCase"; 
+import { Interview } from "@/domain/entities/Interview"; 
+import { IScheduleInterviewUseCase } from "@/application/interfaces/use-cases/IScheduleInterviewUseCase"; 
+import { IInterViewRepository } from "@/domain/repositories/IInterViewRepository";
+import { IjoinInterViewUseCase } from "@/domain/repositories/IjoinInterViewUseCase"; 
 
 
 

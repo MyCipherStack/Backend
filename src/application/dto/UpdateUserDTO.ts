@@ -9,4 +9,4 @@ export class UpdateUserDTO{
         this.status=data.status
 
     }
-}
+} 

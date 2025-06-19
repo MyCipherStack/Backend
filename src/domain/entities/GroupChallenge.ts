@@ -10,5 +10,7 @@ export class GroupChallenge{
         public joinCode?:string,
         public startTime?:string,
         public endTime?:string,
+        public status?:string,
+        public _id?:string
     ){}
 }

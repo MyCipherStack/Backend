@@ -1,8 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { IUserRepository } from "../../../domain/repositories/IUserRepository";
 import { UpdateUserUseCase } from "../../../application/use-cases/UpdateUserUseCase";
 import { UpdateUserDTO } from "../../../application/dto/UpdateUserDTO";
 import { IGetFilteredUsersUseCase } from "../../../application/interfaces/use-cases/IGetFilteredUsersUseCase";
+import { logger } from "@/logger";
+import { AppError } from "@/domain/error/AppError";
 
 
 
@@ -36,17 +38,19 @@ export class UsersListController {
   }
 
 
-  updateUser = async (req: Request, res: Response) => {
+  updateUser = async (req: Request, res: Response,next:NextFunction) => {
     try {
       const userId = req.params.id;
       const updateData = new UpdateUserDTO(req.body)
-
+      console.log(updateData);
+      
+      logger.info("update user ",{update:updateData})
       const updateUseCase = new UpdateUserUseCase(this.userRepository)
       
       const updatedUser = await updateUseCase.execute(userId, updateData)
 
       if (!updatedUser) {
-        return res.status(404).json({ status: false, message: "User not found" });
+        return next(new AppError("User not found",404))
       }
 
       res.status(200).json({ status: true, message: "User updated", user: updatedUser });

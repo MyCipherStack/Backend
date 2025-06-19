@@ -1,42 +1,50 @@
 import { NextFunction, Request, Response } from "express";
 import { IJwtService } from "../domain/services/IJwtService";
 import { env } from "../config/env";
-import { IUserRepository } from "../domain/repositories/IUserRepository";
+import { IBaseRepository } from "@/domain/repositories/IBaseRepository";
+import { logger } from "@/logger";
+import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
+import { AppError } from "@/domain/error/AppError";
 
 
 
-export class Authenticate{
+// ADMIN AND USER HAVE SAME Authenticate CONTROLLLER (
+
+
+export class Authenticate<Entity>{
     constructor(
         private jwtService:IJwtService,
-        private userRepository:IUserRepository
-    ){}
+        private getRepositoryDataUseCase:IGetRepositoryDataUseCase<Entity>
+        ){}
         verify=async(req:Request,res:Response,next:NextFunction)=>{
             try{
             console.log("validating user");
-            // console.log(req.cookies);
             
             const accessToken=req.cookies["accessToken"]
             const refreshToken=req.cookies["refreshToken"]
-            console.log(accessToken,refreshToken);
             
             if(!accessToken && !refreshToken){
-                console.log("no refresh access token");
+                logger.error("no refresh access token");
                 
                 return res.status(401).json({status:false,message:"login  expired"})
             }
             
             
             if(accessToken){
-                console.log("accessToke found");
+               
+
+                logger.info("access token found")
             
-                const isValid=await this.jwtService.varifyAccessToken(accessToken)
+                const tokenData=await this.jwtService.varifyAccessToken(accessToken)
+                logger.info("TokenDAsat",tokenData)
                 // const userPayload=this.jwtService.varifyAccessToken(accessToken)
-                if(isValid){
-                    const foundUser=await this.userRepository.findByEmail(isValid.email)
-                    console.log("accessToken vaild");
+                if(tokenData){
+                    const foundUser=await this.getRepositoryDataUseCase.OneDocumentByid(tokenData.userId)
+                  
+                logger.info("access token valid")
                     
-                    if(foundUser?.status==="banned"){
-                        console.log("user blocked");
+                    if(foundUser?.status && foundUser?.status==="banned"){
+                        logger.info("user blocked");
             
                         res.clearCookie('accessToken', {
                             httpOnly: true,
@@ -53,10 +61,11 @@ export class Authenticate{
                       return   res.status(401).json({status:false,message:"This Account is banned"})
                     }
                     if(foundUser){
-                        req.user={email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
+                        req.user={role:tokenData.role,email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
                         return   next()
                     }else{
-                        throw(new Error("use not found"))
+                        logger.info("sd",{data:foundUser})
+                    return    next(new AppError("user not found",404))
                     }
 
                 }
@@ -74,17 +83,17 @@ export class Authenticate{
                         maxAge:1000 * 60 * 15,
                         path:"/"   
                     })
-                    const foundUser=await this.userRepository.findByEmail(userPayload.email)
+                    const foundUser=await this.getRepositoryDataUseCase.OneDocumentByid(userPayload.id)
                     if(foundUser){
-                        req.user={email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
+                        req.user={role:payload.role,email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
                         return   next()
                     }else{
-                        throw(new Error("user not found"))
+                      return  next(new AppError("user not found",404))
                     }
                 }
             }
         }catch(error){
-            console.log(error);
+            console.log("err in auth middelware",error);
             return res.status(401).json({status:false,message:"No token"})
         }
         }

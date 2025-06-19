@@ -19,7 +19,7 @@ import http from "http"
 import { SubmissionRepository } from "./infrastructure/repositories/SubmissionRepository"
 import { ChallengeRepository } from "./infrastructure/repositories/ChallengeRespository"
 import { logger } from "./logger"
-import { ErrorHandler } from "./middlewares/ErrorHandler"
+import { ErrorHandler } from "./middlewares/errorHandler"
 
 
 

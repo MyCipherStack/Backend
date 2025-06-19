@@ -20,7 +20,7 @@ private userRepository: IUserRepository,
 
   async execute(name: string, email: string,image:string,googleId:string): Promise<AuthResult > {
     const existingUser = await this.userRepository.findByEmail(email);
-    let userData:{name:string,email:string}={name:"",email:""}
+    let userData:{name:string,email:string,_id:string}={name:"",email:"",_id:""}
     if (!existingUser) {
 
         
@@ -44,16 +44,18 @@ private userRepository: IUserRepository,
             image:user.image,
             googleId:user.email,
         } as any)
-        userData=createUser
+
+            userData=createUser
+    
     }else{
-          userData=existingUser
+          userData=existingUser 
 
       }
 
 
     
-    const accessToken= this.jwtService.signAccessToken({emai:userData.email,name:userData.name})
-    const refreshToken= this.jwtService.signRefereshToken({emai:userData.email,name:userData.name})
+    const accessToken= this.jwtService.signAccessToken({emai:userData.email,name:userData.name,userId:userData._id,role:"user"})
+    const refreshToken= this.jwtService.signRefereshToken({emai:userData.email,name:userData.name,userId:userData._id,role:"user"})
     console.log(accessToken,refreshToken);
 
     return {user:userData,accessToken,refreshToken}

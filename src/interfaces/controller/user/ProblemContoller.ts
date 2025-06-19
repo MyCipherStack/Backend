@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
-import { ProblemDTO } from "../../application/dto/ProblemDTO";
-import { IRunProblemUseCase, IsubmitProblemUseCase } from "../../application/interfaces/use-cases/IProblemUseCases";
-import { IGetRepositoryDataUseCase } from "../../application/interfaces/use-cases/IGetRepositoryDataUseCase";
-import { Problem } from "../../domain/entities/Problem.js";
+import { IProblemRepository } from "@/domain/repositories/IProblemRepository";
+import { ProblemDTO } from "@/application/dto/ProblemDTO"; 
+import { IRunProblemUseCase,IsubmitProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases"; 
+import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase"; 
+import { Problem } from "@/domain/entities/Problem"; 
 
 
 

@@ -1,16 +1,16 @@
 import { Request, Response } from "express";
-import { CreateUserUseCase } from "../../application/use-cases/CreateUserUseCase";
-import { CreateUserDTO } from "../../application/dto/CreateUserDTO";
+import { CreateUserUseCase } from "@/application/use-cases/CreateUserUseCase";
+import { CreateUserDTO } from "@/application/dto/CreateUserDTO";
 
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
-import { IUserRepository } from "../../domain/repositories/IUserRepository";
-import { LoginUserUseCase } from "../../application/use-cases/LoginUserUseCase";
-import { LoginDTO } from "../../application/dto/LoginDTO";
-import { IJwtService } from "../../domain/services/IJwtService";
-import { env } from "../../config/env";
-import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
-import { IOtpService } from "../../domain/services/IOtpService";
-import { SendOtpUseCase } from "../../application/use-cases/SendOtpUseCase";
+import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm";
+import { IUserRepository } from "@/domain/repositories/IUserRepository"; 
+import { LoginUserUseCase } from "@/application/use-cases/LoginUserUseCase"; 
+import { LoginDTO } from "@/application/dto/LoginDTO"; 
+import { IJwtService } from "@/domain/services/IJwtService"; 
+import { env } from "@/config/env"; 
+import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository"; 
+import { IOtpService } from "@/domain/services/IOtpService";
+import { SendOtpUseCase } from "@/application/use-cases/SendOtpUseCase";
 
 
 // CreateUserUseCase, something like RegisterUserUseCase may better express intent (since it includes OTP logic right after).

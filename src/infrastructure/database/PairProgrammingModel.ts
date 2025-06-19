@@ -14,6 +14,7 @@ export interface IPairProgramming  extends Document{
     currentStatus:Object
     startTime:Date,
     endTime:Date,
+    status:string
     
   };
 
@@ -36,7 +37,10 @@ const PairProgramingSchema=new mongoose.Schema<IPairProgramming>({
 
         type:{type:String,required:true},
 
-        joinCode:{type:String,required:true}
+        joinCode:{type:String,required:true},
+
+        status:{type:String,enum:["waiting","started","ended","blocked"],default:"waiting"}
+
 
 },{timestamps:true})
 

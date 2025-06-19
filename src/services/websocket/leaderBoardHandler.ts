@@ -2,16 +2,18 @@
 
 import { Server } from "socket.io"
 
-import { IUpdateLeaderBoardUsecase } from "../../application/interfaces/use-cases/ILeaderBoadrUseCase.js";
-import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository.js";
-import { ILeaderBoardRespository } from "../../domain/repositories/ILeaderBoardRepository.js";
+import { IUpdateLeaderBoardUsecase } from "../../application/interfaces/use-cases/ILeaderBoadrUseCase";
+import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
+
+import { logger } from "@/logger";
+import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 
 
 export class LeaderBoardSocketHandler {
     constructor(
         private updateLeaderBoardUseCase: IUpdateLeaderBoardUsecase,
         private submissionRepository: ISubmissionRepository,
-        private leaderBoardRepository: ILeaderBoardRespository
+        private leaderBoardRepository: ILeaderBoardRepository
     ) { }
     private activeUsersMap = new Map<string, Set<string>>()
     private socketToUserMap = new Map<string, { userId: string, challengeId: string }>()
@@ -30,6 +32,9 @@ export class LeaderBoardSocketHandler {
 
 
                 const leaderBoard = await this.leaderBoardRepository.findAll({ challengeId })
+
+                logger.info("leaderboard",{data:leaderBoard})
+
                 if (leaderBoard) {
 
                     const response = leaderBoard.map(data => {

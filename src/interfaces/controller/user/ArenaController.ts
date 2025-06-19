@@ -1,10 +1,8 @@
+import { GroupChallengeDTO } from "@/application/dto/GroupChallengeDTO";
+import { PairProgramingDTO } from "@/application/dto/PairProgammingDTO";
+import { IGroupChallenge, IPairProgramming } from "@/application/interfaces/IChallengeInterfaces";
+import { ICreateChallengeUseCase, ICreatePairProgrammingUseCase, IJoinChallengeUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases";
 import { Request, Response } from "express";
-import { GroupChallengeDTO } from "../../application/dto/GroupChallengeDTO";
-import { ICreateChallengeUseCase, ICreatePairProgrammingUseCase, IJoinChallengeUseCase } from "../../application/interfaces/use-cases/IChallengeUseCases";
-import { PairProgramingDTO } from "../../application/dto/PairProgammingDTO";
-import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces";
-
-
 
 
 export class ArenaController{ 
@@ -64,7 +62,7 @@ export class ArenaController{
         const joinCode=await this.createPairProgrammingUseCase.execute({...data,hostId:userId.id})
         
         console.log(joinCode,"joinCode");
-            res.status(200).json({status:true,message:"group challenge created",joinCode})
+            res.status(200).json({status:true,message:"Challenge created",joinCode})
         }catch(error){
             console.log(error);
             

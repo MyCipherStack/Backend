@@ -42,7 +42,9 @@ export class PairProgrammingRepository extends BaseRepository<PairProgramming,IP
             data.joinCode,
             data.startTime.toString(),
             data.endTime.toString(),
-            data.id
+            data.id,
+            data.status
+
         )
     }
 } 

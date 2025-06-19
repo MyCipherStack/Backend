@@ -21,6 +21,17 @@ import { AdminPremiumPlanController } from "../controller/admin/AdminPremiumPlan
 import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepostiroy"
 import { IpremiumPlanRepository } from "../../domain/repositories/IPremiumPlanRepositroy"
 import { GetFilteredUsersUseCase } from "../../application/use-cases/GetFilteredUsers"
+import { Authenticate } from "@/middlewares/Authenticate"
+import { RoleMiddleware } from "@/middlewares/roleMiddleware"
+import { AuthMiddlwareBundler } from "@/middlewares/AuthMiddlwareBundler"
+import { Admin } from "@/domain/entities/Admin"
+import { GetRepositoryDataUseCase } from "@/application/use-cases/GetRepositoryDataUseCase"
+import { ChallengeContoller } from "../controller/admin/ChallengeContoller"
+import { ChallengeRepository } from "@/infrastructure/repositories/ChallengeRespository"
+import { GroupChallenge } from "@/domain/entities/GroupChallenge"
+import { PairProgramming } from "@/domain/entities/PairProgramming"
+import { PairProgrammingRepository } from "@/infrastructure/repositories/PairProgrammingRepsitory"
+import { IPairProgrammingRepository } from "@/domain/repositories/IPairProgrammingRepository"
 
 
 
@@ -30,7 +41,8 @@ const router=express.Router()
     const userRepository:IUserRepository=new UserRepository()
     const problemRespository:IProblemRepository=new ProblemRepository()
     const premiumPlanRepository:IpremiumPlanRepository=new PremiumPlanRepository()
-    
+    const challengeRepository:ChallengeRepository=new ChallengeRepository()
+    const pairProgrammingRepository:IPairProgrammingRepository=new PairProgrammingRepository()
 
 
 
@@ -53,6 +65,13 @@ const router=express.Router()
     const getFilteredUsersUseCase=new GetFilteredUsersUseCase(userRepository)
 
 
+          const getAdminRepoDataUseCase=new GetRepositoryDataUseCase<Admin>(adminRepository)
+          const getchallengeRepoDataUseCase=new GetRepositoryDataUseCase<GroupChallenge>(challengeRepository)
+          const getPaiProgarmmingRepoDataUseCase=new GetRepositoryDataUseCase<PairProgramming>(pairProgrammingRepository)
+
+          
+    
+
     // const addProblemUseCase=new AddProblemUseCase(problemRespository)
 
 
@@ -60,16 +79,27 @@ const router=express.Router()
     const usersListController=new UsersListController(userRepository,getFilteredUsersUseCase)
     const adminProblemController=new AdminProblemController(addProblemUseCase,editProblemUseCase)
     const adminPremiumPlanController=new AdminPremiumPlanController(premiumPlanRepository)
+    const challengeContoller=new ChallengeContoller(getchallengeRepoDataUseCase,getPaiProgarmmingRepoDataUseCase)
+
+
+
+           let authenticate=new Authenticate(jwtService,getAdminRepoDataUseCase)
+           let authorize=new RoleMiddleware()
+           let auth=new AuthMiddlwareBundler(authenticate,authorize,"admin")
 
 router.post("/login",adminAuthController.login)
 router.post("/logout",adminAuthController.logout)
-router.get("/users",usersListController.getData) 
-router.patch("/users/:id", usersListController.updateUser);
-router.post("/addProblem",adminProblemController.addProblem );
-router.post("/editProblem",adminProblemController.editProblem );
-router.post("/createPremiumPlan",adminPremiumPlanController.createNewPlan)
-router.get("/getAllPlans",adminPremiumPlanController.getPlans)
-router.post("/editPremiumPlan",adminPremiumPlanController.editPlan)
+router.get("/users",auth.verify(),usersListController.getData) 
+router.patch("/users/:id", auth.verify(),usersListController.updateUser);
+router.post("/addProblem",auth.verify(),adminProblemController.addProblem );
+router.post("/editProblem",auth.verify(),adminProblemController.editProblem );
+router.post("/createPremiumPlan",auth.verify(),adminPremiumPlanController.createNewPlan)
+router.get("/adminAllPlans",auth.verify(),adminPremiumPlanController.getPlans)
+router.post("/editPremiumPlan",auth.verify(),adminPremiumPlanController.editPlan)
+
+
+router.get("/getAllGroupChallenges",auth.verify(),challengeContoller.allGroupChallenges)
+router.get("/getAllPairProgramming",auth.verify(),challengeContoller.getAllPairProgramming)
 
 
 

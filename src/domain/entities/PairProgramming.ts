@@ -10,6 +10,7 @@ export class PairProgramming{
         public joinCode?:string,
         public startTime?:string,
         public endTime?:string,
-        public _id?:string
+        public _id?:string,
+        public status?:string
     ){}
 }

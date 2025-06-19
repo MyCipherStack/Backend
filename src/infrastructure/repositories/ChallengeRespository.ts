@@ -27,7 +27,7 @@ export class ChallengeRepository extends BaseRepository<GroupChallenge,IGroupCha
         return this.toEntity(challengeData)
     }
 
-    protected toEntity(data: (IGroupChallenge & Document<unknown, any, any>) | null): GroupChallenge | null {
+    protected toEntity(data: (IGroupChallenge) | null): GroupChallenge | null {
         if(!data) return null
         return new GroupChallenge(
             data.challengeName,
@@ -38,6 +38,8 @@ export class ChallengeRepository extends BaseRepository<GroupChallenge,IGroupCha
             data.joinCode,
             data.startTime.toString(),
             data.endTime.toString(),
+            data.status,
+            data.id
         )
     }
 } 
