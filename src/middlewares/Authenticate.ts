@@ -40,6 +40,7 @@ export class Authenticate<Entity>{
                 // const userPayload=this.jwtService.varifyAccessToken(accessToken)
                 if(tokenData){
                     const foundUser=await this.getRepositoryDataUseCase.OneDocumentByid(tokenData.userId)
+                    logger.info("sd",{data:foundUser})
                   
                 logger.info("access token valid")
                     
@@ -61,6 +62,8 @@ export class Authenticate<Entity>{
                       return   res.status(401).json({status:false,message:"This Account is banned"})
                     }
                     if(foundUser){
+                     
+                        
                         req.user={role:tokenData.role,email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
                         return   next()
                     }else{
@@ -83,7 +86,8 @@ export class Authenticate<Entity>{
                         maxAge:1000 * 60 * 15,
                         path:"/"   
                     })
-                    const foundUser=await this.getRepositoryDataUseCase.OneDocumentByid(userPayload.id)
+                    const foundUser=await this.getRepositoryDataUseCase.OneDocumentByid(userPayload.userId)
+                    logger.info("foundUser",{data:foundUser})
                     if(foundUser){
                         req.user={role:payload.role,email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
                         return   next()

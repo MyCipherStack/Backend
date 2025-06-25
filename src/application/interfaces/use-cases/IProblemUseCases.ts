@@ -4,7 +4,7 @@ import { ITestCase } from "../ITestCase.js";
 
 
 export interface IAddProblemUseCase{
-    execute(problem:Problem):Promise<Problem>
+    execute(problem:Problem):Promise<Problem |null>
 }
 
 export interface IEditProblemUseCase{

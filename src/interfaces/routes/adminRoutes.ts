@@ -32,6 +32,16 @@ import { GroupChallenge } from "@/domain/entities/GroupChallenge"
 import { PairProgramming } from "@/domain/entities/PairProgramming"
 import { PairProgrammingRepository } from "@/infrastructure/repositories/PairProgrammingRepsitory"
 import { IPairProgrammingRepository } from "@/domain/repositories/IPairProgrammingRepository"
+import { DashboardBoardController } from "../controller/admin/DashboardController"
+import { AdminDashBoardUseCase } from "@/application/use-cases/AdminDashBoardUseCase"
+import { GetAllReportsUsecase } from "@/application/use-cases/GetAllReportsUsecase"
+import { AdminReportController } from "../controller/admin/AdminReportController"
+import { IReportRepository } from "@/domain/repositories/IReportRepository"
+import { ReportRepository } from "@/infrastructure/repositories/ReportRepository"
+import { ChangeRespoStatusUseCase } from "@/application/use-cases/ChangeRespoStatusUseCase"
+import { Report } from "@/domain/entities/Report"
+import { TransactionRespotitory } from "@/infrastructure/repositories/TransactionsRespositoy"
+
 
 
 
@@ -43,6 +53,8 @@ const router=express.Router()
     const premiumPlanRepository:IpremiumPlanRepository=new PremiumPlanRepository()
     const challengeRepository:ChallengeRepository=new ChallengeRepository()
     const pairProgrammingRepository:IPairProgrammingRepository=new PairProgrammingRepository()
+    const reportRepository:IReportRepository=new ReportRepository( )
+    const transactionRepository=new TransactionRespotitory()
 
 
 
@@ -63,11 +75,13 @@ const router=express.Router()
     const addProblemUseCase:IAddProblemUseCase=new AddProblemUseCase(problemRespository)
     const editProblemUseCase=new EditProblemUseCase(problemRespository)
     const getFilteredUsersUseCase=new GetFilteredUsersUseCase(userRepository)
-
+    const adminDashBoardUseCase=new AdminDashBoardUseCase(userRepository,transactionRepository)
+    const getAllReportsUsecase=new GetAllReportsUsecase(reportRepository)
 
           const getAdminRepoDataUseCase=new GetRepositoryDataUseCase<Admin>(adminRepository)
           const getchallengeRepoDataUseCase=new GetRepositoryDataUseCase<GroupChallenge>(challengeRepository)
           const getPaiProgarmmingRepoDataUseCase=new GetRepositoryDataUseCase<PairProgramming>(pairProgrammingRepository)
+          const changeRespoStatusUseCase=new ChangeRespoStatusUseCase(reportRepository)
 
           
     
@@ -79,7 +93,9 @@ const router=express.Router()
     const usersListController=new UsersListController(userRepository,getFilteredUsersUseCase)
     const adminProblemController=new AdminProblemController(addProblemUseCase,editProblemUseCase)
     const adminPremiumPlanController=new AdminPremiumPlanController(premiumPlanRepository)
-    const challengeContoller=new ChallengeContoller(getchallengeRepoDataUseCase,getPaiProgarmmingRepoDataUseCase)
+    const challengeController=new ChallengeContoller(getchallengeRepoDataUseCase,getPaiProgarmmingRepoDataUseCase)
+    const dashboardController=new DashboardBoardController(adminDashBoardUseCase)
+    const adminReportController=new AdminReportController<Report>(getAllReportsUsecase,changeRespoStatusUseCase)
 
 
 
@@ -98,8 +114,15 @@ router.get("/adminAllPlans",auth.verify(),adminPremiumPlanController.getPlans)
 router.post("/editPremiumPlan",auth.verify(),adminPremiumPlanController.editPlan)
 
 
-router.get("/getAllGroupChallenges",auth.verify(),challengeContoller.allGroupChallenges)
-router.get("/getAllPairProgramming",auth.verify(),challengeContoller.getAllPairProgramming)
+router.get("/getAllGroupChallenges",auth.verify(),challengeController.allGroupChallenges)
+router.get("/getAllPairProgramming",auth.verify(),challengeController.getAllPairProgramming)
+router.get("/dashboard",auth.verify(),dashboardController.getAllDashBoardData)
+
+router.
+route("/report")
+.get(auth.verify(),adminReportController.getAllreports)
+.patch(auth.verify(),adminReportController.updateReportStatus)
+
 
 
 

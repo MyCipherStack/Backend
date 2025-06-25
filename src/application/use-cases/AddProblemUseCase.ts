@@ -5,16 +5,16 @@ import { IAddProblemUseCase } from "../interfaces/use-cases/IProblemUseCases";
 
 
 
-export class AddProblemUseCase implements IAddProblemUseCase{
+export class AddProblemUseCase implements IAddProblemUseCase {
     constructor(
-        private problemRespository:IProblemRepository
-    ){}
+        private problemRespository: IProblemRepository
+    ) { }
 
- async   execute(problem:Problem){
-    console.log("Add probleusecase");
-    
-        const data= await this.problemRespository.create(problem)
-        return data
-    }   
+    async execute(problem: Problem) {
+
+        const data = await this.problemRespository.create(problem)
+        
+        return data ?? null
+    }
 
 }                                                                                                                                                                                           

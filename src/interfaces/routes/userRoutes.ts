@@ -63,8 +63,11 @@ import { RazorpayServices } from "../../services/razorpay/RazorpayServices";
 import { PaymentController } from "../controller/user/PaymentController";
 import { TransactionRespotitory } from "@/infrastructure/repositories/TransactionsRespositoy";
 import { SubscritpionRepository } from "@/infrastructure/repositories/SubscritpionRepository";
-import { RoleMiddleware } from "@/middlewares/roleMiddleware";
+import { RoleMiddleware } from "@/middlewares/RoleMiddleware";
 import { AuthMiddlwareBundler } from "@/middlewares/AuthMiddlwareBundler";
+import { ReportController } from "../controller/user/ReportController";
+import { ReportRepository } from "@/infrastructure/repositories/ReportRepository";
+import { GetUserDataBynameUseCase } from "@/application/use-cases/GetUserDataBYnameUseCase";
 
 
 
@@ -81,6 +84,7 @@ import { AuthMiddlwareBundler } from "@/middlewares/AuthMiddlwareBundler";
       const premiumPlanRepository=new PremiumPlanRepository()
       const transactionRepository=new TransactionRespotitory()
       const subscritpionRepository=new SubscritpionRepository()
+      const reportRepository=new ReportRepository()
 
 
       
@@ -120,6 +124,7 @@ import { AuthMiddlwareBundler } from "@/middlewares/AuthMiddlwareBundler";
       const scheduleInterviewUsecase=new ScheduleInterviewUseCase(userRepository)
       const joiinInterviewUsecase=new joinInterViewUseCase(interViewRespository)
       const paymentUseCases=new PaymentUseCases(razorpayService,transactionRepository)
+      const getUserDataBynameUseCase=new GetUserDataBynameUseCase(userRepository)
       
       // COMMON USECASES
       const getFilteredUsersUseCase=new GetFilteredUsersUseCase(userRepository)
@@ -127,6 +132,8 @@ import { AuthMiddlwareBundler } from "@/middlewares/AuthMiddlwareBundler";
       
       const createRepoUseCase=new CreateRepoUseCase(interViewRespository)
       const createSubscritionUseCase=new CreateRepoUseCase(subscritpionRepository)
+      const createResportUseCase=new CreateRepoUseCase(reportRepository)
+      
 
 
 
@@ -149,6 +156,7 @@ import { AuthMiddlwareBundler } from "@/middlewares/AuthMiddlwareBundler";
       const interviewController=new InterviewController(createRepoUseCase,scheduleInterviewUsecase,interViewRespository,joiinInterviewUsecase)
       const subscriptionController=new SubscriptionController(getPremiumPlanUseCase,createSubscritionUseCase)
       const paymentController=new PaymentController(paymentUseCases,getPremiumPlanUseCase)
+      const reportController=new ReportController(createResportUseCase,getUserDataBynameUseCase)
  
 
 
@@ -216,6 +224,13 @@ router.get("/allPlans",subscriptionController.getPlans)
 router.post("/createPayment",paymentController.createPayment)
 //SUBSCRIBE PLAN IF VERIFEID PAYMENT
 router.post("/verifyPayment",auth.verify(),paymentController.verifyPayment,subscriptionController.createSubscription)
+
+
+
+//REPORT
+router
+.route("/report")
+.post(auth.verify(),reportController.createReport)
 
 
 

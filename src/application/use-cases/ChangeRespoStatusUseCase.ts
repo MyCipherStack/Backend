@@ -1,20 +1,20 @@
-// import { IBaseRepository } from "../../domain/repositories/IBaseRespository.js";
-// import { IChangeRespoStatusUseCase } from "../interfaces/use-cases/IChangeRespoStatusUseCase.js";
+
+import { IBaseRepository } from "@/domain/repositories/IBaseRepository.js";
+import { IChangeRespoStatusUseCase } from "../interfaces/use-cases/IChangeRespoStatusUseCase.js";
 
 
 
-// export class ChangeRespoStatusUseCase<T extends {status:string}> implements IChangeRespoStatusUseCase<T>{
-//     constructor(
-//         private repository:IBaseRepository<T>
+export class ChangeRespoStatusUseCase<Entity> implements IChangeRespoStatusUseCase<Entity> {
+    constructor(
+        private repository: IBaseRepository<Entity>
 
-//     ){}
- 
+    ) { }
 
-//    async execute(id: string, status: string): Promise<T | null> {
-//     const data=await   this.repository.findOneAndUpdate(id,{status:status} as Partial<T>)
-//     if(data){
-//         return data
-//     }
-//     return null
-//      }
-// }
+
+    async execute(id: string, status: Partial<Entity>): Promise<Entity | null> {
+        const data = await this.repository.updateOneById(id, {status})
+
+        return data ?? null
+    }
+
+}

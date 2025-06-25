@@ -38,7 +38,7 @@ export class VerifyOtpController {
         
       res.json({status:true,message:"user created Successfully",user:{name:userData.name,email:userData.email}})
     }catch (error:any) {
-        console.log(error);
+        console.log("err in verification OTp contorller",error);
         return res.status(500).json({ status: false, message:error.message });
     }
   };

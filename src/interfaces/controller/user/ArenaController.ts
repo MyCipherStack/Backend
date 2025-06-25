@@ -20,7 +20,7 @@ export class ArenaController{
         const joinCode=await this.createChallengeUseCase.execute({...challengeData,hostId:userId.id})
         
             console.log(joinCode,"joinCode");
-            res.status(200).json({status:true,message:"group challenge created",joinCode})
+            res.status(200).json({status:true,message:"challenge created",joinCode})
         }catch(error){
             console.log(error);
             

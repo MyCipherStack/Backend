@@ -28,6 +28,7 @@ export class AuthController {
     register = async (req: Request, res: Response) => {
         try {
             const userData = new CreateUserDTO(req.body)
+            
             const createUser = new CreateUserUseCase(this.userRepository, this.hashService,this.PendingUserRepository);
             const createdUserEmail = await createUser.execute(userData.name, userData.email, userData.password)
             const setOtpUsecase=new SendOtpUseCase(this.otpService,this.PendingUserRepository)

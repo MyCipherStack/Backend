@@ -14,7 +14,7 @@ export interface IPendingUser extends Document{
 const OtpSchema=new  mongoose.Schema<IPendingUser>({
     name:{type:String},
     email:{type:String,required:true},
-    password:{type:String},
+    password:{type:String,required:true},
     otp:{type:String},
     createdAt:{type:Date,default:Date.now,expires:300}
 })

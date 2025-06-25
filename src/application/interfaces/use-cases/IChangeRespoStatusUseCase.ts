@@ -1,5 +1,5 @@
 
 
-export interface IChangeRespoStatusUseCase<T>{
-    execute(id:string,status:string):Promise<T |null>
+export interface IChangeRespoStatusUseCase<Entity>{
+    execute(id:string,status:Partial<Entity>):Promise<Entity  |null>
 }

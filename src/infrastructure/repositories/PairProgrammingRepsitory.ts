@@ -7,6 +7,8 @@ import { BaseRepository } from "./BaseRespositroy";
 
 
 export class PairProgrammingRepository extends BaseRepository<PairProgramming,IPairProgramming> implements IPairProgrammingRepository{
+
+
     // async  create(createData: PairProgramming): Promise<PairProgramming> {
     //     const data= await PairProgramingModel.create(createData)
     //     return new PairProgramming(data.challengeName,data.duration,data.problems,data.type,data.joinCode,data.startTime,data.endTime)
@@ -16,9 +18,7 @@ export class PairProgrammingRepository extends BaseRepository<PairProgramming,IP
     // async findById(Id: string): Promise<PairProgramming | null> {
     //     const data=await PairProgramingModel.findById(Id)
     //     if(!data)return null
-    //     return this.toEntity(data)
-
-       
+    //     return this.toEntity(data)    
     // }
 
     constructor(){

@@ -3,6 +3,7 @@ import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import UserModel, { IUser } from "../database/UserModel";
 import { BaseRepository } from "./BaseRespositroy";
+import { logger } from "@/logger";
 
 
 
@@ -28,19 +29,10 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
     }
 
 
-    // async findById(id: string): Promise<User | null> {
-        //     const getUser=await UserModel.findById(id).lean()
-    //     if(!getUser) return null
-      
-    //     return new User(getUser.name,getUser.email,"",getUser.status,getUser._id,getUser.image,getUser.googleId,getUser.refreshToken,getUser.displayName,getUser.theme,getUser.preferences)
-    //     // return new ProfileDTO(personal,appearance,preferences )
-    // }
-
     
     async findByUserName(name: string): Promise<User | null> {
         const getUser=await UserModel.findOne({name}).lean()
         if(!getUser) return null
-        // return new User(getUser.name,getUser.email,getUser.password,getUser.status,getUser._id)
         return this.toEntity(getUser)
 
     }
@@ -49,7 +41,6 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
     async updatePassword(email:string,password: string): Promise<User | null> {
         const updateUser=await UserModel.findOneAndUpdate({email},{password})
         if(!updateUser) return null
-        // return new User(updateUser.name,updateUser.email,updateUser.password)
         return this.toEntity(updateUser)
 
     }
@@ -59,7 +50,6 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
         if(!updateUser) return null
         return this.toEntity(updateUser)
 
-        // return new User(updateUser.name,updateUser.email,updateUser.password)
 
       
     }
@@ -93,6 +83,39 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
     
 
 
+    async userGrowthByRange(format:string,startDate:Date): Promise<any | null> {
+        logger.info("userRepodata",{format,startDate})
+
+        const data=await UserModel.aggregate([{$match:{
+            createdAt:{$gte:startDate}}},
+            {
+                $group:{
+                    _id:{
+                        $dateToString:{
+                            format,
+                            date:'$createdAt'
+                        }
+                    },
+                    userCount:{$sum:1}
+                }
+            }
+        ])
+        
+        const mapper=(data)=>{ return   data.map((obj=>({range:obj._id,usersCount:obj.userCount})))}
+        
+        const user=await UserModel.aggregate([{
+            $group:{
+                _id:null,
+                totalUsers:{$sum:1},
+                premiumUsers:{$sum:{$cond:[{$eq:["$role","premium"]},1,0]}}
+            }}
+        ])
+        
+        logger.info("ASDsdfsdf",{data})
+
+        return {userDetails:mapper(data),totalUser:user}
+    }
+
 
 
     protected toEntity(data: (IUser & Document<unknown, any, any>) | null): User | null {
@@ -110,7 +133,6 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
             data.updated_at,
             )
 
-        // return new User(data.name,data.email,data.password,data.status,data._id,data.image,data.googleId,data.refreshToken,data.displayName,data.theme,data.preferences,data.bio,data.github,data.linkedin,data.role,data.streak,data.created_at,data.updated_at)
     }
 }
 
@@ -125,30 +147,3 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
 
 
 
-
-
-
-// const personal={
-//     username: getUser.name,
-//     displayName: getUser.displayName,
-//     email: getUser.email,
-//     phone: getUser.phone,
-//     bio: getUser.bio,
-//     github: getUser?.github,
-//     linkedin: getUser?.linkedin,
-//     avatar: getUser.image,
-//     theme: getUser.theme
-// }
-// const appearance={
-//     theme:getUser.theme
-// }
-
-// const preferences = {
-//     emailNotifications: Boolean(getUser.preferences?.emailNotifications),
-//     interviewReminders: Boolean(getUser.preferences?.interviewReminders),
-//     contestReminders: Boolean(getUser.preferences?.contestReminders),
-//     language: String(getUser.preferences?.language || 'en'),
-//     timezone: String(getUser.preferences?.timezone || 'UTC'),
-//     publicProfile: Boolean(getUser.preferences?.publicProfile),
-//     showActivity: Boolean(getUser.preferences?.showActivity),
-// };

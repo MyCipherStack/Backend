@@ -4,7 +4,6 @@ import { Server } from "socket.io"
 
 import { IUpdateLeaderBoardUsecase } from "../../application/interfaces/use-cases/ILeaderBoadrUseCase";
 import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
-
 import { logger } from "@/logger";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 
@@ -33,7 +32,7 @@ export class LeaderBoardSocketHandler {
 
                 const leaderBoard = await this.leaderBoardRepository.findAll({ challengeId })
 
-                logger.info("leaderboard",{data:leaderBoard})
+                logger.info("leaderboard", { data: leaderBoard })
 
                 if (leaderBoard) {
 
@@ -131,18 +130,21 @@ export class LeaderBoardSocketHandler {
 
 
 
-            
+
             socket.on("join-pairProgramming", ({ roomId, userName }) => {
                 socket.join(roomId)
+                console.log("join", roomId);
                 socket.to(roomId).emit("pairProgram-update", { userName })
             })
 
             socket.on("code-change", ({ roomId, code }) => {
+                console.log("code change", roomId);
                 socket.to(roomId).emit("code-change", code)
             })
 
-            socket.on("cursor-change", ({ roomId, userId, posision }) => {
-                socket.to(roomId).emit("cursor-change", { userId, posision })
+            socket.on("cursor-change", ({ roomId, userId, position }) => {
+                console.log("cursor-change", roomId, userId, position);
+                socket.to(roomId).emit("cursor-change", { userId, position })
             })
 
             socket.on("send-message", ({ roomId, userName, text, time }) => {
@@ -152,8 +154,7 @@ export class LeaderBoardSocketHandler {
             })
 
             socket.on("signal", ({ roomId, data }) => {   // I only this for audio call  first i did this  for learn
-                console.log(roomId, data);
-
+                console.log("signal", roomId);
                 socket.to(roomId).emit("signal", data)
             })
 
@@ -169,22 +170,34 @@ export class LeaderBoardSocketHandler {
 
             //Best Implimetation for WEBTRC 
 
-            socket.on("join-interview",({roomId})=>{
-                console.log(roomId,"joinedInterview");
-                
+            socket.on("join-interview", ({ roomId }) => {
                 socket.join(roomId)
+                const clients = io.sockets.adapter.rooms.get(roomId)
+                const isInitiator = clients?.size === 1
+                logger.info(roomId, "joinedInterview", isInitiator);
+                socket.to(roomId).emit("joined", { roomId, isInitiator })
             })
 
-            socket.on("offer",({roomId,data})=>{
-                socket.to(roomId).emit('offer',data)
+            socket.on("offer", ({ roomId, data }) => {
+                logger.info("offer", roomId);
+
+                socket.to(roomId).emit('offer', data)
             })
-            socket.on("answer",({roomId,data})=>{
-                socket.to(roomId).emit('answer',data)
+            socket.on("answer", ({ roomId, data }) => {
+
+                logger.info("answer", roomId);
+
+                socket.to(roomId).emit('answer', data)
             })
-            socket.on("candidate",({roomId,data})=>{
-                console.log(data);
-                
-                socket.to(roomId).emit('candidate',data)
+            socket.on("candidate", ({ roomId, data }) => {
+                logger.info("candidate", roomId);
+
+                socket.to(roomId).emit('candidate', data)
+            })
+
+            socket.on("track-type", ({ roomId, kind, type }) => {
+                logger.info("track-type", { kind, type })
+                socket.to(roomId).emit("track-type", { kind, type })
             })
 
 
