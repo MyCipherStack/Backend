@@ -3,23 +3,12 @@ import { PairProgramming } from "../../domain/entities/PairProgramming";
 import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository";
 import { IPairProgramming, PairProgrammingModel } from "../database/PairProgrammingModel";
 import { BaseRepository } from "./BaseRespositroy";
+import { logger } from "@/logger";
 
 
 
 export class PairProgrammingRepository extends BaseRepository<PairProgramming,IPairProgramming> implements IPairProgrammingRepository{
 
-
-    // async  create(createData: PairProgramming): Promise<PairProgramming> {
-    //     const data= await PairProgramingModel.create(createData)
-    //     return new PairProgramming(data.challengeName,data.duration,data.problems,data.type,data.joinCode,data.startTime,data.endTime)
-        
-    // }
-
-    // async findById(Id: string): Promise<PairProgramming | null> {
-    //     const data=await PairProgramingModel.findById(Id)
-    //     if(!data)return null
-    //     return this.toEntity(data)    
-    // }
 
     constructor(){
         super(PairProgrammingModel)
@@ -43,7 +32,9 @@ export class PairProgrammingRepository extends BaseRepository<PairProgramming,IP
             data.startTime.toString(),
             data.endTime.toString(),
             data.id,
-            data.status
+            data.status,
+            data.createdAt,
+            data.updatedAt,
 
         )
     }

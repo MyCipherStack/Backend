@@ -1,6 +1,6 @@
 
 import { logger } from "@/logger";
-import { IAdminDashBoardUseCase } from "../interfaces/use-cases/IAdminDashBoardUseCase";
+import { IAdminDashBoardUseCase } from "../interfaces/use-cases/IAdminUseCase";
 import { IUserRepository } from "@/domain/repositories/IUserRepository";
 import { ITransactionRepotitory } from "@/domain/repositories/ITransactionRepotitory";
 

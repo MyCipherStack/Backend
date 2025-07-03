@@ -13,9 +13,12 @@ export interface IGroupChallenge extends Document{
     type:string
     joinCode:string
     currentStatus:Object
-    startTime:Date,
-    endTime:Date,
+    startTime:Date
+    endTime:Date
     status:string
+    isBlocked:boolean
+    createdAt:string
+    updatedAt:string
     
   };
 
@@ -42,7 +45,9 @@ const groupChallengeSchema=new mongoose.Schema<IGroupChallenge>({
 
         joinCode:{type:String,required:true},
 
-        status:{type:String,enum:["waiting","started","ended","blocked"],default:"waiting"}
+        status:{type:String,enum:["waiting","started","ended","blocked"],default:"waiting"},
+
+        isBlocked:{type:Boolean,default:false}
 
 },{timestamps:true})
 

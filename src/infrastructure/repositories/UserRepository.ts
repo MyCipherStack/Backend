@@ -13,12 +13,6 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
         super(UserModel)    
     }
 
-    
-    
-    // async create(user: User): Promise<User> {
-    //     const newUser=await UserModel.create({name:user.name,email:user.email,password:user.password,image:user?.image,googleId:user?.googleId});
-    //     return new User(newUser.name,newUser.email,newUser.password)
-    // }
 
 
 
@@ -126,11 +120,18 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
             data.image,
             data.displayName,
             data.theme,data.bio,data.github,
-            data.linkedin,data.created_at,
-            data.status,data.role,data.streak,
-            data.preferences,data.refreshToken,
-            data._id,data.googleId,data.password,
+            data.linkedin,
+            data.created_at,
+            data.status,
+            data.role,
+            data.streak,
+            data.preferences,
+            data.refreshToken,
+            data._id,
+            data.googleId,
+            data.password,
             data.updated_at,
+            data.subscripctionId
             )
 
     }

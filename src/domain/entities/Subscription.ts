@@ -18,7 +18,16 @@ export class SubscriptionEntity {
 
         public trial: number,
 
-        public status: string
+        public status: string,
+
+        public planId:string,
+
+        public createdAt:Date,
+
+        public endDate:Date,
+
+        public _id:string
+
 
     ) { }
 }

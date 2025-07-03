@@ -6,16 +6,13 @@ import { IOtpService } from "@/domain/services/IOtpService";
 import { env } from "@/config/env"; 
 import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository"; 
 import { IUserRepository } from "@/domain/repositories/IUserRepository"; 
+import { IResetPassswordOtpUseCase } from "@/application/interfaces/use-cases/IUserPasswordUseCases";
 
 
 
 export class ForgotPasswordOtpController{
     constructor(
-        private otpService:IOtpService,
-        private jwtService:IJwtService,
-        private hashService:IHashAlgorithm,
-        private pendingUserRepository:IPendingUserRepository,
-        private userRepository:IUserRepository,
+        private resetPassswordOtpUseCase:IResetPassswordOtpUseCase
         
     ){}
     sendOtp=async(req:Request,res:Response)=>{
@@ -23,8 +20,8 @@ export class ForgotPasswordOtpController{
             let data=req.body
             console.log(data.email,"fogotpassword email");
             
-        let resetOtp=new ResetPassswordOtpUseCase(this.otpService,this.jwtService,this.hashService,this.pendingUserRepository,this.userRepository)
-    let otpToken=await resetOtp.execute(data.email)
+
+    let otpToken=await this.resetPassswordOtpUseCase.execute(data.email)
 
     console.log(otpToken,"setting toke otp");
     

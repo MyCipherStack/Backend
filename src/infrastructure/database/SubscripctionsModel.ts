@@ -1,50 +1,86 @@
-import mongoose, { Document, model, SchemaTypes, Types } from "mongoose";
+import mongoose, { Document, SchemaTypes, Types } from "mongoose";
 
 
 
-export interface ISubscription extends Document{
+export interface ISubscription extends Document {
 
-        userId:Types.ObjectId
+    userId: Types.ObjectId
 
-        transactionId:Types.ObjectId
+    transactionId: Types.ObjectId
 
-        name:string
+    name: string
 
-        price:number
+    price: number
 
-        cycle:string
+    cycle: string
 
-        features:[{text:String,enabled:Boolean}]
+    features: [{ text: String, enabled: Boolean }]
 
-        trial:number
+    trial: number
 
-        status:string
+    planId: string
+
+    status: string
+
+    endDate: Date,
+
+    createdAt:Date,
+
+    _id: string
 }
 
 
 
 
-const subscritpionSchema=new mongoose.Schema<ISubscription>({
+const subscritpionSchema = new mongoose.Schema<ISubscription>({
 
-    userId:{type:SchemaTypes.ObjectId,ref:"User",required:true},
+    userId: { type: SchemaTypes.ObjectId, ref: "User", required: true },
 
-    transactionId:{type:SchemaTypes.ObjectId,ref:"transaction",required:true},
+    transactionId: { type: SchemaTypes.ObjectId, ref: "transaction", required: true },
 
-    name:{ type:String, required:true},
+    name: { type: String, required: true },
 
-    price:{type:Number,required:true},
+    price: { type: Number, required: true },
 
-    cycle: {  type: String,default:"monthly" },
+    cycle: { type: String, default: "monthly" },
 
-    features:{type:[{text:String,enabled:Boolean}],default:[]}, 
+    features: { type: [{ text: String, enabled: Boolean }], default: [] },
 
-    trial: { type: Number,default:7 },
+    trial: { type: Number, default: 7 },
 
-    status:{type:String, enum:["active","hidden","deleted"]}
+    planId: { type: String },
+
+    endDate: { type: Date },
+
+    status: { type: String, enum: ["active", "hidden", "deleted"] }
 
 
 
-},{timestamps:true})
+
+}, { timestamps: true })
 
 
-export const subscripctionModel=mongoose.model<ISubscription>("subscription",subscritpionSchema)
+subscritpionSchema.pre("validate", function (next) {
+
+
+    const today = new Date()
+    if (this.cycle === "monthly") {
+        this.endDate = new Date(today)
+        this.endDate.setMonth(this.endDate.getMonth() + 1)
+    }
+
+    if (this.cycle === "quarterly") {
+        this.endDate = new Date(today)
+        this.endDate.setMonth(this.endDate.getMonth() + 3)
+    }
+    if (this.cycle === "yearly") {
+        this.endDate = new Date(today)
+        this.endDate.setFullYear(this.endDate.getFullYear() + 1)
+    }
+
+
+    next()
+})
+
+
+export const subscripctionModel = mongoose.model<ISubscription>("subscription", subscritpionSchema)

@@ -18,7 +18,7 @@ export interface IPlanDocument extends Document {
 
 const PremiumPlanSchema=new Schema<IPlanDocument>({
 
-    name:{ type:String, required:true},
+    name:{ type:String, required:true,unique:true},
 
     price:{type:Number,required:true},
 

@@ -27,5 +27,6 @@ export class    User{
         public googleId?:string,
         public password?:string,
         public updated_at?:Date,
+        public subscripctionId?:string
     ){}
 };

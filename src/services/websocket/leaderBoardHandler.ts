@@ -30,19 +30,21 @@ export class LeaderBoardSocketHandler {
                 this.socketToUserMap.set(socket.id, { userId, challengeId })
 
 
-                const leaderBoard = await this.leaderBoardRepository.findAll({ challengeId })
+                const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId })
 
                 logger.info("leaderboard", { data: leaderBoard })
 
                 if (leaderBoard) {
-
+                    let rank=1
                     const response = leaderBoard.map(data => {
                         return {
                             userName: data.userId.name,
-                            totalScore: data.totalScore,
-                            solvedCount: data.solvedProblems.length,
+                            totalScore: data.totalscore,
+                            solvedCount: data.solvedProblems?.length ?? 0,
                             isLive: this.activeUsersMap.get(challengeId)?.has(data.userId._id.toString()) || false,
-                            image: data.userId.image
+                            image: data.userId.image,
+                            rank:rank++
+                            
 
                         }
                     })
@@ -62,16 +64,22 @@ export class LeaderBoardSocketHandler {
                             console.log("problem Accepted ");
                             console.log(new Date(submissionDetails.createdAt).toTimeString(), "Date");
 
+
+
                             const updatedLeaderboard = await this.updateLeaderBoardUseCase.execute(userId, challengeId, { time, problemId: submissionDetails.problemId, submissionId })
-                            const leaderBoard = await this.leaderBoardRepository.findAll({ challengeId })
+
+                            const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId })
                             if (leaderBoard) {
+                                let rank=1
                                 const response = leaderBoard.map(data => {
                                     return {
                                         userName: data.userId.name,
-                                        totalScore: data.totalScore,
-                                        solvedCount: data.solvedProblems.length,
+                                        totalScore: data.totalscore,
+                                        solvedCount: data.solvedProblems?.length ?? 0,
                                         isLive: this.activeUsersMap.get(challengeId)?.has(data.userId.toString()) || false,
-                                        image: data.userId.image
+                                        image: data.userId.image,
+                                        rank: rank++
+
 
 
                                     }
@@ -106,15 +114,17 @@ export class LeaderBoardSocketHandler {
                     this.socketToUserMap.delete(socket.id)
 
 
-                    const leaderBoard = await this.leaderBoardRepository.findAll({ challengeId })
+                    const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId })
                     if (leaderBoard) {
+                        let rank = 1
                         const response = leaderBoard.map(data => {
                             return {
                                 userName: data.userId.name,
                                 totalScore: data.totalScore,
                                 solvedCount: data.solvedProblems.length,
                                 isLive: this.activeUsersMap.get(challengeId)?.has(data.userId.toString()) || false,
-                                image: data.userId.image
+                                image: data.userId.image,
+                                reank: rank++
 
 
                             }
@@ -198,6 +208,24 @@ export class LeaderBoardSocketHandler {
             socket.on("track-type", ({ roomId, kind, type }) => {
                 logger.info("track-type", { kind, type })
                 socket.to(roomId).emit("track-type", { kind, type })
+            })
+
+
+
+
+
+            socket.on("join-user-name",(userId)=>{
+
+                socket.join(userId)
+                
+                logger.info("userjoind",userId)
+
+            })
+
+    
+            
+            socket.on("discount-user-room",()=>{
+                
             })
 
 

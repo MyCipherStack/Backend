@@ -24,6 +24,7 @@ export interface IProblem extends Document {
         type: string},
       returnType:{type:string}},
     starterCode:{},
+    acceptence:number,
     status:boolean
   }
   
@@ -70,7 +71,7 @@ const problemsSchema=new Schema({
 
         testCases: { type: [TestCaseSchema], default: [] },
         
-        acceptence:{type:Number,default:100},
+        acceptence:{type:Number,default:0},
 
         functionSignatureMeta:{
             name:{type:String},

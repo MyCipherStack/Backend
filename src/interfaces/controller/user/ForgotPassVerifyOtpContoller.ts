@@ -1,23 +1,19 @@
 import { OtpDTO } from "@/application/dto/OtpDTO";
 
 import { Request, Response } from "express"
-import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository";
-import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm"; 
-import { ResetPassverifyOtpUseCase } from "@/application/use-cases/ResetPassverifyOtpUseCase"; 
-import { env } from "process";
+import { IResetPassverifyOtpUseCase } from "@/application/interfaces/use-cases/IUserPasswordUseCases";
+import { env } from "@/config/env";
 
 export class ForgotPassVerifyOtpController{
   constructor(
-    private pendingUserRepository:IPendingUserRepository,
-    private hashService:IHashAlgorithm,
+    private resetPassverifyOtpUseCase:IResetPassverifyOtpUseCase
  
 ) {}
     
   verify = async(req: Request, res: Response) => {
     try {
       const data= new OtpDTO(req.body);
-      const resetUseCase=new  ResetPassverifyOtpUseCase(this.pendingUserRepository,this.hashService)
-      let success= await resetUseCase.execute(data)
+      let success= await this.resetPassverifyOtpUseCase.execute(data)
       if(!success){
         throw new Error("Session expired.Please request OTP again")
       } 

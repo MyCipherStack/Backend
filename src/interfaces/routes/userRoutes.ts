@@ -67,7 +67,18 @@ import { RoleMiddleware } from "@/middlewares/RoleMiddleware";
 import { AuthMiddlwareBundler } from "@/middlewares/AuthMiddlwareBundler";
 import { ReportController } from "../controller/user/ReportController";
 import { ReportRepository } from "@/infrastructure/repositories/ReportRepository";
-import { GetUserDataBynameUseCase } from "@/application/use-cases/GetUserDataBYnameUseCase";
+import { GetUserDataBynameUseCase } from "@/application/use-cases/GetUserDataBynameUseCase"; 
+import { LoginUserUseCase } from "@/application/use-cases/LoginUserUseCase";
+import { CreateUserUseCase } from "@/application/use-cases/CreateUserUseCase";
+import { SendOtpUseCase } from "@/application/use-cases/SendOtpUseCase";
+import { ResetPassswordOtpUseCase } from "@/application/use-cases/ResetPasswordOtpUseCase";
+import { ResetPassverifyOtpUseCase } from "@/application/use-cases/ResetPassverifyOtpUseCase";
+import { GoogleUserUseCase } from "@/application/use-cases/GoogleUserUseCase";
+import { VerifyOtpUseCase } from "@/application/use-cases/VerifyUsecase";
+import { RegisterUserFromPendingUseCase } from "@/application/use-cases/RegisterUserFromPendingUseCase ";
+import { SubscriptionEntity } from "@/domain/entities/Subscription";
+import { ActivePrivateChallengeUsecase } from "@/application/use-cases/ActivePrivateChallengeUsecase";
+import { ActivePublicChallengeUsecase } from "@/application/use-cases/ActivePublicChallengeUsecase";
 
 
 
@@ -107,9 +118,10 @@ import { GetUserDataBynameUseCase } from "@/application/use-cases/GetUserDataBYn
 
 
       // REUSABLE USECASES - GetRepositoryDataUseCase
-      const getRepositoryDataUseCase=new GetRepositoryDataUseCase<User>(userRepository)
+      const getUserRepositoryDataUseCase=new GetRepositoryDataUseCase<User>(userRepository)
       const getProblemDataUseCase=new GetRepositoryDataUseCase<Problem>(problemRespository)
       const getPremiumPlanUseCase=new GetRepositoryDataUseCase<PremiumPlan>(premiumPlanRepository)
+      const getSubcriptionUseCase=new GetRepositoryDataUseCase<SubscriptionEntity>(subscritpionRepository)
 
 
       const verifyUserPasswordUseCase=new VerifyUserPasswordUseCase(userRepository,hashService)
@@ -119,12 +131,30 @@ import { GetUserDataBynameUseCase } from "@/application/use-cases/GetUserDataBYn
       const getAllSubmissionByProblemuseCase=new GetAllSubmissionByProblemuseCase(submissionRespository)
       const createChallengeUseCase=new CreateChallengeUseCase(challengeRepository)
       const joinChallengeUseCase=new JoinChallengeUseCase<IGroupChallenge>(challengeRepository,leaderBoardRespository)
-      const createPairProgrammingUseCase=new CreatePairProgrammingUseCase(pairProgrammingRepository)
-      const joinPairProgarmmingUseCase=new JoinChallengeUseCase<IPairProgramming>(pairProgrammingRepository,leaderBoardRespository)
+      const createPairProgrammingUseCase=new CreatePairProgrammingUseCase(pairProgrammingRepository,problemRespository)
+      const joinPairProgarmmingUseCase=new JoinChallengeUseCase<IPairProgramming>(challengeRepository,leaderBoardRespository)
       const scheduleInterviewUsecase=new ScheduleInterviewUseCase(userRepository)
       const joiinInterviewUsecase=new joinInterViewUseCase(interViewRespository)
       const paymentUseCases=new PaymentUseCases(razorpayService,transactionRepository)
       const getUserDataBynameUseCase=new GetUserDataBynameUseCase(userRepository)
+      const loginUserUseCase = new LoginUserUseCase(userRepository,hashService,jwtService)
+      const createUserUseCase = new CreateUserUseCase(userRepository,hashService,pendingUserRepository);
+      const sendOtpUseCase = new SendOtpUseCase(otpService,pendingUserRepository)
+      const resetPassswordOtpUseCase=new ResetPassswordOtpUseCase(otpService,pendingUserRepository,userRepository)
+      const resetPassverifyOtpUseCase=new  ResetPassverifyOtpUseCase(pendingUserRepository)
+      const googleUserUseCase=new GoogleUserUseCase(userRepository,hashService,jwtService)
+      const verifyOtpUseCase = new VerifyOtpUseCase(pendingUserRepository,otpService);
+      const registerUserFromPendingUseCase=new RegisterUserFromPendingUseCase(pendingUserRepository,userRepository)
+      const activePrivateChallengeUsecase=new ActivePrivateChallengeUsecase(challengeRepository)
+      const activePublicChallengeUsecase=new ActivePublicChallengeUsecase(challengeRepository)
+
+
+
+   
+      
+      
+      
+
       
       // COMMON USECASES
       const getFilteredUsersUseCase=new GetFilteredUsersUseCase(userRepository)
@@ -133,6 +163,8 @@ import { GetUserDataBynameUseCase } from "@/application/use-cases/GetUserDataBYn
       const createRepoUseCase=new CreateRepoUseCase(interViewRespository)
       const createSubscritionUseCase=new CreateRepoUseCase(subscritpionRepository)
       const createResportUseCase=new CreateRepoUseCase(reportRepository)
+
+      
       
 
 
@@ -140,28 +172,28 @@ import { GetUserDataBynameUseCase } from "@/application/use-cases/GetUserDataBYn
      
 
       
-      const authController= new AuthController(userRepository,hashService,jwtService,otpService,pendingUserRepository)
-      const verifyOtpController=new VerifyOtpController(otpService,pendingUserRepository,userRepository)
-      const resendOtpController=new ResendOtpController(otpService,pendingUserRepository)
+      const authController= new AuthController(createUserUseCase,sendOtpUseCase,loginUserUseCase)
+      const verifyOtpController=new VerifyOtpController(verifyOtpUseCase,registerUserFromPendingUseCase)
+      const resendOtpController=new ResendOtpController(sendOtpUseCase)
       const logoutController=new LogoutController()
-      const googleAuthController=new GoogleAuthController(userRepository,hashService,jwtService)
-      const forgotPasswordVerify=new ForgotPassVerifyOtpController(pendingUserRepository,hashService)
-      const resetPassword=new ResetPasswordContoller(userRepository,hashService)
-      const forgotPasswordOtpController=new ForgotPasswordOtpController(otpService,jwtService,hashService,pendingUserRepository,userRepository)
+      const googleAuthController=new GoogleAuthController(googleUserUseCase)
+      const forgotPasswordVerify=new ForgotPassVerifyOtpController(resetPassverifyOtpUseCase)
+      const resetPassword=new ResetPasswordContoller(resetPasswordUseCase)
+      const forgotPasswordOtpController=new ForgotPasswordOtpController(resetPassswordOtpUseCase)
       const problemController=new ProblemController(problemRespository,runProblemUseCase,getProblemDataUseCase,submitProblemUseCase)
-      const profileController=new ProfileController(updateUserUseCase,getRepositoryDataUseCase,userRepository,verifyUserPasswordUseCase,resetPasswordUseCase)
-      const arenaController=new ArenaController(createChallengeUseCase,joinChallengeUseCase,createPairProgrammingUseCase,joinPairProgarmmingUseCase)
+      const profileController=new ProfileController(updateUserUseCase,getUserRepositoryDataUseCase,verifyUserPasswordUseCase,resetPasswordUseCase)
+      const arenaController=new ArenaController(createChallengeUseCase,joinChallengeUseCase,createPairProgrammingUseCase,joinPairProgarmmingUseCase,activePrivateChallengeUsecase,activePublicChallengeUsecase)
       const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
       const usersController=new UsersController(getFilteredUsersUseCase)
       const interviewController=new InterviewController(createRepoUseCase,scheduleInterviewUsecase,interViewRespository,joiinInterviewUsecase)
-      const subscriptionController=new SubscriptionController(getPremiumPlanUseCase,createSubscritionUseCase)
+      const subscriptionController=new SubscriptionController(getPremiumPlanUseCase,createSubscritionUseCase,updateUserUseCase,getSubcriptionUseCase,getUserRepositoryDataUseCase)
       const paymentController=new PaymentController(paymentUseCases,getPremiumPlanUseCase)
       const reportController=new ReportController(createResportUseCase,getUserDataBynameUseCase)
  
 
 
        //MIDDLEWARE--FOR AUTHENCATION AND AUTHORIZE
-       let authenticate=new Authenticate(jwtService,getRepositoryDataUseCase)
+       let authenticate=new Authenticate(jwtService,getUserRepositoryDataUseCase)
        let authorize=new RoleMiddleware()
        let auth=new AuthMiddlwareBundler(authenticate,authorize,"user")
 
@@ -181,7 +213,7 @@ router.get("/auth/google",passport.authenticate("google",{scope:["profile","emai
 
 router.get("/auth/google/callback",passport.authenticate("google",{
       failureRedirect:"/Login",session:true
-}),(req,res)=>googleAuthController.handleSuccess(req,res))
+}),(req,res,next)=>googleAuthController.handleSuccess(req,res,next))
 
 router.post("/logout",logoutController.logout)
 router.post("/forgotPasswordOtp",forgotPasswordOtpController.sendOtp)
@@ -189,6 +221,7 @@ router.post("/forgotPasswordOtp",forgotPasswordOtpController.sendOtp)
 router.post("/forgotPasswordVerify",forgotPasswordVerify.verify)
 router.post("/resetPassword",resetPassword.reset)
 router.get("/problems",problemController.getData)
+router.get("/problemDetails",problemController.problemDetails)
 
 
 //USERS
@@ -199,6 +232,7 @@ router.get("/profile",auth.verify(),profileController.getData)
 router.patch("/profile/resetPassword",auth.verify(),profileController.resetPassword)
 
 
+
 router.post("/problem/run",auth.verify(),problemController.runProblem)
 router.post("/problem/submit",auth.verify(),problemController.submitProblem)
 
@@ -207,6 +241,8 @@ router.get("/submissions",auth.verify(),submissionController.getSubmissionData)
 
 router.post("/arena/createGroupChallenge",auth.verify(),arenaController.createGroupChallenge)
 router.post("/joinGroupChallenge",auth.verify(),arenaController.joinGroupChallenge)
+router.get("/activeChallenges",auth.verify(),arenaController.activeChallenges)
+
 
 
 router.post("/createPairProgramming",auth.verify(),arenaController.createPairProgramming)
@@ -219,6 +255,7 @@ router.post("/joinInterView",auth.verify(),interviewController.joinInterview)
 
 //PREMIUM
 router.get("/allPlans",subscriptionController.getPlans)
+router.get("/subscriptionData",auth.verify(),subscriptionController.getSubcriptionData)
 
 //PAYMENT 
 router.post("/createPayment",paymentController.createPayment)
@@ -231,6 +268,8 @@ router.post("/verifyPayment",auth.verify(),paymentController.verifyPayment,subsc
 router
 .route("/report")
 .post(auth.verify(),reportController.createReport)
+
+
 
 
 

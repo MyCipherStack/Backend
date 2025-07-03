@@ -30,7 +30,7 @@ export abstract class BaseRepository<Entity,ModelSchema> implements IBaseReposit
 
 
     async updateOneById(id:string,updatedData:Partial<Entity>):Promise<Entity | null>{
-        const updated=await this.model.findByIdAndUpdate(id,updatedData as any,{upsert:true})
+        const updated=await this.model.findByIdAndUpdate(id,updatedData as any,{upsert:true,new:true})
         return this.toEntity(updated)
     }
 

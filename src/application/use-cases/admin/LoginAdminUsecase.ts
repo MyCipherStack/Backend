@@ -1,16 +1,17 @@
-import { Admin } from "../../domain/entities/Admin";
-import { IAdminRepository } from "../../domain/repositories/IAdminRepository";
-import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
-import { IJwtService } from "../../domain/services/IJwtService";
+import { Admin } from "../../../domain/entities/Admin";
+import { IAdminRepository } from "../../../domain/repositories/IAdminRepository";
+import { IHashAlgorithm } from "../../../domain/services/IHashAlgorithm";
+import { IJwtService } from "../../../domain/services/IJwtService";
+import { ILoginAdminUsecase } from "../../interfaces/use-cases/IAdminUseCase";
 
 
-export class LoginAdminUsecase{
+export class LoginAdminUsecase implements ILoginAdminUsecase {
     constructor(
         private adminRepository:IAdminRepository,
         private hashService:IHashAlgorithm,
         private JwtService:IJwtService
     ){}
-    async execute(name:string,password:string){
+    async execute(name:string,password:string):Promise<{admin:{name:string},refreshToken:string,accessToken:string}>{
         console.log("exicute  admin login");
         
         

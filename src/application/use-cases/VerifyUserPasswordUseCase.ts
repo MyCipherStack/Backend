@@ -1,6 +1,6 @@
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
-import { IVerifyUserPasswordUseCase } from "../interfaces/use-cases/IVerifyUserPasswordUseCase";
+import { IVerifyUserPasswordUseCase } from "../interfaces/use-cases/IUserPasswordUseCases";
 
 
 

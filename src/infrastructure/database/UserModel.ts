@@ -27,7 +27,8 @@ export interface IUser extends Document {
         publicProfile: boolean,
         showActivity: false,
       },
-    streak:{lastActiveDate:Date,currentStreak:number,higestStreak:number}
+    streak:{lastActiveDate:Date,currentStreak:number,higestStreak:number},
+    subscripctionId:Types.ObjectId
 }
 
 // create the user Schema
@@ -70,7 +71,7 @@ const UserSchema=new Schema<IUser>({
     },
     role:{
         type:String,
-        default:"regular"
+        default:"regular", 
     },
     preferences: {
         emailNotifications:{type:Boolean,default:true},
@@ -83,7 +84,9 @@ const UserSchema=new Schema<IUser>({
       },
     theme:{type:String,default:"cyberpunk"},
 
-    streak:{lastActiveDate:Date,currentStreak:Number,higestStreak:Number}
+    streak:{lastActiveDate:Date,currentStreak:Number,higestStreak:Number},
+
+    subscripctionId:{type:Schema.ObjectId,default:null,ref:"subscription"}
 
 },{timestamps:true})
 

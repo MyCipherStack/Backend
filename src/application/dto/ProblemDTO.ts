@@ -16,7 +16,7 @@ export class ProblemDTO {
     name:string,
     parameters:[],
     returnType:{type:string}}
-    starterCode:{};
+    starterCode:Record<string,string>;
     status:boolean
   
     constructor(data:ProblemDTO) {

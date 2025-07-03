@@ -3,17 +3,11 @@
 
 
 import { FilterDTO } from "@/application/dto/FilterDTO";
-import { CreateReportDTO } from "@/application/dto/ReportDTO";
 import { IChangeRespoStatusUseCase } from "@/application/interfaces/use-cases/IChangeRespoStatusUseCase";
-import { ICreateRepoUseCase } from "@/application/interfaces/use-cases/ICreateRepoUseCase";
-import { IGetAllReportsUsecase } from "@/application/interfaces/use-cases/IReportUseCase";
-import { IGetUserDataBynameUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
-import { Report } from "@/domain/entities/Report";
+import { IGetAllReportsUsecase } from "@/application/interfaces/use-cases/IReportUseCase";;
 import { AppError } from "@/domain/error/AppError";
-import { IChallengeRepository } from "@/domain/repositories/IchallengeRepository";
 import { logger } from "@/logger";
 import { NextFunction, Request, Response } from "express";
-import { report } from "process";
 
 
 

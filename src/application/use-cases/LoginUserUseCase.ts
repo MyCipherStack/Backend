@@ -3,9 +3,10 @@ import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
 import { IJwtService } from "../../domain/services/IJwtService";
+import { ILoginUserUseCase } from "../interfaces/use-cases/IUserUseCase";
 
 
-export class LoginUserUseCase{
+export class LoginUserUseCase implements ILoginUserUseCase {
     constructor(
         private userRepository:IUserRepository,
         private hashService:IHashAlgorithm,
@@ -40,6 +41,6 @@ export class LoginUserUseCase{
         const refreshToken= this.JwtService.signRefereshToken({userId:foundUser._id,name:foundUser.name,role:"user"})
         logger.info(accessToken,refreshToken);
          const user = new User(foundUser.name, foundUser.email,foundUser.password,foundUser.status,foundUser._id);
-        return {user:{name:user.name,email:user.email,image:user.image},refreshToken,accessToken}
+        return {user:{name:user.name,email:user.email,image:user.image,id:user._id},refreshToken,accessToken}
     }
 }

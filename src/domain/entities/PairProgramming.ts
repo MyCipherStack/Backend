@@ -11,6 +11,9 @@ export class PairProgramming{
         public startTime?:string,
         public endTime?:string,
         public _id?:string,
-        public status?:string
+        public status?:string,
+        public createdAt?:string,
+        public updatedAt?:string
+        
     ){}
 }

@@ -9,7 +9,7 @@ export class FilterDTO{
 
     constructor(data:{ page:number,limit:number,role?: string; status: string; search: string }){
        
-        this.role=data.role
+        this.role=data?.role
         this.status=data.status
         this.search=data.search
         this.page=data.page

@@ -67,8 +67,18 @@ export class Authenticate<Entity>{
                         req.user={role:tokenData.role,email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
                         return   next()
                     }else{
-                        logger.info("sd",{data:foundUser})
-                    return    next(new AppError("user not found",404))
+                        res.clearCookie('accessToken', {
+                            httpOnly: true,
+                            sameSite: 'strict',
+                            secure: process.env.NODE_ENV === 'production'
+                        });
+                        
+                        res.clearCookie('refreshToken', {
+                            httpOnly: true,
+                            sameSite: 'strict',
+                            secure: process.env.NODE_ENV === 'production'
+                        });
+                    return    next(new AppError("user not found: Unauthorized ",401))
                     }
 
                 }

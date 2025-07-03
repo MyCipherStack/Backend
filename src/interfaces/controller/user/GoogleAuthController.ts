@@ -1,24 +1,21 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { GoogleDto } from "@/application/dto/GoogleUseDto";
-import { IUserRepository } from "@/domain/repositories/IUserRepository";
-import { GoogleUserUSerCase } from "@/application/use-cases/GoogleUserUSerCase";
-import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm"; 
-import { IJwtService } from "@/domain/services/IJwtService";
-import { env } from "process"; 
+import { IGoogleUserUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
+import { AppError } from "@/domain/error/AppError";
+import { env } from "@/config/env";
 
 
 
 export class GoogleAuthController{
     
     constructor(
-        private userRepository: IUserRepository,
-        private hashService: IHashAlgorithm,
-        private jwtService: IJwtService,
+
+        private googleUserUseCase:IGoogleUserUseCase
         
     ) { }
 
 
-    handleSuccess=async(req:Request,res:Response)=>{
+    handleSuccess=async(req:Request,res:Response,next:NextFunction)=>{
         try{
             console.log("google auth backend callll",req.user);
             
@@ -29,15 +26,9 @@ export class GoogleAuthController{
             const googleId=googleUser.googleId
             const image=googleUser.image
 
-            const foundUser=await this.userRepository.findByEmail(email)
-            if(foundUser?.status==="banned"){
-                console.log("user blocked");
-                
-             return   res.status(401).json({status:false,message:"This Account is banned"})
-            }
-            
-            const googleUseCase=new GoogleUserUSerCase(this.userRepository,this.hashService,this.jwtService)
-            const createdUser=await googleUseCase.execute(name,email,image,googleId)
+        
+
+            const createdUser=await this.googleUserUseCase.execute(name,email,image,googleId)
 
                  res.cookie("accessToken",createdUser.accessToken,{
                             httpOnly:true,
@@ -53,15 +44,16 @@ export class GoogleAuthController{
                             maxAge:1000 * 60 * 60 * 24 * 7,
                             path:"/"
                         })
-            res.redirect(`http://localhost:3000/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}`)
+            res.redirect(`${env.GOOGLE_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}`)
    
             // res.status(200).json({status:true,message:"user logged success",user:{name:createdUser.name,email:createdUser.email}})
 
 
 
         }catch(error:any){
-            res.status(400).json({status:false,message:error.message })
+            // res.status(400).json({status:false,message:error.message })
 
+            next(new AppError(error.messag,400))
         }
     }
 }

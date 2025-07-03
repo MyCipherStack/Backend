@@ -2,9 +2,9 @@
 export type IGroupChallenge = {
     hostId:string
     challengeName: string;
-    maxParticipants:number
+    participants:number
     duration:number
-    problems:string[],
+    problems:Record<string,string>[],
     type:string
 
   };
@@ -13,10 +13,11 @@ export type IGroupChallenge = {
 
   export type IPairProgramming = {
     challengeName: string;
-    problems: string[],
+    problems:string[]
     duration:number
     problemsName: string[],
-    type: string,
-    invitedFriends:string[]
+    sessionType: string,
+    invitedUsers:string[]
+    problemType:string
 
   };

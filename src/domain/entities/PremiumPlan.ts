@@ -4,9 +4,9 @@ export class PremiumPlan{
     constructor(
         public name:string,
         public price:number,
-        public cycle:number,
+        public cycle:string,
         public features:string[],
-        public trial:string,
+        public trial:number,
         public status:string,
         public _id?:string,
     ){}

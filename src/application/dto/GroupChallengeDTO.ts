@@ -1,3 +1,4 @@
+import { logger } from "@/logger";
 import { IGroupChallenge } from "../interfaces/IChallengeInterfaces";
 
 
@@ -9,10 +10,11 @@ export class GroupChallengeDTO{
         type:string
 
     constructor(data:IGroupChallenge){
+   
         this.challengeName=data.challengeName
         this.maxParticipants=data.participants
         this.duration=data.duration
-        this.problems=data.problems
+        this.problems=data.problems.map((data:{id:string})=>data.id)
         this.type=data.type
     }
 }

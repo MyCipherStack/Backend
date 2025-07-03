@@ -21,12 +21,12 @@ export class LeaderBoardRepository extends BaseRepository<leaderBoard,ILeaderBoa
 
    }
 
-   async findAll(filter:Partial<leaderBoard>):Promise<leaderBoard[]>{
-    const leaderBoardData=await leaderBoardModel.find(filter).populate("userId")
+   async findAllWithUserDeatils(filter:Partial<leaderBoard>):Promise<leaderBoard[]>{
+    const leaderBoardData=await leaderBoardModel.find(filter).populate("userId").sort({rank:1})
     return leaderBoardData.map(doc=>this.toEntity(doc)).filter(doc=>doc!=null)
    }
 
-    async findOneAndUpdateLeaderBoard(filter: { userId: string; challengeId: string; }, updateData: IsolvedProblem): Promise<leaderBoard | null> {
+    async findOneAndUpdate(filter: { userId: string; challengeId: string; }, updateData: IsolvedProblem): Promise<leaderBoard | null> {
         console.log("in Repo",filter);
         
         let leaderBoardData = await leaderBoardModel.findOneAndUpdate({ userId: filter.userId, challengeId: filter.challengeId },{$push:{solvedProblems:updateData},$inc:{totalScore:updateData.score}},{new:true})
@@ -49,8 +49,7 @@ export class LeaderBoardRepository extends BaseRepository<leaderBoard,ILeaderBoa
             data.userId,
             data.totalScore,
             data.rank,
-            data.solvedProblems
-
+            data.solvedProblems,
         )
     }
 }

@@ -1,4 +1,4 @@
-import { IAdminDashBoardUseCase } from "@/application/interfaces/use-cases/IAdminDashBoardUseCase";
+import { IAdminDashBoardUseCase } from "@/application/interfaces/use-cases/IAdminUseCase";
 import { logger } from "@/logger";
 import { Request, Response } from "express";
 

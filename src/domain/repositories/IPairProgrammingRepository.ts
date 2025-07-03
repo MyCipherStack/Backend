@@ -6,5 +6,8 @@ import { IBaseRepository } from "./IBaseRepository.js";
 
 
 export interface IPairProgrammingRepository extends IBaseRepository<PairProgramming>{
+
         findOneChallenge(data:Partial<PairProgramming>):Promise<PairProgramming | null>
+
+        
 }

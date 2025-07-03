@@ -1,6 +1,6 @@
-import { Problem } from "../../domain/entities/Problem";
-import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
-import { IAddProblemUseCase } from "../interfaces/use-cases/IProblemUseCases";
+import { Problem } from "../../../domain/entities/Problem";
+import { IProblemRepository } from "../../../domain/repositories/IProblemRepository";
+import { IAddProblemUseCase } from "../../interfaces/use-cases/IProblemUseCases";
 
 
 

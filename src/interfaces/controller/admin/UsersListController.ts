@@ -1,18 +1,17 @@
 import { NextFunction, Request, Response } from "express";
-import { IUserRepository } from "../../../domain/repositories/IUserRepository";
-import { UpdateUserUseCase } from "../../../application/use-cases/UpdateUserUseCase";
 import { UpdateUserDTO } from "../../../application/dto/UpdateUserDTO";
 import { IGetFilteredUsersUseCase } from "../../../application/interfaces/use-cases/IGetFilteredUsersUseCase";
 import { logger } from "@/logger";
 import { AppError } from "@/domain/error/AppError";
+import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 
 
 
 
 export class UsersListController {
   constructor(
-    private userRepository: IUserRepository,
-    private getFilteredUsersUseCase: IGetFilteredUsersUseCase
+    private getFilteredUsersUseCase: IGetFilteredUsersUseCase,
+    private updateUserUseCase:IUpdateUserUseCase
 
   ) { }
   getData = async (req: Request, res: Response) => {
@@ -40,14 +39,16 @@ export class UsersListController {
 
   updateUser = async (req: Request, res: Response,next:NextFunction) => {
     try {
-      const userId = req.params.id;
+      const userEmail = req.params.email;
+      
       const updateData = new UpdateUserDTO(req.body)
-      console.log(updateData);
+      console.log("updateData",updateData);
+
+      console.log(req.params,"params");
       
-      logger.info("update user ",{update:updateData})
-      const updateUseCase = new UpdateUserUseCase(this.userRepository)
+      // logger.info("update user ",{update:updateData}) 
       
-      const updatedUser = await updateUseCase.execute(userId, updateData)
+      const updatedUser = await this.updateUserUseCase.execute(userEmail, updateData)
 
       if (!updatedUser) {
         return next(new AppError("User not found",404))
@@ -55,8 +56,10 @@ export class UsersListController {
 
       res.status(200).json({ status: true, message: "User updated", user: updatedUser });
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ status: false, message: "Internal server error" });
+
+      logger.error(err);
+
+      return next(new AppError("Internal server error",500))
     }
   };
 

@@ -1,13 +1,13 @@
 import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository"
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm"
+import { IResetPassverifyOtpUseCase } from "../interfaces/use-cases/IUserPasswordUseCases"
 
 
 
 
-export class ResetPassverifyOtpUseCase{
+export class ResetPassverifyOtpUseCase implements IResetPassverifyOtpUseCase {
     constructor(
         private pendingUserRepository:IPendingUserRepository,
-           private hashService:IHashAlgorithm
     ){}
     
     async execute(data:{email:string,otp:string}){

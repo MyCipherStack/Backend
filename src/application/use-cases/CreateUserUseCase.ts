@@ -4,8 +4,9 @@ import { User } from "../../domain/entities/User";
 import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
 import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
 import { logger } from "@/logger";
+import { ICreateUserUseCase } from "../interfaces/use-cases/IUserUseCase";
 
-export class CreateUserUseCase  {
+export class CreateUserUseCase  implements ICreateUserUseCase {
   constructor(
     private userRepository: IUserRepository,
     private hashService: IHashAlgorithm,

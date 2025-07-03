@@ -15,12 +15,17 @@ export class UpdateLeaderBoardUseCase implements IUpdateLeaderBoardUsecase {
 
     async execute(userId: string, challengeId: string, updateData: { time: Date, problemId: string, submissionId: string }): Promise<leaderBoard | null> {
         const challengeData = await this.challengeReposiotry.findById(challengeId)
-        console.log(challengeData, "challegen Data");
+
         const now = new Date()
+
         const startTime = new Date(challengeData?.startTime || "")
+
         const TimeUsed = now.getTime() - startTime.getTime()
+
         let second = Math.floor(TimeUsed / 1000)
+
         let minutes = Math.floor(second / 60) + 60
+
         if (minutes < 0) {
             throw new Error("Challenge not started")
         }
@@ -35,8 +40,11 @@ export class UpdateLeaderBoardUseCase implements IUpdateLeaderBoardUsecase {
 
         console.log(second, minutes, score);
 
-        const updatedData = await this.leaderBoardRepository.findOneAndUpdateLeaderBoard({ userId, challengeId }, { time: minutes, problemId: updateData.problemId, submissionId: updateData.submissionId, score })
+        const updatedData = await this.leaderBoardRepository.findOneAndUpdate({ userId, challengeId }, { time: minutes, problemId: updateData.problemId, submissionId: updateData.submissionId, score })
+        
         if (!updatedData) return null
+
+        
         return updatedData
     }
 }

@@ -1,8 +1,3 @@
-
-import { Types } from "mongoose";
-
-
-
 interface Features {text:String,enabled:Boolean}
 
 
@@ -25,8 +20,11 @@ export class CreateSubscripctionDTO{
 
         status:string
 
-    constructor(data:CreateSubscripctionDTO){  
+        planId:string
 
+    constructor(data){  
+        console.log("plan details",data);
+        
        this.userId=data.userId
        this.transactionId=data.transactionId
        this.name=data.name
@@ -35,5 +33,6 @@ export class CreateSubscripctionDTO{
        this.features=data.features as Features[]
        this.trial=data.trial
        this.status=data.status
+       this.planId=data._id
     }
 }

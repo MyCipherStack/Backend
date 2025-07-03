@@ -15,4 +15,5 @@ export const env = {
 
   RAZORPAY_SECRET:process.env.RAZORPAY_SECRET || "this_is_my_secret",
   RAZORPAY_KEY:process.env.RAZORPAY_KEY || "",
+  GOOGLE_URL:process.env.GOOGLE_URL || "http://localhost:3000"
 };

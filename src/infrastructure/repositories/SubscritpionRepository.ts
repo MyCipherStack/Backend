@@ -16,7 +16,7 @@ export class SubscritpionRepository extends BaseRepository<SubscriptionEntity,IS
         super(subscripctionModel)
     }
 
-    protected toEntity(data: (ISubscription & Document<unknown, any, any>) | null): SubscriptionEntity | null {
+    protected toEntity(data: (ISubscription & Document) | null): SubscriptionEntity | null {
         if(!data) return null
         return new SubscriptionEntity(
                 data.userId.toString(),
@@ -26,7 +26,11 @@ export class SubscritpionRepository extends BaseRepository<SubscriptionEntity,IS
                 data.cycle,
                 data.features,
                 data.trial,
-                data.status
+                data.status,
+                data.planId,
+                data.createdAt,
+                data.endDate,
+                data._id
         )
     }
 }
