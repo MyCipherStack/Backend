@@ -1,175 +1,235 @@
-import axios from 'axios';
 
-const JUDGE0_API_URL = 'http://localhost:2358/submissions'; // Judge0 API URL
 
-interface IJudge0Response {
-  stdout: string;
-  stderr: string;
-  compile_output: string;
-  status: {
-    id: number;
-    description: string;
-  };
-}
+import { Server } from "socket.io"
 
-export default class Judge0Service {
-  // Function to send code to Judge0 for execution
-  static async submitCode(
-    language: string, // Programming language
-    sourceCode: string, // Source code to execute
-    stdin: string, // Input to the code (if any)
-    expectedOutput: string, // Expected output to verify the solution
-  ) {
-    try {
-      const response = await axios.post(
-        JUDGE0_API_URL,
-        {
-          source_code: sourceCode,
-          language_id: this.getLanguageId(language), // Map language to Judge0 ID
-          stdin,
-          expected_output: expectedOutput,
-          cpu_time_limit: 1000, // 1 second CPU time limit (adjust as needed)
-          memory_limit: 128000, // Memory limit in KB (128MB)
-          number_of_test_cases: 1, // Can be adjusted based on requirements
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+import { IUpdateLeaderBoardUsecase } from "../../application/interfaces/use-cases/ILeaderBoadrUseCase";
+import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
+import { logger } from "@/logger";
+import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 
-      const { token } = response.data; // Get the submission token
 
-      // Once the submission is made, we can use the token to fetch the result
-      const result = await this.getResult(token);
+export class BaseSocket{
+    constructor(
+        private updateLeaderBoardUseCase: IUpdateLeaderBoardUsecase,
+        private submissionRepository: ISubmissionRepository,
+        private leaderBoardRepository: ILeaderBoardRepository
+    ) { }
+    private activeUsersMap = new Map<string, Set<string>>()
+    private socketToUserMap = new Map<string, { userId: string, challengeId: string }>()
+    public register(io: Server) {
 
-      return result; // Return the result (output or error)
-    } catch (error) {
-      console.error('Error submitting code to Judge0:', error);
-      throw new Error('Failed to submit code to Judge0');
+        io.on("connection", (socket) => {
+            socket.on("join-challenge", async (challengeId: string, userId: string) => {
+
+                socket.join(challengeId) // here join room with room id is challenge id
+
+                if (!this.activeUsersMap.has(challengeId)) {
+                    this.activeUsersMap.set(challengeId, new Set())
+                }
+                this.activeUsersMap.get(challengeId)?.add(userId)
+                this.socketToUserMap.set(socket.id, { userId, challengeId })
+
+
+                const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId })
+
+                logger.info("leaderboard", { data: leaderBoard })
+
+                if (leaderBoard) {
+                    let rank=1
+                    const response = leaderBoard.map(data => {
+                        return {
+                            userName: data.userId.name,
+                            totalScore: data.totalscore,
+                            solvedCount: data.solvedProblems?.length ?? 0,
+                            isLive: this.activeUsersMap.get(challengeId)?.has(data.userId._id.toString()) || false,
+                            image: data.userId.image,
+                            rank:rank++
+                            
+
+                        }
+                    })
+                    io.to(challengeId).emit("leaderboard-update", response)
+
+                    // socket.emit("leaderboard-update", response)
+                }
+
+            })
+
+            socket.on("update-submit", async (challengeId: string, userId: string, time: number, problemId, submissionId) => {
+                try {
+                    console.log(challengeId, "challegeID in socker on");
+                    const submissionDetails = await this.submissionRepository.findById(submissionId)
+                    if (submissionDetails) {
+                        if (submissionDetails.status == "Accepted") {
+                            console.log("problem Accepted ");
+                            console.log(new Date(submissionDetails.createdAt).toTimeString(), "Date");
+
+
+
+                            const updatedLeaderboard = await this.updateLeaderBoardUseCase.execute(userId, challengeId, { time, problemId: submissionDetails.problemId, submissionId })
+
+                            const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId })
+                            if (leaderBoard) {
+                                let rank=1
+                                const response = leaderBoard.map(data => {
+                                    return {
+                                        userName: data.userId.name,
+                                        totalScore: data.totalscore,
+                                        solvedCount: data.solvedProblems?.length ?? 0,
+                                        isLive: this.activeUsersMap.get(challengeId)?.has(data.userId.toString()) || false,
+                                        image: data.userId.image,
+                                        rank: rank++
+
+
+
+                                    }
+                                })
+                                io.to(challengeId).emit("leaderboard-update", response)
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.log(err);
+
+                }
+            })
+
+            // socket.emit("leaderboard-update",async()=>{
+
+
+            // }   )
+
+            socket.on("disconnect", async () => {
+                const userInfo = this.socketToUserMap.get(socket.id)
+                if (userInfo) {
+                    const { userId, challengeId } = userInfo
+                    const userSet = this.activeUsersMap.get(challengeId)
+                    if (userSet) {
+                        userSet.delete(userId)
+                        if (userSet.size === 0) {
+                            this.activeUsersMap.delete(challengeId)
+                        }
+                    }
+
+                    this.socketToUserMap.delete(socket.id)
+
+
+                    const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId })
+                    if (leaderBoard) {
+                        let rank = 1
+                        const response = leaderBoard.map(data => {
+                            return {
+                                userName: data.userId.name,
+                                totalScore: data.totalScore,
+                                solvedCount: data.solvedProblems.length,
+                                isLive: this.activeUsersMap.get(challengeId)?.has(data.userId.toString()) || false,
+                                image: data.userId.image,
+                                reank: rank++
+
+
+                            }
+                        })
+                        io.to(challengeId).emit("leaderboard-update", response)
+                    }
+                }
+
+
+
+            })
+            // ------------------------------------------------------------------------------------------------------
+
+
+
+
+            socket.on("join-pairProgramming", ({ roomId, userName }) => {
+                socket.join(roomId)
+                console.log("join", roomId);
+                socket.to(roomId).emit("pairProgram-update", { userName })
+            })
+
+            socket.on("code-change", ({ roomId, code }) => {
+                console.log("code change", roomId);
+                socket.to(roomId).emit("code-change", code)
+            })
+
+            socket.on("cursor-change", ({ roomId, userId, position }) => {
+                console.log("cursor-change", roomId, userId, position);
+                socket.to(roomId).emit("cursor-change", { userId, position })
+            })
+
+            socket.on("send-message", ({ roomId, userName, text, time }) => {
+                console.log(roomId, text);
+
+                socket.to(roomId).emit("receive-message", { userName, text, time })
+            })
+
+            socket.on("signal", ({ roomId, data }) => {   // I only this for audio call  first i did this  for learn
+                console.log("signal", roomId);
+                socket.to(roomId).emit("signal", data)
+            })
+
+            socket.on('mute-status-changed', ({ roomId, userId, isMuted }) => {
+                console.log(roomId, userId, isMuted);
+
+                socket.to(roomId).emit("mute-status-changed", { userId, isMuted })
+            });
+
+
+
+
+
+            //Best Implimetation for WEBTRC 
+
+            socket.on("join-interview", ({ roomId }) => {
+                socket.join(roomId)
+                const clients = io.sockets.adapter.rooms.get(roomId)
+                const isInitiator = clients?.size === 1
+                logger.info(roomId, "joinedInterview", isInitiator);
+                socket.to(roomId).emit("joined", { roomId, isInitiator })
+            })
+
+            socket.on("offer", ({ roomId, data }) => {
+                logger.info("offer", roomId);
+
+                socket.to(roomId).emit('offer', data)
+            })
+            socket.on("answer", ({ roomId, data }) => {
+
+                logger.info("answer", roomId);
+
+                socket.to(roomId).emit('answer', data)
+            })
+            socket.on("candidate", ({ roomId, data }) => {
+                logger.info("candidate", roomId);
+
+                socket.to(roomId).emit('candidate', data)
+            })
+
+            socket.on("track-type", ({ roomId, kind, type }) => {
+                logger.info("track-type", { kind, type })
+                socket.to(roomId).emit("track-type", { kind, type })
+            })
+
+
+
+
+
+            socket.on("join-user-name",(userId)=>{
+
+                socket.join(userId)
+                
+                logger.info("userjoind",userId)
+
+            })
+
+    
+            
+            socket.on("discount-user-room",()=>{
+                
+            })
+
+
+        })
+
     }
-  }
-
-  // Function to get the result from Judge0 after submission
-  static async getResult(token: string) {
-    try {
-      const response = await axios.get(`${JUDGE0_API_URL}/${token}`);
-      const data: IJudge0Response = response.data;
-
-      // Check the result and return the relevant information
-      if (data.status.id === 3) { // "3" indicates successful execution
-        return {
-          success: true,
-          output: data.stdout,
-          error: data.stderr,
-          compile_output: data.compile_output,
-        };
-      } else {
-        return {
-          success: false,
-          error: data.stderr || 'Unknown error during execution.',
-        };
-      }
-    } catch (error) {
-      console.error('Error fetching result from Judge0:', error);
-      throw new Error('Failed to fetch result from Judge0');
-    }
-  }
-
-  // Map language to Judge0's language ID
-  private static getLanguageId(language: string): number {
-    const languageMap: { [key: string]: number } = {
-      javascript: 63, // JavaScript
-      python: 71, // Python 3
-      java: 62, // Java
-      typescript: 93, // TypeScript (may require correct Judge0 ID)
-    };
-
-    return languageMap[language.toLowerCase()] || 71; // Default to Python if unknown language
-  }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const generateWrapper = (code, meta, language) => {
-  switch (language) {
-    case 'javascript':
-      return `
-${code}
-const readline = require('readline');
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-rl.on('line', (line) => {
-  console.log(${meta.name}(line));
-  rl.close();
-});`;
-    case 'python':
-      return `
-${code}
-import sys
-input_data = sys.stdin.read().strip()
-print(${meta.name}(input_data))`;
-    case 'java':
-      return `
-import java.util.*;
-public class Main {
-    public static boolean ${meta.name}(String s) {
-        // your code here
-        return true;
-    }
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
-        System.out.println(${meta.name}(input));
-    }
-}`;
-    default:
-      return code;
-  }
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import { ObjectId } from "mongoose";
-
-export interface IsolvedProblem{
-    time:Date,problemId:string,submissionId:string}
-
-
-export class leaderBoard{
-
-     challengeId:ObjectId
-     userId:ObjectId
-     score?:number
-     rank?:number
-     solvedProblems?:[IsolvedProblem]
-
-    constructor(data:Partial<leaderBoard){Object.assign(this,data)}
 }

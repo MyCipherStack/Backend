@@ -12,6 +12,9 @@ export interface ICreateChallengeUseCase {
 export interface IJoinChallengeUseCase<joinType> {
     execute(joinCode: string, userId: string): Promise<joinType>
 }
+export interface IJoinPairProgrammigUseCase<joinType> {
+    execute(joinCode: string, userId: string): Promise<joinType>
+}
 
 
 export interface ICreatePairProgrammingUseCase {

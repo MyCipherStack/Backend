@@ -16,6 +16,8 @@ export class ChallengeRepository extends BaseRepository<GroupChallenge,IGroupCha
         
         const challengeData=await groupChallengeModel.findOne(data).populate("problems")
 
+        
+
         return this.toEntity(challengeData)
     }
 
