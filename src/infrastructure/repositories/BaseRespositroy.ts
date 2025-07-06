@@ -24,7 +24,7 @@ export abstract class BaseRepository<Entity,ModelSchema> implements IBaseReposit
     }
 
     async findById(id: string): Promise<Entity | null> {
-        const findedData=await this.model.findById(id)
+        const findedData=await this.model.findById(id).lean()
         return this.toEntity(findedData)
     }
 

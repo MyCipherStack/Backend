@@ -27,7 +27,7 @@ export class LeaderBoardRepository extends BaseRepository<leaderBoard,ILeaderBoa
    }
 
     async findOneAndUpdate(filter: { userId: string; challengeId: string; }, updateData: IsolvedProblem): Promise<leaderBoard | null> {
-        console.log("in Repo",filter);
+        console.log("in Repo updatedData",updateData);
         
         let leaderBoardData = await leaderBoardModel.findOneAndUpdate({ userId: filter.userId, challengeId: filter.challengeId },{$push:{solvedProblems:updateData},$inc:{totalScore:updateData.score}},{new:true})
         return this.toEntity(leaderBoardData)

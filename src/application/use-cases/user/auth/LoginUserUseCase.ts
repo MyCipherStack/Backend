@@ -40,7 +40,7 @@ export class LoginUserUseCase implements ILoginUserUseCase {
         const accessToken= this.JwtService.signAccessToken({userId:foundUser._id,name:foundUser.name,role:"user"})
         const refreshToken= this.JwtService.signRefereshToken({userId:foundUser._id,name:foundUser.name,role:"user"})
         logger.info(accessToken,refreshToken);
-         const user = new User(foundUser.name, foundUser.email,foundUser.password,foundUser.status,foundUser._id);
-        return {user:{name:user.name,email:user.email,image:user.image,id:user._id},refreshToken,accessToken}
+        //  
+        return {user:{name:foundUser.name,email:foundUser.email,image:foundUser.image,id:foundUser._id},refreshToken,accessToken}
     }
 }

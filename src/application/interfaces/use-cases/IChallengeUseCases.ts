@@ -2,6 +2,7 @@
 import { FilterDTO } from "@/application/dto/FilterDTO.js";
 import { GroupChallenge } from "../../../domain/entities/GroupChallenge.js";
 import { IGroupChallenge, IPairProgramming } from "../IChallengeInterfaces.js";
+import { PairProgramming } from "@/domain/entities/PairProgramming.js";
 
 
 
@@ -12,8 +13,8 @@ export interface ICreateChallengeUseCase {
 export interface IJoinChallengeUseCase<joinType> {
     execute(joinCode: string, userId: string): Promise<joinType>
 }
-export interface IJoinPairProgrammigUseCase<joinType> {
-    execute(joinCode: string, userId: string): Promise<joinType>
+export interface IJoinPairProgrammigUseCase {
+    execute(joinCode: string, userId: string,userName:string): Promise<PairProgramming | null>
 }
 
 

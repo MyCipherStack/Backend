@@ -48,6 +48,14 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
       
     }
 
+    async updatePoints(id: string, points: number): Promise<User | null> {
+        const updateUser=await UserModel.findByIdAndUpdate(id,{$inc:{rankingPoints:points}},{new:true})
+
+        if(!updateUser)return null
+
+        return this.toEntity(updateUser)
+    }
+
     async getFiltersUsers(filters: {page:number,limit:number, role?: string; status?: string; search?: string; }): Promise<{
         users: any[];
         totalUsers: number;

@@ -18,7 +18,7 @@ import { GoogleAuthController } from "../controller/user/GoogleAuthController";
 import { ForgotPassVerifyOtpController } from "../controller/user/ForgotPassVerifyOtpContoller"; 
 import { ForgotPasswordOtpController } from "../controller/user/ForgotPassOtpController"; 
 import { ResetPasswordContoller } from "../controller/user/resetPasswordController";
-import { ProblemController } from "../controller/user/ProblemContoller"; 
+import { ProblemController } from "../controller/user/ProblemController"; 
 import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
 import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepository";
 import { Authenticate } from "../../middlewares/Authenticate";
@@ -45,7 +45,7 @@ import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRe
 import { LeaderBoardRepository } from "../../infrastructure/repositories/LeaderBoardRepository";
 import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepsitory";
 import { CreatePairProgrammingUseCase } from "@/application/use-cases/user/arena/CreatePairProgrammingUseCase"; 
-import { IGroupChallenge, IPairProgramming } from "../../application/interfaces/IChallengeInterfaces";
+import { IGroupChallenge } from "../../application/interfaces/IChallengeInterfaces";
 import { UsersController } from "../controller/user/UsersController";
 import { InterviewController } from "../controller/user/InterviewController";
 import { CreateRepoUseCase } from "@/application/use-cases/shared/CreateRepoUseCase"; 
@@ -78,9 +78,22 @@ import { SubscriptionEntity } from "@/domain/entities/Subscription";
 import { ActivePrivateChallengeUsecase } from "@/application/use-cases/user/arena/ActivePrivateChallengeUseCase";  
 import { ActivePublicChallengeUsecase } from "@/application/use-cases/user/arena/ActivePublicChallengeUseCase";  
 import { GoogleUserUseCase } from "@/application/use-cases/user/auth/GoogleUserUseCase";
+import { JoinPairProgrammigUseCase } from "@/application/use-cases/user/arena/JoinPairProgrammigUseCase";
+
+
+// import { notificationSocket } from "@/app";
+import { logger } from "@/logger";
+import { notificationSocket, NotificationSocket } from "@/services/websocket/NotificationSocket";
+import { GetAllUsersSubmissionUseCase } from "@/application/use-cases/user/problem-mangement/GetAllUsersSubmissionUseCase";
 
 
 
+
+
+      logger.info("userRouter file",{notificationSocket})
+      console.log(notificationSocket,"ASDf");
+      
+      
       export const userRepository:IUserRepository=new UserRepository()
       const algorithm=new BcryptHashAlgorithm()     // dip for hashServices
       const hashService:IHashAlgorithm=new HashService(algorithm)
@@ -95,22 +108,23 @@ import { GoogleUserUseCase } from "@/application/use-cases/user/auth/GoogleUserU
       const transactionRepository=new TransactionRespotitory()
       const subscritpionRepository=new SubscritpionRepository()
       const reportRepository=new ReportRepository()
-
-
+      
+      
       
       const accessToken=env.ACCESS_JWT_TOKEN
       const refreshToken=env.REFRESH_JWT_TOKEN
       const razorpay_key=env.RAZORPAY_KEY
       const razorpay_secret=env.RAZORPAY_SECRET
-
-
-
+      
+      
+      
       const jwtService=new JwtService(accessToken,refreshToken)
       const otpService=new OtpService(env.EMAIL,env.NODEMAILER_PASS)
       const juge0CodeExecuteService=new Juge0CodeExecute()
       const streakService=new StreakService(userRepository)
       const razorpayService=new RazorpayServices(razorpay_key,razorpay_secret)
-
+      
+      console.log(streakService,"ASDf");
 
 
       const updateUserUseCase=new UpdateUserUseCase(userRepository)
@@ -123,6 +137,8 @@ import { GoogleUserUseCase } from "@/application/use-cases/user/auth/GoogleUserU
       const getSubcriptionUseCase=new GetRepositoryDataUseCase<SubscriptionEntity>(subscritpionRepository)
 
 
+
+
       const verifyUserPasswordUseCase=new VerifyUserPasswordUseCase(userRepository,hashService)
       const resetPasswordUseCase=new ResetPasswordUseCase(userRepository,hashService)
       const runProblemUseCase=new RunProblemUseCase(juge0CodeExecuteService)
@@ -130,8 +146,7 @@ import { GoogleUserUseCase } from "@/application/use-cases/user/auth/GoogleUserU
       const getAllSubmissionByProblemuseCase=new GetAllSubmissionByProblemuseCase(submissionRespository)
       const createChallengeUseCase=new CreateChallengeUseCase(challengeRepository)
       const joinChallengeUseCase=new JoinChallengeUseCase<IGroupChallenge>(challengeRepository,leaderBoardRespository)
-      const createPairProgrammingUseCase=new CreatePairProgrammingUseCase(pairProgrammingRepository,problemRespository)
-      const joinPairProgarmmingUseCase=new JoinChallengeUseCase<IPairProgramming>(challengeRepository,leaderBoardRespository)
+      const joinPairProgarmmingUseCase=new JoinPairProgrammigUseCase(pairProgrammingRepository)
       const scheduleInterviewUsecase=new ScheduleInterviewUseCase(userRepository)
       const joiinInterviewUsecase=new joinInterViewUseCase(interViewRespository)
       const paymentUseCases=new PaymentUseCases(razorpayService,transactionRepository)
@@ -146,7 +161,8 @@ import { GoogleUserUseCase } from "@/application/use-cases/user/auth/GoogleUserU
       const registerUserFromPendingUseCase=new RegisterUserFromPendingUseCase(pendingUserRepository,userRepository)
       const activePrivateChallengeUsecase=new ActivePrivateChallengeUsecase(challengeRepository)
       const activePublicChallengeUsecase=new ActivePublicChallengeUsecase(challengeRepository)
-
+      const createPairProgrammingUseCase=new CreatePairProgrammingUseCase(pairProgrammingRepository,problemRespository,notificationSocket,getUserDataBynameUseCase)
+      const getAllUsersSubmissionUseCase=new GetAllUsersSubmissionUseCase(submissionRespository)
 
 
    
@@ -157,8 +173,6 @@ import { GoogleUserUseCase } from "@/application/use-cases/user/auth/GoogleUserU
       
       // COMMON USECASES
       const getFilteredUsersUseCase=new GetFilteredUsersUseCase(userRepository)
-      
-      
       const createRepoUseCase=new CreateRepoUseCase(interViewRespository)
       const createSubscritionUseCase=new CreateRepoUseCase(subscritpionRepository)
       const createResportUseCase=new CreateRepoUseCase(reportRepository)
@@ -182,13 +196,19 @@ import { GoogleUserUseCase } from "@/application/use-cases/user/auth/GoogleUserU
       const problemController=new ProblemController(problemRespository,runProblemUseCase,getProblemDataUseCase,submitProblemUseCase)
       const profileController=new ProfileController(updateUserUseCase,getUserRepositoryDataUseCase,verifyUserPasswordUseCase,resetPasswordUseCase)
       const arenaController=new ArenaController(createChallengeUseCase,joinChallengeUseCase,createPairProgrammingUseCase,joinPairProgarmmingUseCase,activePrivateChallengeUsecase,activePublicChallengeUsecase)
-      const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase)
+      const submissionController=new SubmissionController(getAllSubmissionByProblemuseCase,getAllUsersSubmissionUseCase)
       const usersController=new UsersController(getFilteredUsersUseCase)
       const interviewController=new InterviewController(createRepoUseCase,scheduleInterviewUsecase,interViewRespository,joiinInterviewUsecase)
       const subscriptionController=new SubscriptionController(getPremiumPlanUseCase,createSubscritionUseCase,updateUserUseCase,getSubcriptionUseCase,getUserRepositoryDataUseCase)
       const paymentController=new PaymentController(paymentUseCases,getPremiumPlanUseCase)
       const reportController=new ReportController(createResportUseCase,getUserDataBynameUseCase)
  
+
+      //Notification 
+      
+
+  
+
 
 
        //MIDDLEWARE--FOR AUTHENCATION AND AUTHORIZE
@@ -235,7 +255,9 @@ router.patch("/profile/resetPassword",auth.verify(),profileController.resetPassw
 router.post("/problem/run",auth.verify(),problemController.runProblem)
 router.post("/problem/submit",auth.verify(),problemController.submitProblem)
 
+
 router.get("/submissions",auth.verify(),submissionController.getSubmissionData)
+router.get("/userSubmissions",auth.verify(),submissionController.getUserSubmissons)
 
 
 router.post("/arena/createGroupChallenge",auth.verify(),arenaController.createGroupChallenge)

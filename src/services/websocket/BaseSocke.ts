@@ -1,11 +1,7 @@
 
 
 import { Server, Socket } from "socket.io"
-
-import { IUpdateLeaderBoardUsecase } from "../../application/interfaces/use-cases/ILeaderBoadrUseCase";
-import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
 import { logger } from "@/logger";
-import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 
 
 export abstract class BaseSocket{

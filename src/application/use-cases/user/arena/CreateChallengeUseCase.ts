@@ -9,6 +9,7 @@ import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository
 export class CreateChallengeUseCase implements ICreateChallengeUseCase{
     constructor(
         private challengeRepository:IChallengeRepository,
+        
     ){}
    async execute(challengeData: IGroupChallenge): Promise<string |null> {
     

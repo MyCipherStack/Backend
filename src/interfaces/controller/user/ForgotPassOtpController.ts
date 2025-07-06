@@ -1,11 +1,5 @@
 import { Request, Response } from "express";
-import { ResetPassswordOtpUseCase } from "@/application/use-cases/ResetPasswordOtpUseCase";
-import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm"; 
-import { IJwtService } from "@/domain/services/IJwtService"; 
-import { IOtpService } from "@/domain/services/IOtpService"; 
 import { env } from "@/config/env"; 
-import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository"; 
-import { IUserRepository } from "@/domain/repositories/IUserRepository"; 
 import { IResetPassswordOtpUseCase } from "@/application/interfaces/use-cases/IUserPasswordUseCases";
 
 

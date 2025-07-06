@@ -11,7 +11,7 @@ import cookieParser from "cookie-parser"
 import session from "express-session"
 import passport from "passport"
 import "./infrastructure/strategies/GoogleStrategy"
-import { UpdateLeaderBoardUseCase } from "./application/use-cases/UpdateLeaderBoardUseCase"
+import { UpdateLeaderBoardUseCase } from "./application/use-cases/user/arena/UpdateLeaderBoardUseCase"
 import { LeaderBoardRepository } from "./infrastructure/repositories/LeaderBoardRepository"
 import { Server } from "socket.io"
 import http from "http"
@@ -19,9 +19,11 @@ import { SubmissionRepository } from "./infrastructure/repositories/SubmissionRe
 import { ChallengeRepository } from "./infrastructure/repositories/ChallengeRespository"
 import { logger } from "./logger"
 import { ErrorHandler } from "./middlewares/errorHandler"
-import { LeaderBoardSocket } from "./services/websocket/leaderBoardSocket"
-import { PairProgramSocket } from "./services/websocket/pairProgramming"
+import { LeaderBoardSocket } from "./services/websocket/LeaderBoardSocket"
+import { PairProgramSocket } from "./services/websocket/PairProgramming"
 import { InterviewSocket } from "./services/websocket/InterviewSocket"
+import { notificationSocket } from "./services/websocket/NotificationSocket"
+import { UserRepository } from "./infrastructure/repositories/UserRepository"
 
 
 
@@ -44,7 +46,8 @@ app.use(passport.session());
 const leaderBoardRepository = new LeaderBoardRepository()
 const submissionRepository = new SubmissionRepository()
 const challengeReposiotry = new ChallengeRepository()
-const updateLeaderBoardUseCase = new UpdateLeaderBoardUseCase(leaderBoardRepository, challengeReposiotry)
+const userRepository=new UserRepository()
+const updateLeaderBoardUseCase = new UpdateLeaderBoardUseCase(leaderBoardRepository, challengeReposiotry,userRepository)
 const leaderBoardSocket = new LeaderBoardSocket(updateLeaderBoardUseCase, submissionRepository, leaderBoardRepository)
 const pairProgramSocket = new PairProgramSocket()
 const intetviewSocket = new InterviewSocket()
@@ -52,8 +55,9 @@ const intetviewSocket = new InterviewSocket()
 
 leaderBoardSocket.register(io)
 pairProgramSocket.register(io)
-leaderBoardSocket.register(io)
 intetviewSocket.register(io)
+notificationSocket.register(io)
+
 
 
 

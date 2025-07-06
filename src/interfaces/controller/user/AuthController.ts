@@ -58,7 +58,7 @@ export class AuthController{
 
             // const loginUsecase = new LoginUserUseCase(this.userRepository, this.hashService, this.JwtService)
             let loginUserData = await this.loginUserUseCase.execute(loginData.identifier, loginData.password)
-            console.log(loginUserData, "login use in controller");
+       
 
 
             res.cookie("accessToken", loginUserData.accessToken, {

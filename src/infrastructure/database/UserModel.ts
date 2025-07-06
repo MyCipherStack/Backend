@@ -29,6 +29,7 @@ export interface IUser extends Document {
       },
     streak:{lastActiveDate:Date,currentStreak:number,higestStreak:number},
     subscripctionId:Types.ObjectId
+    rankingPoints:number
 }
 
 // create the user Schema
@@ -86,7 +87,9 @@ const UserSchema=new Schema<IUser>({
 
     streak:{lastActiveDate:Date,currentStreak:Number,higestStreak:Number},
 
-    subscripctionId:{type:Schema.ObjectId,default:null,ref:"subscription"}
+    subscripctionId:{type:Schema.ObjectId,default:null,ref:"subscription"},
+
+    rankingPoints:{type:Number}
 
 },{timestamps:true})
 

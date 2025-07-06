@@ -1,6 +1,7 @@
 import { IJuge0CodeExecute } from "@/domain/services/IJudge0CodeExecute"; 
 import { ITestCase } from "@/application/interfaces/ITestCase"; 
 import { IRunProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases"; 
+import { logger } from "@/logger";
 
 export class RunProblemUseCase implements IRunProblemUseCase {
     constructor(
@@ -8,10 +9,14 @@ export class RunProblemUseCase implements IRunProblemUseCase {
     ){}
     async execute(testCases: ITestCase[],code:string,language:string,memoryLimit:number,timeLimit:number,functionSignatureMeta:{},stopFailTestCase:boolean): Promise<ITestCase[]> {
         let result:ITestCase[]=[]
+
+        // logger.info("testCase",{testCases})
         
         for(let test of testCases){
             
             const updatedTestCases={...test}
+
+            // logger.info("testcaseForRun",{updatedTestCases})
             
             const token= await this.juge0CodeExecute.codeSubmitToJudge0(language,code,test.input,test.output,memoryLimit,timeLimit,functionSignatureMeta)
             if(!token){

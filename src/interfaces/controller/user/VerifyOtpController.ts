@@ -1,11 +1,5 @@
 import { NextFunction, Request, Response } from "express"
 import { OtpDTO } from "../../../application/dto/OtpDTO"
-import { VerifyUseCase } from "../../../application/use-cases/VerifyUsecase";
-import { IPendingUserRepository } from "../../../domain/repositories/IPendingUserRepository";
-import { IOtpService } from "../../../domain/services/IOtpService.js";
-// import { RegisterUserFromPendingUseCase } from "../../application/use-cases/RegisterUserFromPendingUseCase";
-import { IUserRepository } from "../../../domain/repositories/IUserRepository";
-import { RegisterUserFromPendingUseCase } from "../../../application/use-cases/RegisterUserFromPendingUseCase ";
 import { IVerifyOtpUseCase } from "@/application/interfaces/use-cases/IOtpUseCases";
 import { IRegisterUserFromPendingUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 import { AppError } from "@/domain/error/AppError";

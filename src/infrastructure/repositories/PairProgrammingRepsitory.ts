@@ -3,7 +3,7 @@ import { PairProgramming } from "../../domain/entities/PairProgramming";
 import { IPairProgrammingRepository } from "../../domain/repositories/IPairProgrammingRepository";
 import { IPairProgramming, PairProgrammingModel } from "../database/PairProgrammingModel";
 import { BaseRepository } from "./BaseRespositroy";
-import { logger } from "@/logger";
+
 
 
 
@@ -24,6 +24,7 @@ export class PairProgrammingRepository extends BaseRepository<PairProgramming,IP
     protected toEntity(data: (IPairProgramming & Document<unknown, any, any>) | null): PairProgramming | null {
         if(!data) return null
         return new PairProgramming(
+            data.hostId.toString(),
             data.challengeName,
             data.duration,
             data.problems,
@@ -33,6 +34,7 @@ export class PairProgrammingRepository extends BaseRepository<PairProgramming,IP
             data.endTime.toString(),
             data.id,
             data.status,
+            data.navigator,
             data.createdAt,
             data.updatedAt,
 

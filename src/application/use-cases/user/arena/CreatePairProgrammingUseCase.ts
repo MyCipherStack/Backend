@@ -4,17 +4,25 @@ import { ICreatePairProgrammingUseCase } from "@/application/interfaces/use-case
 import { IPairProgrammingRepository } from "@/domain/repositories/IPairProgrammingRepository";
 import { IProblemRepository } from "@/domain/repositories/IProblemRepository";
 import { logger } from "@/logger";
+import { INotificationSocket } from "@/domain/services/ISocketService";
+import { IGetUserDataBynameUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
+import { title } from "process";
 
 
 
 export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCase {
     constructor(
         private pairProgrammingRepository: IPairProgrammingRepository,
-        private problemRepository: IProblemRepository
+        private problemRepository: IProblemRepository,
+        private notificationService: INotificationSocket,
+        private getUserDataBynameUseCase: IGetUserDataBynameUseCase
+
     ) { }
     async execute(data: IPairProgramming): Promise<string | null> {
 
         const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6);  //SET GROUP CHALLENGE
+
+        // console.log("notification",this.notificationService,this.getUserDataBynameUseCase)
 
         logger.info(data.problemType)
         if (data.problemType === "random") {
@@ -27,8 +35,20 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
             }
         }
 
-        
-    
+        if (data.invitedUsers) {
+            data.invitedUsers.map(async (userName) => { 
+                const data = await this.getUserDataBynameUseCase.exectue(userName)
+                if (data?._id){
+                    
+                    // console.log("user Idddddddddddddddd",data._id.toString())
+                    this.notificationService.emitNotification(data._id.toString(), {title:"Arena update", message: "Requsted a pairProgam invite" })
+                }
+            })
+        }
+
+
+
+
         const createdChallenge = await this.pairProgrammingRepository.create({ ...data, duration: 1, joinCode: "cipher-" + nanoid() })
         console.log(createdChallenge);
 

@@ -2,7 +2,7 @@ import { FilterDTO } from "@/application/dto/FilterDTO";
 import { GroupChallengeDTO } from "@/application/dto/GroupChallengeDTO";
 import { PairProgramingDTO } from "@/application/dto/PairProgammingDTO";
 import { IGroupChallenge, IPairProgramming } from "@/application/interfaces/IChallengeInterfaces";
-import { IActivePrivateChallengeUsecase, IActivePublicChallengeUsecase, ICreateChallengeUseCase, ICreatePairProgrammingUseCase, IJoinChallengeUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases";
+import { IActivePrivateChallengeUsecase, IActivePublicChallengeUsecase, ICreateChallengeUseCase, ICreatePairProgrammingUseCase, IJoinChallengeUseCase, IJoinPairProgrammigUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases";
 import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/logger";
 import { NextFunction, Request, Response } from "express";
@@ -13,7 +13,7 @@ export class ArenaController {
         private createChallengeUseCase: ICreateChallengeUseCase,
         private joinChallengeUseCase: IJoinChallengeUseCase<IGroupChallenge>,
         private createPairProgrammingUseCase: ICreatePairProgrammingUseCase,
-        private joinPairProgarmmingUseCase: IJoinChallengeUseCase<IPairProgramming>,
+        private joinPairProgarmmingUseCase: IJoinPairProgrammigUseCase,
         public activePrivateChallengeUsecase: IActivePrivateChallengeUsecase,
         public activePublicChallengeUsecase: IActivePublicChallengeUsecase,
         // public
@@ -88,7 +88,7 @@ export class ArenaController {
             const user = req.user
             console.log(joinCode, "code");
             if (joinCode && user) {
-                const response = await this.joinPairProgarmmingUseCase.execute(joinCode.toString(), user.id)
+                const response = await this.joinPairProgarmmingUseCase.execute(joinCode.toString(), user.id,user.name)
                 console.log(response);
                 res.status(200).json({ status: true, message: "joined groupChallenge ", challengeData: response })
 

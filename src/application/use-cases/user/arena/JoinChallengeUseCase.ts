@@ -1,28 +1,37 @@
-import { ObjectId } from "mongoose";
+
+
+
 import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository";
 
 import { IJoinChallengeUseCase } from "../../../interfaces/use-cases/IChallengeUseCases";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/logger";
+import { INotificationSocket } from "@/domain/services/ISocketService";
 
 
 export class JoinChallengeUseCase<joinType> implements IJoinChallengeUseCase<joinType> {
     constructor(
         private Repositoy: IChallengeRepository,
-        private leaderBoardRespository: ILeaderBoardRepository
+        private leaderBoardRespository: ILeaderBoardRepository,
     ) { }
+
+
+
     async execute(joinCode: string, userId: string): Promise<joinType> {
-            logger.info("joinCodeeeee",joinCode)
+        logger.info("joinCodeeeee", joinCode)
         const respositoryData = await this.Repositoy.findOneChallenge({ joinCode })
-        console.log(respositoryData,joinCode,  "joinedDATA");
+
+        console.log(respositoryData, joinCode, "joinedDATA");
+
         
-        
+
         if (respositoryData) {
 
             const leaderBoards = await this.leaderBoardRespository.findAllWithUserDeatils({ challengeId: respositoryData._id })
-    
-    
+
+
+
             const currentUsers = leaderBoards?.length ?? 0
             const allowedUsers = respositoryData?.maxParticipants ?? 0
             if (allowedUsers < currentUsers) {

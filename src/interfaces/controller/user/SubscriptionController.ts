@@ -26,7 +26,10 @@ export class SubscriptionController {
 
 
     getPlans = async (req: Request, res: Response, next: NextFunction) => {
-        console.log("get plan controller");
+        
+        
+        logger.info("get plan controller");
+
 
         try {
             const response = await this.getPremiumPlanUseCase.allDoucuments()
@@ -56,7 +59,7 @@ export class SubscriptionController {
 
             const data = new CreateSubscripctionDTO({
                 userId: user.id, transactionId,
-               ... planDetails
+                ...planDetails
 
             })
 
@@ -83,15 +86,15 @@ export class SubscriptionController {
 
     getSubcriptionData = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id = req.user?.id
-            logger.info("id",id)
-            logger.info("id",id)
-            console.log(id)
-            const userDetails = await this.getUserUseCase.OneDocumentByid(id!)
-            logger.info("id",{userDetails})
+            const user = req.user as { id: "string" }
+
+            logger.info("subscrption Data",{user})
+
+            const userDetails = await this.getUserUseCase.OneDocumentByid(user?.id)
+            logger.info("id", { userDetails })
             const subscripctionId = userDetails?.subscripctionId
             const data = await this.getSubcriptionUseCase.OneDocumentByid(subscripctionId!)
-            logger.info("data",{data})
+            logger.info("data", { data })
 
             res.status(200).json({ status: true, message: " subscription Details", data })
 

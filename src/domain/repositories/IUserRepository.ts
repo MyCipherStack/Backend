@@ -25,6 +25,10 @@ export interface IUserRepository extends IBaseRepository<User>{
       userGrowthByRange(format:string,startDate:Date):Promise<{date:string,users:number} | null>
 
 
+     updatePoints(id:string,points:number):Promise<User | null>
+
+
+
 }
 
 

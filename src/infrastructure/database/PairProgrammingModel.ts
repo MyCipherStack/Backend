@@ -16,6 +16,10 @@ export interface IPairProgramming extends Document {
   startTime: Date,
   endTime: Date,
   status: string,
+  navigator:{
+    name:string,
+    id:string
+  },
   invitedUsers:string[],
   createdAt?: string,
   updatedAt?: string
@@ -39,9 +43,11 @@ const PairProgramingSchema = new mongoose.Schema<IPairProgramming>({
 
   endTime: { type: Date },
 
-  type: { type: String, required: true },
+  type: { type: String, required: true }, //remove if not needed last
 
   joinCode: { type: String, required: true },
+  
+  navigator:{name:{type:String},id:{type:Types.ObjectId}},
   
   invitedUsers:[{type:String}],
 
