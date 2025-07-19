@@ -3,6 +3,7 @@ import { Problem } from "../../domain/entities/Problem";
 import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
 import { IProblem, problemModel } from "../database/ProblemModel";
 import { BaseRepository } from "./BaseRespositroy";
+import { logger } from "@/logger";
 
 
 
@@ -21,7 +22,7 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
       query.difficulty = filters.difficulty
     }
     if (filters.status) query.status = filters.status
-    // if(filters.category) query.tags=`${filters.category}`
+
     if (filters.category) query.tags = { $regex: new RegExp(`\\b${filters.category}\\b`, 'i') }
     if (filters.search) {
       query.$or = [
@@ -38,20 +39,38 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
   }
 
   async editProblem(id: string, problem: Problem): Promise<Problem | null> {
+
     const problemData = await problemModel.findOneAndUpdate({ _id: id }, { ...problem }, { new: true })
+
     if (problemData) {
+
       return this.toEntity(problemData)
-    } return null
+    }
+     return null
   }
+
+
 
 
 
   async getRadomDocument(): Promise<Problem | null> {
 
+    const data = await problemModel.aggregate([{ $match: { status: false } }, { $sample: { size: 1 } }])
 
-    // const data=await PairProgrammingModel.aggregate([{$match:{status:false}},{$sample:{size:1}}])
-    const data = await problemModel.aggregate([{ $match: { status: false } },{$sample:{size:1}}])
     return this.toEntity(data[0])
+  }
+
+
+
+  async updateAcceptence(id: string, submited: number, accepted: number): Promise<boolean> {
+
+    const data = await problemModel.updateOne({ _id: id }, { $inc: { "acceptence.submited": submited, "acceptence.accepted": accepted } })
+
+    logger.info("update Acceptence", { data })
+    
+    return data.modifiedCount > 0
+
+
   }
 
 
@@ -74,8 +93,9 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
       data.constraints, data.testCases,
       data.functionSignatureMeta,
       data.acceptence,
+      data.hint,
       data.starterCode,
-      data._id 
+      data.id,
     )
   }
 

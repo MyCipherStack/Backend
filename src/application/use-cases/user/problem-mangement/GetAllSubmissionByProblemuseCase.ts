@@ -8,7 +8,9 @@ export  class GetAllSubmissionByProblemuseCase implements IGetAllSubmissionByPro
     ){}
 
     async execute(userId: string, problemId: string): Promise<Submission[]> {
+        
        const submission=await this.submissionRepository.getSubmissionsByProblem(userId,problemId)
+       
        return submission
     }
     

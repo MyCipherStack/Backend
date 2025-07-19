@@ -1,6 +1,6 @@
 
 import { IBaseRepository } from "@/domain/repositories/IBaseRepository.js";
-import { IChangeRespoStatusUseCase } from "@/application/interfaces/use-cases/IChangeRespoStatusUseCase"; 
+import { IChangeRespoStatusUseCase } from "@/application/interfaces/use-cases/ISharedUseCase"; 
 
 
 

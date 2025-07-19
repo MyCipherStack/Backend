@@ -26,8 +26,8 @@ export class SubscriptionController {
 
 
     getPlans = async (req: Request, res: Response, next: NextFunction) => {
-        
-        
+
+
         logger.info("get plan controller");
 
 
@@ -43,7 +43,6 @@ export class SubscriptionController {
             console.log(error);
             next(new AppError("create subcription failed", 500))
 
-            // res.status(400).json({status:false,message:error})
         }
     }
 
@@ -55,7 +54,7 @@ export class SubscriptionController {
             let transactionId = res.locals.paymentId
             let planDetails = res.locals.planDetails
             let user = req.user!
-            logger.info({ meassage: "create subscription", user: req.user })
+            logger.info({ meassage: "create subscription", user })
 
             const data = new CreateSubscripctionDTO({
                 userId: user.id, transactionId,
@@ -76,7 +75,6 @@ export class SubscriptionController {
 
 
         } catch (error) {
-            logger.error("err", error)
 
             next(new AppError("create subcription failed", 500))
         }
@@ -88,13 +86,18 @@ export class SubscriptionController {
         try {
             const user = req.user as { id: "string" }
 
-            logger.info("subscrption Data",{user})
+            logger.info("subscrption Data", { user })
 
             const userDetails = await this.getUserUseCase.OneDocumentByid(user?.id)
             logger.info("id", { userDetails })
             const subscripctionId = userDetails?.subscripctionId
             const data = await this.getSubcriptionUseCase.OneDocumentByid(subscripctionId!)
-            logger.info("data", { data })
+            if (data?.endDate && userDetails?.email) {
+                if (data?.endDate! < new Date()) {
+                    await this.updateUseCase.execute(userDetails?.email, { subscripctionId: "", role: "regular" })
+                }
+
+            }
 
             res.status(200).json({ status: true, message: " subscription Details", data })
 

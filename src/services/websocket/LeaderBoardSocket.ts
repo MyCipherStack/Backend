@@ -4,6 +4,8 @@ import { ISubmissionRepository } from "@/domain/repositories/ISubmissionReposito
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 import { Server, Socket } from "socket.io";
 import { logger } from "@/logger";
+import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
+import { GroupChallenge } from "@/domain/entities/GroupChallenge";
 
 
 
@@ -16,7 +18,9 @@ export class LeaderBoardSocket extends BaseSocket {
 
         private updateLeaderBoardUseCase: IUpdateLeaderBoardUsecase,
         private submissionRepository: ISubmissionRepository,
-        private leaderBoardRepository: ILeaderBoardRepository
+        private leaderBoardRepository: ILeaderBoardRepository,
+        // private getChallengeDataUseCase: IGetRepositoryDataUseCase<GroupChallenge>,
+
     ) {
         super()
     }
@@ -30,7 +34,7 @@ export class LeaderBoardSocket extends BaseSocket {
 
     protected async connectSocket(socket: Socket, io: Server): Promise<void> {
 
-        console.log(socket.listenerCount("join-challenge"),"join-challenge")
+        // console.log(socket.listenerCount("join-challenge"), "join-challenge")
 
 
 
@@ -38,11 +42,17 @@ export class LeaderBoardSocket extends BaseSocket {
 
             socket.join(challengeId) // here join room with room id is challenge id
 
+            // logger.info("joinchallnege",{challengeId,userId})
+            
             if (!this.activeUsersMap.has(challengeId)) {
+                // logger.info("not  active user",{challengeId})
 
-                logger.info("added a user",{userId})
-
+                // logger.info("added a user", { userId })
+                
                 this.activeUsersMap.set(challengeId, new Set())
+            }else{
+                
+                logger.info("active user", { userId })
             }
             this.activeUsersMap.get(challengeId)?.add(userId)
             this.socketToUserMap.set(socket.id, { userId, challengeId })
@@ -55,7 +65,7 @@ export class LeaderBoardSocket extends BaseSocket {
         })
 
 
-        console.log(socket.listenerCount("update-submit"),"update-submitcout")
+        // console.log(socket.listenerCount("update-submit"), "update-submitcout"// )
         socket.removeAllListeners("update-submit")
 
         socket.on("update-submit", async (challengeId: string, userId: string, time: number, problemId, submissionId) => {
@@ -63,12 +73,12 @@ export class LeaderBoardSocket extends BaseSocket {
                 console.log(challengeId, "challegeID in socker on");
 
                 const submissionDetails = await this.submissionRepository.findById(submissionId)
-                
+
                 if (submissionDetails) {
 
                     if (submissionDetails.status == "Accepted") {
-                        
-                        console.log("problem Accepted ");
+
+                        // console.log("problem Accepted ");
 
                         console.log(new Date(submissionDetails.createdAt).toTimeString(), "Date");
 
@@ -84,7 +94,17 @@ export class LeaderBoardSocket extends BaseSocket {
             }
         })
 
-  
+
+
+        socket.on("update-challenge-status", async (challengeId, updatedData) => {
+
+
+            //   const response=await  this.getChallengeDataUseCase.OneDocumentByid(challegeID)
+
+            io.to(challengeId).emit("update-challenge-status", updatedData)
+
+        })
+
 
         socket.on("disconnect", async () => {
             const userInfo = this.socketToUserMap.get(socket.id)
@@ -104,9 +124,6 @@ export class LeaderBoardSocket extends BaseSocket {
                 this.emitUpdateLeaderBoard(io, challengeId)
 
             }
-
-
-
         })
     }
 
@@ -116,7 +133,7 @@ export class LeaderBoardSocket extends BaseSocket {
     private async emitUpdateLeaderBoard(io: Server, challengeId: string) {
 
 
-        logger.info("active user",{data:this.activeUsersMap})
+        logger.info("active user", { data: this.activeUsersMap })
         const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId })
 
         logger.info("leaderboard", { data: leaderBoard })
@@ -126,7 +143,7 @@ export class LeaderBoardSocket extends BaseSocket {
             let rank = 1
 
             const response = leaderBoard.map(data => {
-                
+
                 return {
                     userName: data.userId.name,
                     totalScore: data.totalscore,

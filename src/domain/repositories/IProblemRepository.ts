@@ -18,6 +18,8 @@ export interface IProblemRepository extends IBaseRepository<Problem> {
     
     // changeStatus(id:string,status:boolean):Promise<Problem | null>
 
+    updateAcceptence(id:string,submited:number,accepted:number):Promise<boolean>
+
 
 
 }

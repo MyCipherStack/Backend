@@ -1,8 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { LoginAdminUsecase } from "../../../application/use-cases/admin/LoginAdminUsecase";
-import { IAdminRepository } from "../../../domain/repositories/IadminRepository";
-import { IHashAlgorithm } from "../../../domain/services/IHashAlgorithm";
-import { IJwtService } from "../../../domain/services/IJwtService";
 import { LoginDTO } from "../../../application/dto/LoginDTO";
 import { env } from "../../../config/env";
 import { logger } from "@/logger";

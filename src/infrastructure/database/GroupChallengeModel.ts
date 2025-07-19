@@ -1,63 +1,70 @@
 import mongoose, { Document, ObjectId, Types } from "mongoose";
-import {customAlphabet} from "nanoid"
+import { customAlphabet } from "nanoid"
 
 const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6);
 
 
-export interface IGroupChallenge extends Document{
-    hostId:ObjectId
-    challengeName: string;
-    maxParticipants:number
-    duration:number
-    problems:string[],
-    type:string
-    joinCode:string
-    currentStatus:Object
-    startTime:Date
-    endTime:Date
-    status:string
-    isBlocked:boolean
-    createdAt:string
-    updatedAt:string
-    
-  };
+
+export interface IGroupChallenge extends Document {
+
+  hostId: ObjectId
+  challengeName: string;
+  maxParticipants: number
+  duration: number
+  problems: string[],
+  type: string
+  joinCode: string
+  currentStatus: Object
+  startTime: Date
+  endTime: Date
+  status: string
+  isBlocked: boolean
+  winner: ObjectId
+  createdAt: string
+  updatedAt: string
+
+};
 
 
-const groupChallengeSchema=new mongoose.Schema<IGroupChallenge>({
 
-        hostId:{type:Types.ObjectId,ref:"User",required:true},
+const groupChallengeSchema = new mongoose.Schema<IGroupChallenge>({
 
-        challengeName:{type:String,required:true},
+  hostId: { type: Types.ObjectId, ref: "User", required: true },
 
-        maxParticipants:{type:Number,required:true},
+  challengeName: { type: String, required: true },
 
-        duration:{type:Number,required:true},
+  maxParticipants: { type: Number, required: true },
 
-        currentStatus:{type:Object},
+  duration: { type: Number, required: true },
 
-        problems:[{type:Types.ObjectId,ref:"problem",required:true}],
+  currentStatus: { type: Object },
 
-        startTime:{type:Date,required:true,default:()=>new Date(Date.now()+3*60*1000)},
+  problems: [{ type: Types.ObjectId, ref: "problem", required: true }],
 
-        endTime:{type:Date},
+  startTime: { type: Date, required: true, default: () => new Date(Date.now() + 3 * 60 * 1000) },
 
-        type:{type:String,required:true},
+  endTime: { type: Date },
 
-        joinCode:{type:String,required:true},
+  type: { type: String, required: true },
 
-        status:{type:String,enum:["waiting","started","ended","blocked"],default:"waiting"},
+  winner: { type: Types.ObjectId },
 
-        isBlocked:{type:Boolean,default:false}
+  joinCode: { type: String, required: true },
 
-},{timestamps:true})
+  status: { type: String, enum: ["waiting", "started", "ended", "blocked"], default: "waiting" },
+
+  isBlocked: { type: Boolean, default: false }
+
+}, { timestamps: true })
 
 
-groupChallengeSchema.pre("save",function(next){
-  if(this.isModified("startTime") || this.isModified("duration")){
-    this.endTime=new Date(this.startTime.getTime()+this.duration*60*1000)
+
+groupChallengeSchema.pre("save", function (next) {
+  if (this.isModified("startTime") || this.isModified("duration")) {
+    this.endTime = new Date(this.startTime.getTime() + this.duration * 60 * 1000)
   }
   next()
 })
 
 
-export const groupChallengeModel=mongoose.model<IGroupChallenge>("groupChallenges",groupChallengeSchema)
+export const groupChallengeModel = mongoose.model<IGroupChallenge>("groupChallenges", groupChallengeSchema)

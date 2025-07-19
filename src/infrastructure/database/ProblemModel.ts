@@ -4,86 +4,94 @@ import mongoose, { Document, Schema } from "mongoose";
 
 
 export interface IProblem extends Document {
-    title: string;
-    problemId: string;
-    difficulty: string;
-    timeLimit: number;
-    memoryLimit: number;
-    isPremium: boolean;
-    tags: string;
-    statement: string;
-    inputFormat: string;
-    outputFormat: string;
-    constraints: string;
-    hint:string;
+  title: string;
+  problemId: string;
+  difficulty: string;
+  timeLimit: number;
+  memoryLimit: number;
+  isPremium: boolean;
+  tags: string;
+  statement: string;
+  inputFormat: string;
+  outputFormat: string;
+  constraints: string;
+  hint: string;
 
-    testCases: ITestCase[];
-    functionSignatureMeta:{
-      name:{type:String},
-      parameters:{name: string,
-        type: string},
-      returnType:{type:string}},
-    starterCode:{},
-    acceptence:number,
-    status:boolean
-  }
-  
-  const TestCaseSchema: Schema = new Schema({
-    testCaseNo:{type:Number,require:true},
-    input: { type: String, required: true },
-    output: { type: String, required: true },
-    isSample: { type: Boolean, default: false },
-    explanation:{ type: String }
-  });
-  
-  export interface ITestCase {
-    testCaseNo:number;
-    input: string;
-    output: string; 
-    isSample: boolean;
-  }
+  testCases: ITestCase[];
+  functionSignatureMeta: {
+    name: { type: String },
+    parameters: {
+      name: string,
+      type: string
+    },
+    returnType: { type: string }
+  },
+  starterCode: {},
+  acceptence: {submited:number,accepted:number},
+  status: boolean
+}
 
-const problemsSchema=new Schema({
+const TestCaseSchema: Schema = new Schema({
+  testCaseNo: { type: Number, require: true },
+  input: { type: String, required: true },
+  output: { type: String, required: true },
+  isSample: { type: Boolean, default: false },
+  explanation: { type: String }
+});
 
-        title:{ type:String, required:true},
+export interface ITestCase {
+  testCaseNo: number;
+  input: string;
+  output: string;
+  isSample: boolean;
+}
 
-        problemId:{type:String,required:true},
+const problemsSchema = new Schema({
 
-        difficulty: {  type: String,required: true },
+  title: { type: String, required: true },
 
-        timeLimit: { type: Number, default: 1000 },
+  problemId: { type: String, required: true },
 
-        memoryLimit: { type: Number, default: 128 },
+  difficulty: { type: String, required: true },
 
-        isPremium: { type: Boolean, default: false },
+  timeLimit: { type: Number, default: 1000 },
 
-        tags: { type: String },
+  memoryLimit: { type: Number, default: 128 },
 
-        statement: { type: String, required: true },
+  isPremium: { type: Boolean, default: false },
 
-        inputFormat: { type: String, required: true },
-        
-        outputFormat: { type: String, required: true },
+  tags: { type: String },
 
-        constraints: { type: String, required: true },
+  statement: { type: String, required: true },
 
-        hint:{type:String},
+  inputFormat: { type: String, required: true },
 
-        testCases: { type: [TestCaseSchema], default: [] },
-        
-        acceptence:{type:Number,default:0},
+  outputFormat: { type: String, required: true },
 
-        functionSignatureMeta:{
-            name:{type:String},
-            parameters:{type:Array},
-            returnType:{type:String}},
+  constraints: { type: String, required: true },  
 
-        starterCode:{type:Object},
+  hint: { type: String },
 
-        status:{type:Boolean,default:true}
-        
-    },{timestamps:true}
+  testCases: { type: [TestCaseSchema], default: [] },
+
+  acceptence: {
+    type: { submited: Number, accepted: Number }, default: {
+      submited: 0, accepted: 0
+    }
+  },
+
+  functionSignatureMeta: {
+    name: { type: String },
+    parameters: { type: Array },
+    returnType: { type: String }
+  },
+
+  starterCode: { type: Object },
+
+  status: { type: Boolean, default: true }
+
+}, { timestamps: true }
 
 )
 
-export const problemModel=mongoose.model<IProblem>("problem",problemsSchema)
+export const problemModel = mongoose.model<IProblem>("problem", problemsSchema)

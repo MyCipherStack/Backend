@@ -4,6 +4,7 @@ import { IStreakService } from "@/domain/services/IStreakService";
 import { ITestCase } from "@/application/interfaces/ITestCase";
 import { IsubmitProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases";
 import { logger } from "@/logger";
+import { IProblemRepository } from "@/domain/repositories/IProblemRepository";
 
 
 
@@ -13,7 +14,9 @@ import { logger } from "@/logger";
 export class SubmitProblemUseCase implements IsubmitProblemUseCase {
     constructor(
         private submissionRespository: ISubmissionRepository,
-        private streakService: IStreakService
+        private streakService: IStreakService,
+        private problemRepository: IProblemRepository
+
     ) { }
     async execute(updatedTestCases: Partial<ITestCase[]>, userId: string, problemId: string, code: string, language: string, totalTestCases: number): Promise<Submission> {
 
@@ -55,13 +58,15 @@ export class SubmitProblemUseCase implements IsubmitProblemUseCase {
 
 
         //Calculation And Update Acceptance
-
-        if(status=="Accepted"){
-
+        if (status == "Accepted") {
+         await  this.problemRepository.updateAcceptence(problemId, 1, 1)
+            
+        }else{
+          await  this.problemRepository.updateAcceptence(problemId, 1, 0)
         }
 
 
-        
+
 
         //    console.log(isFailed[0],"failed tesst case");
         //    console.log( typeof totalMemoryUsed,"totalmeomory");

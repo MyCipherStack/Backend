@@ -3,7 +3,7 @@
 
 
 import { FilterDTO } from "@/application/dto/FilterDTO";
-import { IChangeRespoStatusUseCase } from "@/application/interfaces/use-cases/IChangeRespoStatusUseCase";
+import { IChangeRespoStatusUseCase } from "@/application/interfaces/use-cases/ISharedUseCase";
 import { IGetAllReportsUsecase } from "@/application/interfaces/use-cases/IReportUseCase";;
 import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/logger";

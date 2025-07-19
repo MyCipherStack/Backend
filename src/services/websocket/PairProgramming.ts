@@ -14,13 +14,13 @@ export class PairProgramSocket extends BaseSocket {
 
     protected async connectSocket(socket: Socket, io: Server): Promise<void> {
 
-        
 
-        socket.on("join-pairProgramming", ({ roomId, userName }) => {
+
+        socket.on("join-pairProgramming",async ( {roomId, userName }) => {
             socket.join(roomId)
-            console.log("join", roomId);
+            console.log("join pair", roomId,userName);
             socket.to(roomId).emit("pairProgram-update", { userName })
-        })
+        }) 
 
         socket.on("code-change", ({ roomId, code }) => {
             console.log("code change", roomId);
@@ -31,7 +31,7 @@ export class PairProgramSocket extends BaseSocket {
             console.log("cursor-change", roomId, userId, position);
             socket.to(roomId).emit("cursor-change", { userId, position })
         })
-
+  
         socket.on("send-message", ({ roomId, userName, text, time }) => {
             console.log(roomId, text);
 

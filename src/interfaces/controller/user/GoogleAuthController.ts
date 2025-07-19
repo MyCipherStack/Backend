@@ -4,8 +4,6 @@ import { IGoogleUserUseCase } from "@/application/interfaces/use-cases/IUserUseC
 import { AppError } from "@/domain/error/AppError";
 import { env } from "@/config/env";
 
-
-
 export class GoogleAuthController{
     
     constructor(
@@ -44,9 +42,10 @@ export class GoogleAuthController{
                             maxAge:1000 * 60 * 60 * 24 * 7,
                             path:"/"
                         })
-            res.redirect(`${env.GOOGLE_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}`)
-   
+            res.redirect(`${env.GOOGLE_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}&id=${encodeURIComponent(createdUser.user._id)}`)
+
             // res.status(200).json({status:true,message:"user logged success",user:{name:createdUser.name,email:createdUser.email}})
+
 
 
 

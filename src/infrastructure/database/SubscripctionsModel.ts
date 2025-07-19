@@ -1,3 +1,4 @@
+import { logger } from "@/logger";
 import mongoose, { Document, SchemaTypes, Types } from "mongoose";
 
 
@@ -62,6 +63,7 @@ const subscritpionSchema = new mongoose.Schema<ISubscription>({
 
 subscritpionSchema.pre("validate", function (next) {
 
+    logger.info("validate",{cycle:this.cycle})
 
     const today = new Date()
     if (this.cycle === "monthly") {

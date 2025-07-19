@@ -50,6 +50,7 @@ export class OtpService implements IOtpService {
   }
 
   verifyOtp(enterdOtp:string, dbOtp: string): boolean {
-    return enterdOtp.trim()===dbOtp.trim()
+      return enterdOtp.trim()===dbOtp.trim()
+ 
   } 
 }

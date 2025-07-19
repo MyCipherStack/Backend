@@ -21,3 +21,6 @@ export interface IRunProblemUseCase{
 export interface IsubmitProblemUseCase{
     execute(testCases:ITestCase[],userId:string,problemId:string,code:string,language:string,totalTestCases:number):Promise<Submission>
 }
+export interface IAcceptedUserProblemsUseCase{
+    execute(userId:string):Promise<Problem[]>
+}

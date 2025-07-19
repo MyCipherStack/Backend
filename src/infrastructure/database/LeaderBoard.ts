@@ -15,7 +15,7 @@ const solvedProblemSchema=new mongoose.Schema({
 
 const LeaderBoardSchmea=new mongoose.Schema<ILeaderBoard>({
 
-    challengeId:{type:Types.ObjectId,require:true},
+    challengeId:{type:Types.ObjectId,require:true,ref:"groupChallenges"},
 
     userId:{type:Types.ObjectId,ref:"User",required:true},
 

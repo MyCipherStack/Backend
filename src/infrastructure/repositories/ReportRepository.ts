@@ -3,8 +3,7 @@ import { BaseRepository } from "./BaseRespositroy";
 import { IReports, reportModel } from "../database/ReportModel";
 import { Document } from "mongoose";
 import { IReportRepository } from "@/domain/repositories/IReportRepository";
-import { logger } from "@/logger";
-import { User } from "@/domain/entities/User";
+
 
 
 
@@ -33,7 +32,7 @@ export class ReportRepository extends BaseRepository<Report, IReports> implement
         const skip = (filters.page - 1) * filters.limit
         const totalReports = await reportModel.countDocuments(query);
         const totalPages = Math.ceil(totalReports / filters.limit);
-        let users = await reportModel.find(query).populate("submittedBy").populate("reportedUser").skip(skip).limit(filters.limit).lean()
+        let users = await reportModel.find(query).populate("submittedBy").populate("reportedUser").skip(skip).limit(filters.limit).lean().sort({createdAt:-1})
         let updatedUser = users.map(data => {
 
             return {

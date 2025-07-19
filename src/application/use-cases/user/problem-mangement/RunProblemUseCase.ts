@@ -1,7 +1,7 @@
 import { IJuge0CodeExecute } from "@/domain/services/IJudge0CodeExecute"; 
 import { ITestCase } from "@/application/interfaces/ITestCase"; 
 import { IRunProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases"; 
-import { logger } from "@/logger";
+ 
 
 export class RunProblemUseCase implements IRunProblemUseCase {
     constructor(
@@ -9,8 +9,7 @@ export class RunProblemUseCase implements IRunProblemUseCase {
     ){}
     async execute(testCases: ITestCase[],code:string,language:string,memoryLimit:number,timeLimit:number,functionSignatureMeta:{},stopFailTestCase:boolean): Promise<ITestCase[]> {
         let result:ITestCase[]=[]
-
-        // logger.info("testCase",{testCases})
+ 
         
         for(let test of testCases){
             
@@ -51,6 +50,7 @@ export class RunProblemUseCase implements IRunProblemUseCase {
                 if(!status && stopFailTestCase){
 
                  result.push(updatedTestCases)
+                 
                  console.log("2break");
                  
                     break

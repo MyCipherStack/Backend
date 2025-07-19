@@ -1,11 +1,12 @@
 import { NextFunction, Request, Response } from "express";
 import { IProblemRepository } from "@/domain/repositories/IProblemRepository";
 import { ProblemDTO } from "@/application/dto/ProblemDTO";
-import { IRunProblemUseCase, IsubmitProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases";
-import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
-import { Problem } from "@/domain/entities/Problem";
+import { IAcceptedUserProblemsUseCase, IRunProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases";
 import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/logger";
+import { IGeneratePrompt, ISendToOllama } from "@/domain/services/IOllama";
+
+
 
 
 
@@ -13,8 +14,10 @@ export class ProblemController {
     constructor(
         private problemRespository: IProblemRepository,
         private runProblemUseCase: IRunProblemUseCase,
-        private getProblemDataUseCase: IGetRepositoryDataUseCase<Problem>,
-        private submitProblemUseCase: IsubmitProblemUseCase
+        private acceptedUserProblemsUseCase: IAcceptedUserProblemsUseCase,
+        private generatePrompt: IGeneratePrompt,
+        private ollamaAi: ISendToOllama
+
     ) { }
     getData = async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -38,6 +41,8 @@ export class ProblemController {
                 }
             })
             const sampleTestCasesOnlyData = { ...data, problems }
+
+            // logger.info("problem",{sampleTestCasesOnlyData})
 
             res.status(200).json({ status: true, message: "problems fetched success", problemData: sampleTestCasesOnlyData })
             return
@@ -102,66 +107,59 @@ export class ProblemController {
             console.log(error);
             next(new AppError("Something went wrong", 500))
 
-            // res.status(400).json({ status: false, message: error.message })
         }
     }
 
-    submitProblem = async (req: Request, res: Response, next: NextFunction) => {
+
+    acceptedUserProblems = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const problem = new ProblemDTO(req.body.problemDetails)
-            const code = req.body.code
-            const language = req.body.language
-            let testCases = req.body.testCases  //this have only sampleTestCase
-            const user = req.user as { id: string }
-            const ProblemWithAlltestCases = await this.getProblemDataUseCase.OneDocumentByid(problem._id)
-            const AllTestCases = ProblemWithAlltestCases?.testCases ?? []
-            const updatedTestCases = await this.runProblemUseCase.execute(AllTestCases, code, language, problem.memoryLimit, problem.timeLimit, problem.functionSignatureMeta, true)
 
-            const totalTestCases = ProblemWithAlltestCases?.testCases.length ?? 0
+            const id = req.user?.id
 
-            //    const totalMemoryUsed=updatedTestCases.reduce((acc,testCase)=>{
-            //      return  acc+= testCase.memory ?? 0
-            //     },0)
-            //    const totalTimeUsed=updatedTestCases.reduce((acc,testCase)=>{
-            //      return  acc+= testCase.runtime ?? 0
-            //     },0)
+            logger.info("accepted problem", id)
+            const acceptedData = await this.acceptedUserProblemsUseCase.execute(id!)
 
-            //     let passedTestCases=updatedTestCases.length
-            //     let status="Accepted"
-            //     let failingTestCaseResult={input:"",output:"",compile_output:""}
-
-            //     const isFailed=updatedTestCases.filter(testCase=>{
-            //          if(testCase.status==false)
-            //             return testCase
-            //     })
-            //     const failedTestCase=isFailed[0]
-            //     if(failedTestCase){
-            //         passedTestCases-=1
-            //         status="Wrong Answer"
-            //         failingTestCaseResult.input=failedTestCase.input
-            //         failingTestCaseResult.output=failedTestCase.output
-            //         failingTestCaseResult.compile_output=failedTestCase.compile_output as string
-
-            //     }
-            //     console.log(isFailed[0],"failed tesst case");
-
-            //     console.log(totalMemoryUsed,"totalmeomory");
-
-
-
-            const submitData = await this.submitProblemUseCase.execute(updatedTestCases, user.id, problem._id, code, language, totalTestCases)
-            console.log(submitData);
-            res.status(200).json({ status: true, message: "problem submited", submissions: submitData })
-
+            res.status(200).json({ status: true, message: "accepted user problem", acceptedData: acceptedData })
 
         } catch (error) {
-            logger.error("err", error)
-            next(new AppError("Something went wrong", 500))
 
-            // res.status(400).json({ status: false, message: "something went wrong" })
+            next(new AppError("Something went wrong", 500))
 
 
         }
     }
+
+
+
+    solution = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+
+            const problemId = req.params.id
+
+            const problemDetails = await this.problemRespository.findById(problemId)
+
+            const prompt = this.generatePrompt.createSolutionPrompt(problemDetails,"javascript")
+
+            logger.info("problemId", { problemId })
+            logger.info("prompt", { prompt })
+            
+            
+            const ollamoutput=await this.ollamaAi.generateResponse(prompt)
+
+            
+            console.log(ollamoutput);
+            
+            
+            
+            logger.info("ollamoutput", {ollamoutput})
+        } catch (error) {
+            logger.error("gettiing solution errr",error)
+            next(new AppError("Something went wrong", 500))
+
+
+        }
+    }
+
+
 
 }

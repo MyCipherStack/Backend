@@ -1,0 +1,60 @@
+import { IGetAllRepoDataUsingFieldUseCase, IUpdateRepositoryDataUseCase } from "@/application/interfaces/use-cases/ISharedUseCase"
+import { NotificationEntity } from "@/domain/entities/Notification"
+import { AppError } from "@/domain/error/AppError"
+import { logger } from "@/logger"
+import { NextFunction, Request, Response } from "express"
+
+
+
+
+export class NotificationController {
+
+    constructor(
+        private updateRepositoryDataUseCase: IUpdateRepositoryDataUseCase<NotificationEntity>,
+        private getAllNotificaionDataUsingFieldUseCase: IGetAllRepoDataUsingFieldUseCase<NotificationEntity>
+
+    ) { }
+
+
+    userAllNotification = async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const user = req.user as { id: "string" }
+
+            const allNotification = await this.getAllNotificaionDataUsingFieldUseCase.execute({ userId: user.id })
+
+            logger.info("all notification",{allNotification})
+            
+            res.status(200).json({ status: true, message: "problem submited", allNotification })
+
+
+        } catch (error) {
+
+            return next(new AppError("server error", 500))
+
+
+        }
+    }
+
+
+
+    readNotification = async (req: Request, res: Response, next: NextFunction) => {
+
+        try {
+
+            const notificationId = req.body.id
+            logger.info("readnotification ---- id", { notificationId })
+
+            const notification = await this.updateRepositoryDataUseCase.execute(notificationId, { isRead: true })
+
+            res.status(200).json({ status: true, message: "problem submited", notification })
+
+
+        } catch (error) {
+
+            return next(new AppError("server error", 500))
+
+        }
+    }
+
+
+}

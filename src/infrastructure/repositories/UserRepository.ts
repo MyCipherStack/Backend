@@ -139,7 +139,7 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
             data.googleId,
             data.password,
             data.updated_at,
-            data.subscripctionId
+            data.subscripctionId?.toString()
             )
 
     }

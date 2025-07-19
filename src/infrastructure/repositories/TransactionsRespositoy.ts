@@ -54,12 +54,46 @@ export class TransactionRespotitory extends BaseRepository<Transaction, ITransac
 
         const mapper = (data) => { return data.map((obj => ({ range: obj._id, revenue: obj.revenue }))) }
 
-        logger.info("this month",thisMonth[0])
+        logger.info("this month", thisMonth[0])
 
         return { transactionDetails: mapper(data), thisMonth: thisMonth[0].thisMonthRevenu }
     }
 
-    
+
+
+
+
+    async getFiltersTrasations(filters: { page: number, limit: number, status?: string }): Promise<{     
+        transaction: any[];
+        totalTransaction: number;
+        totalPages: number;
+    }> {
+        let query: any = {}
+
+        if (filters.status) query.status = filters.status
+
+        const skip = (filters.page - 1) * filters.limit
+        const totalTransaction = await transactionModel.countDocuments(query);
+        const totalPages = Math.ceil(totalTransaction / filters.limit);
+        let Transaction = await transactionModel.find(query).skip(skip).limit(filters.limit).lean().sort({createdAt:-1})
+        let updatedTransaction = Transaction.map(data => this.toEntity(data))
+        return { transaction: updatedTransaction, totalTransaction, totalPages }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     protected toEntity(data: (ITransaction & Document<unknown, any, any>) | null): Transaction | null {
 
 
@@ -67,8 +101,8 @@ export class TransactionRespotitory extends BaseRepository<Transaction, ITransac
         return new Transaction(
             data.userId.toString(),
             data.amount,
-            data.paymentId,
             data.paymentMethord,
+            data.paymentId,
             data.orderId,
             data.status,
             data.id)

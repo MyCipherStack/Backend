@@ -46,8 +46,12 @@ export class InterviewSocket extends BaseSocket {
             socket.to(roomId).emit("track-type", { kind, type })
         })
 
+        socket.on("send-message", ({ roomId, userName, text, time }) => {
+            console.log(roomId, text);
+ 
+            socket.to(roomId).emit("receive-message", { userName, text, time })
+        })
 
-        
 
     }
 

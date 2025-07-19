@@ -14,7 +14,9 @@ export class VerifyOtpUseCase  implements IVerifyOtpUseCase{
         const userData = await this.pendingUserRepository.findValidUser(email)
         console.log(userData);
 
-
+if(!userData){
+    throw new Error("otp expired try register again!")
+}
 
         const isValid = this.otpService.verifyOtp(userData?.otp, otp)
         if (!isValid) {

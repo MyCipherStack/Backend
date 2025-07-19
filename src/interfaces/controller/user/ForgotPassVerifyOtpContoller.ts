@@ -17,6 +17,7 @@ export class ForgotPassVerifyOtpController{
       if(!success){
         throw new Error("Session expired.Please request OTP again")
       } 
+      if(typeof success === 'object')
       res.cookie("otpAccess",{email:success.email,verifyed:success.verified},{
                          httpOnly:true,
                          secure:env.NODE_ENV === "production",

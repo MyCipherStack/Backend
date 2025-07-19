@@ -13,12 +13,11 @@ export class JoinPairProgrammigUseCase implements IJoinPairProgrammigUseCase {
         private pairProgrammingRepository: IPairProgrammingRepository,
 
 
+
     ) { }
     async execute(joinCode: string, userId: string, userName: string): Promise<PairProgramming | null> {
-        // logger.info("join useCase",{joinCode,userId,userName})
+
         const respositoryData = await this.pairProgrammingRepository.findOneChallenge({ joinCode })
-        // logger.info("hostID",{id:respositoryData?.hostId})
-        // console.log(respositoryData, joinCode, "joinedDATA");
         
 
         if (respositoryData) {
@@ -26,18 +25,19 @@ export class JoinPairProgrammigUseCase implements IJoinPairProgrammigUseCase {
             
                 return respositoryData
             } else {
-                logger.info("sameuser",{navigator:respositoryData.navigator,userId});
+
                 
-                logger.info("check",{navigator:respositoryData.navigator.id===userId});
-
-
-                if(respositoryData.navigator && respositoryData.navigator.id==userId){
+                let navigatorId=respositoryData.navigator?.id
+            
+                
+                if(respositoryData.navigator?.id && navigatorId?.toString()==userId.toString()){
                     
                     logger.info("if",{navigator:respositoryData.navigator,userId});
 
                     
                     return respositoryData
                 }
+                //if no current navigator so join that
                 if (!respositoryData.navigator?.id && respositoryData._id ) {
 
                     let navigator = { name: userName, id: userId }

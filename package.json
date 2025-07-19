@@ -2,13 +2,12 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "app.js",
-"scripts": {
-  "build": "tsc",
-  "start": "node -r tsconfig-paths/register dist/app.js",  
-  "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts", 
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
-
+  "scripts": {
+    "build": "tsc",
+    "start": "node -r tsconfig-paths/register dist/app.js",
+    "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,11 +16,13 @@
     "@types/express": "^4.17.21",
     "axios": "^1.8.4",
     "bcryptjs": "^3.0.2",
+    "bullmq": "^5.56.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
+    "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "lodash.debounce": "^4.0.8",
     "mongoose": "^8.13.1",

@@ -1,4 +1,4 @@
-import { IChangeRespoStatusUseCase } from "@/application/interfaces/use-cases/IChangeRespoStatusUseCase";
+import { IChangeRespoStatusUseCase } from "@/application/interfaces/use-cases/ISharedUseCase";
 import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
 import { PairProgramming } from "@/domain/entities/PairProgramming";
 import { AppError } from "@/domain/error/AppError";

@@ -33,6 +33,8 @@ export class ChallengeRepository extends BaseRepository<GroupChallenge,IGroupCha
 
 
 
+
+
        async paginatedData(filters: {page:number,limit:number, type?: string; status?: string; search?: string; }): Promise<{
             datas: any[];
             totalCount: number;
@@ -82,6 +84,7 @@ export class ChallengeRepository extends BaseRepository<GroupChallenge,IGroupCha
             data.id,
             data.createdAt,
             data.updatedAt,
+            data.hostId
             
         )
     }

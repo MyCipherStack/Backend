@@ -4,6 +4,9 @@ export class OtpDTO{
     otp:string
     constructor(data:{email:string,otp:string}){
         this.email=data.email
+        if(!data.otp){
+            throw new Error("otp is empty")
+        }
         if(Array.isArray(data.otp)){
             this.otp=data.otp.join("")
         }else{

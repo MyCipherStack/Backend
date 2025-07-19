@@ -7,7 +7,6 @@ import { IJoinChallengeUseCase } from "../../../interfaces/use-cases/IChallengeU
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/logger";
-import { INotificationSocket } from "@/domain/services/ISocketService";
 
 
 export class JoinChallengeUseCase<joinType> implements IJoinChallengeUseCase<joinType> {

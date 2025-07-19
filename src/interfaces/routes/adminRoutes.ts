@@ -46,6 +46,9 @@ import { LoginAdminUsecase } from "@/application/use-cases/admin/LoginAdminUseca
 import { CreateRepoUseCase } from "@/application/use-cases/shared/CreateRepoUseCase" 
 import { EditPlanUseCase } from "@/application/use-cases/admin/EditPlanUseCase"
 import { PairProgrammingController } from "../controller/admin/PairProgramming"
+import { TransationController } from "../controller/admin/TransationController"
+import { LeaderBoardRepository } from "@/infrastructure/repositories/LeaderBoardRepository"
+import { TransactionUseCase } from "@/application/use-cases/admin/TransactionUseCase"
 
 
 
@@ -85,6 +88,8 @@ const getAllReportsUsecase = new GetAllReportsUsecase(reportRepository)
 const updateUserUseCase = new UpdateUserUseCase(userRepository)
 const loginAdminUsecase = new LoginAdminUsecase(adminRepository, hashService, jwtService)
 const editPlanUseCase = new EditPlanUseCase(premiumPlanRepository)
+const transactionUsecase=new TransactionUseCase(transactionRepository)
+
 
 
 
@@ -97,6 +102,7 @@ const createPremiumRepoUseCase = new CreateRepoUseCase(premiumPlanRepository)
 const getPremiumDataUseCase = new GetRepositoryDataUseCase(premiumPlanRepository)
 const changechallegeStatusUSeCase=new ChangeRespoStatusUseCase(challengeRepository)
 const changePairProgramStatusUSeCase=new ChangeRespoStatusUseCase(pairProgrammingRepository)
+const allTransationsDataUseCase=new GetRepositoryDataUseCase(transactionRepository)
 
 
 
@@ -114,7 +120,7 @@ const challengeController = new ChallengeController(getchallengeRepoDataUseCase 
 const dashboardController = new DashboardBoardController(adminDashBoardUseCase)
 const adminReportController = new AdminReportController<Report>(getAllReportsUsecase, changeRespoStatusUseCase)
 const pairProgrammingController=new PairProgrammingController(getPaiProgarmmingRepoDataUseCase,changePairProgramStatusUSeCase)
-
+const transationController=new TransationController(transactionUsecase)
 
 
 let authenticate = new Authenticate(jwtService, getAdminRepoDataUseCase)
@@ -124,6 +130,7 @@ let auth = new AuthMiddlwareBundler(authenticate, authorize, "admin")
 router.post("/login", adminAuthController.login)
 router.post("/logout", adminAuthController.logout)
 router.get("/users", auth.verify(), usersListController.getData)
+router.get("/transations", auth.verify(), transationController.allTransations)
 router.patch("/users/:email", auth.verify(), usersListController.updateUser);
 router.post("/addProblem", auth.verify(), adminProblemController.addProblem);
 router.post("/editProblem", auth.verify(), adminProblemController.editProblem);

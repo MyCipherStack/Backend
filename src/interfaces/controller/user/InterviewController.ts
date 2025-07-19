@@ -5,6 +5,8 @@ import { Interview } from "@/domain/entities/Interview";
 import { IScheduleInterviewUseCase } from "@/application/interfaces/use-cases/IScheduleInterviewUseCase"; 
 import { IInterViewRepository } from "@/domain/repositories/IInterViewRepository";
 import { IjoinInterViewUseCase } from "@/domain/repositories/IjoinInterViewUseCase"; 
+import { logger } from "@/logger";
+import { AppError } from "@/domain/error/AppError";
 
 
 
@@ -21,7 +23,7 @@ export class InterviewController {
         try {
             const data = new InterviewDTO(req.body)
             const createData = await this.scheduleInterviewUsecase.execute(data)
-            const { id } = req.user
+            const { id } = req.user as { id: string }
             createData.hostId = id
             const response = await this.createRepoUseCase.execute(createData)
             res.status(200).json({ status: true, message: "schedule interview", Interview: response })
@@ -35,7 +37,7 @@ export class InterviewController {
 
     getUserInterviews = async (req: Request, res: Response) => {
         try {
-            const { id } = req.user
+            const { id } = req.user as {id: string}
             const userCreatedInterview = await this.interViewRepository.findByField({ hostId: id })
 
             const userInterviews = await this.interViewRepository.findByField({ partipantId: id })
@@ -56,14 +58,17 @@ export class InterviewController {
         try{
             const { id } = req.user
             const InterviewId=req.body.id
-            console.log(InterviewId,"interviewID");
-           const response=await this.joinInterViewUseCase.execute(id.toString(),InterviewId)
-
+            logger.info("interviewID",{InterviewId});
+            const response=await this.joinInterViewUseCase.execute(id.toString(),InterviewId)
+            
+            logger.info("interviewID",{response});
         
            res.status(200).json({ status: true, message: "joined interview", interview:response })
-        }catch(error){
-            console.log(error);
-          res.status(400).json({ status: false, message:error.message});
+        }catch(error:{message:string}){
+
+
+           logger.error("err",{error})
+          res.status(400).json({ status: false, message:error.message });
             
         }
     }

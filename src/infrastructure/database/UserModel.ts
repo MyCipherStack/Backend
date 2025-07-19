@@ -32,7 +32,7 @@ export interface IUser extends Document {
     rankingPoints:number
 }
 
-// create the user Schema
+
 
 const UserSchema=new Schema<IUser>({
     name:{
@@ -52,7 +52,7 @@ const UserSchema=new Schema<IUser>({
 
     password:{type:String,required:true },
 
-    image:{  type:String,// default:"https://images.app.goo.gl/WxwYnYXooctTp8sX7" 
+    image:{  type:String, // default:"https://images.app.goo.gl/WxwYnYXooctTp8sX7" 
         },
     bio:{type:String},
 
