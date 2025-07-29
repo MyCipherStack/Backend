@@ -2,7 +2,7 @@
 
 import { IEvaluateWinnerUsecase } from "@/application/interfaces/use-cases/IChallengeUseCases";
 import { redisConnection } from "@/infrastructure/database/connection/redisConnection";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { Worker,QueueScheduler } from 'bullmq'
 
 

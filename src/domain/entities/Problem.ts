@@ -16,10 +16,10 @@ export class Problem {
     public constraints: string,
     public testCases: { testCaseNo:number,input: string; output: string; isSample: boolean }[] = [],
     public functionSignatureMeta:Object,
-    public acceptence:{submited:number,accepted:number},
-    public hint:string,
+    public acceptance?:{submitted:number,accepted:number},
+    public hint?:string,
     public starterCode?: Record<string,string>,
-    public _id?: Types.ObjectId,
+    public _id?: string
   ) {}
 
 }

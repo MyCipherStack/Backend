@@ -4,7 +4,8 @@
 
 
 export  interface IBaseRepository<Entity>{
-    create(data:Entity):Promise<Entity| null>;
+    
+    create(data:Entity):Promise<Entity>;
 
     findById(Id:string):Promise<Entity|null>
 

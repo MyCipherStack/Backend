@@ -18,7 +18,7 @@ import { AddProblemUseCase } from "@/application/use-cases/admin/AddProblemUseCa
 import { EditProblemUseCase } from "@/application/use-cases/admin/EditProblemUseCase"  
 import { IAddProblemUseCase } from "../../application/interfaces/use-cases/IProblemUseCases"
 import { AdminPremiumPlanController } from "../controller/admin/AdminPremiumPlanController"
-import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepostiroy"
+import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepository"
 import { IpremiumPlanRepository } from "../../domain/repositories/IPremiumPlanRepositroy"
 import { GetFilteredUsersUseCase } from "@/application/use-cases/user/user-mangement/GetFilteredUsers"  
 import { Authenticate } from "@/middlewares/Authenticate"
@@ -30,7 +30,7 @@ import {  ChallengeController } from "../controller/admin/ChallengeController"
 import { ChallengeRepository } from "@/infrastructure/repositories/ChallengeRespository"
 import { GroupChallenge } from "@/domain/entities/GroupChallenge"
 import { PairProgramming } from "@/domain/entities/PairProgramming"
-import { PairProgrammingRepository } from "@/infrastructure/repositories/PairProgrammingRepsitory"
+import { PairProgrammingRepository } from "@/infrastructure/repositories/PairProgrammingRepository"
 import { IPairProgrammingRepository } from "@/domain/repositories/IPairProgrammingRepository"
 import { DashboardBoardController } from "../controller/admin/DashboardController"
 import { AdminDashBoardUseCase } from "@/application/use-cases/admin/AdminDashBoardUseCase" 
@@ -38,17 +38,18 @@ import { GetAllReportsUsecase } from "@/application/use-cases/user/GetAllReports
 import { AdminReportController } from "../controller/admin/AdminReportController"
 import { IReportRepository } from "@/domain/repositories/IReportRepository"
 import { ReportRepository } from "@/infrastructure/repositories/ReportRepository"
-import { ChangeRespoStatusUseCase } from "@/application/use-cases/shared/ChangeRespoStatusUseCase"  
+import { ChangeRepoStatusUseCase } from "@/application/use-cases/shared/ChangeRepoStatusUseCase"  
 import { Report } from "@/domain/entities/Report"
 import { TransactionRespotitory } from "@/infrastructure/repositories/TransactionsRespositoy"
 import { UpdateUserUseCase } from "@/application/use-cases/user/user-mangement/UpdateUserUseCase" 
 import { LoginAdminUsecase } from "@/application/use-cases/admin/LoginAdminUsecase"
 import { CreateRepoUseCase } from "@/application/use-cases/shared/CreateRepoUseCase" 
 import { EditPlanUseCase } from "@/application/use-cases/admin/EditPlanUseCase"
-import { PairProgrammingController } from "../controller/admin/PairProgramming"
+import { PairProgrammingController } from "../controller/admin/PairProgrammingController"
 import { TransationController } from "../controller/admin/TransationController"
 import { LeaderBoardRepository } from "@/infrastructure/repositories/LeaderBoardRepository"
 import { TransactionUseCase } from "@/application/use-cases/admin/TransactionUseCase"
+import { UpdateRepositoryDataUseCase } from "@/application/use-cases/shared/UpdateRepositoryDataUseCase"
 
 
 
@@ -97,11 +98,12 @@ const transactionUsecase=new TransactionUseCase(transactionRepository)
 const getAdminRepoDataUseCase = new GetRepositoryDataUseCase<Admin>(adminRepository)
 const getchallengeRepoDataUseCase = new GetRepositoryDataUseCase<GroupChallenge>(challengeRepository)
 const getPaiProgarmmingRepoDataUseCase = new GetRepositoryDataUseCase<PairProgramming>(pairProgrammingRepository)
-const changeRespoStatusUseCase = new ChangeRespoStatusUseCase(reportRepository)
+const changeRespoStatusUseCase = new ChangeRepoStatusUseCase(reportRepository)
 const createPremiumRepoUseCase = new CreateRepoUseCase(premiumPlanRepository)
 const getPremiumDataUseCase = new GetRepositoryDataUseCase(premiumPlanRepository)
-const changechallegeStatusUSeCase=new ChangeRespoStatusUseCase(challengeRepository)
-const changePairProgramStatusUSeCase=new ChangeRespoStatusUseCase(pairProgrammingRepository)
+const updateChallengeRepoDataUseCase=new UpdateRepositoryDataUseCase(challengeRepository)
+const updatePairRepoDataUseCase=new UpdateRepositoryDataUseCase(pairProgrammingRepository)
+const changePairProgramStatusUSeCase=new ChangeRepoStatusUseCase(pairProgrammingRepository)
 const allTransationsDataUseCase=new GetRepositoryDataUseCase(transactionRepository)
 
 
@@ -116,10 +118,10 @@ const adminAuthController = new AdminAuthController(loginAdminUsecase)
 const usersListController = new UsersListController(getFilteredUsersUseCase, updateUserUseCase)
 const adminProblemController = new AdminProblemController(addProblemUseCase, editProblemUseCase)
 const adminPremiumPlanController = new AdminPremiumPlanController(createPremiumRepoUseCase,getPremiumDataUseCase,editPlanUseCase)
-const challengeController = new ChallengeController(getchallengeRepoDataUseCase ,changechallegeStatusUSeCase)
+const challengeController = new ChallengeController(challengeRepository ,updateChallengeRepoDataUseCase)
 const dashboardController = new DashboardBoardController(adminDashBoardUseCase)
-const adminReportController = new AdminReportController<Report>(getAllReportsUsecase, changeRespoStatusUseCase)
-const pairProgrammingController=new PairProgrammingController(getPaiProgarmmingRepoDataUseCase,changePairProgramStatusUSeCase)
+const adminReportController = new AdminReportController(getAllReportsUsecase, changeRespoStatusUseCase)
+const pairProgrammingController=new PairProgrammingController(pairProgrammingRepository,updatePairRepoDataUseCase)
 const transationController=new TransationController(transactionUsecase)
 
 

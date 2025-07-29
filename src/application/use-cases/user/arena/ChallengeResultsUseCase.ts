@@ -1,5 +1,4 @@
 import { IChallengeResultsUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases";
-import { GroupChallenge } from "@/domain/entities/GroupChallenge";
 import { leaderBoard } from "@/domain/entities/LeaderBoard";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 

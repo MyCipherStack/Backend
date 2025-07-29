@@ -15,7 +15,8 @@ export class PairProgramming{
         public status?:string,
         public navigator?:{name:string,id:string},
         public createdAt?:string,
-        public updatedAt?:string
+        public updatedAt?:string,
+        public isBlocked?:string
         
     ){}
 }

@@ -1,5 +1,5 @@
 import { IAdminDashBoardUseCase } from "@/application/interfaces/use-cases/IAdminUseCase";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { Request, Response } from "express";
 
 

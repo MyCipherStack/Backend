@@ -1,19 +1,22 @@
 import { SubscriptionEntity } from "@/domain/entities/Subscription";
-import { BaseRepository } from "./BaseRespositroy";
-import {ISubscription, subscripctionModel } from "../database/SubscripctionsModel";
+import { BaseRepository } from "./BaseRepository";
+ 
 import { Document } from "mongoose";
-import { IISubscritpionRepository } from "@/domain/repositories/ISubscritpionRepository";
+
+import { ISubscription, subscriptionModel } from "../database/SubscriptionsModel";
+import { ISubmissionRepository } from "@/domain/repositories/ISubmissionRepository";
+import { ISubscriptionRepository } from "@/domain/repositories/ISubscriptionRepository";
 
 
 
 
 
 
-export class SubscritpionRepository extends BaseRepository<SubscriptionEntity,ISubscription>  implements IISubscritpionRepository{
+export class SubscriptionRepository extends BaseRepository<SubscriptionEntity,ISubscription>  implements ISubscriptionRepository{
 
 
     constructor(){
-        super(subscripctionModel)
+        super(subscriptionModel)
     }
 
     protected toEntity(data: (ISubscription & Document) | null): SubscriptionEntity | null {

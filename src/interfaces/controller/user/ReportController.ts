@@ -5,7 +5,7 @@ import { IGetAllReportsUsecase } from "@/application/interfaces/use-cases/IRepor
 import { IGetUserDataBynameUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 import { Report } from "@/domain/entities/Report";
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { NextFunction, Request, Response } from "express";
 
 

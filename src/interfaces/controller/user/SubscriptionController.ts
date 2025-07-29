@@ -4,7 +4,7 @@ import { PremiumPlan } from "@/domain/entities/PremiumPlan"
 import { ICreateRepoUseCase } from "@/application/interfaces/use-cases/ICreateRepoUseCase";
 import { SubscriptionEntity } from "@/domain/entities/Subscription";
 import { CreateSubscripctionDTO } from "@/application/dto/CreateSubscripctionDTO";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { AppError } from "@/domain/error/AppError";
 import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 import { User } from "@/domain/entities/User";
@@ -15,9 +15,9 @@ import { User } from "@/domain/entities/User";
 export class SubscriptionController {
     constructor(
         private getPremiumPlanUseCase: IGetRepositoryDataUseCase<PremiumPlan>,
-        private createSubscritionUseCase: ICreateRepoUseCase<SubscriptionEntity>,
+        private createSubscriptionUseCase: ICreateRepoUseCase<SubscriptionEntity>,
         private updateUseCase: IUpdateUserUseCase,
-        private getSubcriptionUseCase: IGetRepositoryDataUseCase<SubscriptionEntity>,
+        private getSubscriptionUseCase: IGetRepositoryDataUseCase<SubscriptionEntity>,
         private getUserUseCase: IGetRepositoryDataUseCase<User>,
 
 
@@ -32,7 +32,7 @@ export class SubscriptionController {
 
 
         try {
-            const response = await this.getPremiumPlanUseCase.allDoucuments()
+            const response = await this.getPremiumPlanUseCase.allDocuments()
             if (response) {
 
                 const plans = response.filter(plan => plan.status != "deleted")
@@ -63,14 +63,14 @@ export class SubscriptionController {
             })
 
 
-            const response = await this.createSubscritionUseCase.execute(data)
+            const response = await this.createSubscriptionUseCase.execute(data)
 
-            const subscripctionId = response?._id
+            const subscriptionId = response?._id
 
-            await this.updateUseCase.execute(user.email, { subscripctionId, role: "premium" })
+            await this.updateUseCase.execute(user.email, { subscriptionId, role: "premium" })
 
-            logger.info("id", response._id)
-            logger.info("create subcription", { data: response })
+        
+  
             res.status(200).json({ status: true, message: "create subscription" })
 
 
@@ -82,23 +82,23 @@ export class SubscriptionController {
 
 
 
-    getSubcriptionData = async (req: Request, res: Response, next: NextFunction) => {
+    getSubscriptionData = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const user = req.user as { id: "string" }
 
-            logger.info("subscrption Data", { user })
-
-            const userDetails = await this.getUserUseCase.OneDocumentByid(user?.id)
+            
+            const userDetails = await this.getUserUseCase.OneDocumentById(user?.id)
             logger.info("id", { userDetails })
-            const subscripctionId = userDetails?.subscripctionId
-            const data = await this.getSubcriptionUseCase.OneDocumentByid(subscripctionId!)
+            const subscriptionId = userDetails?.subscriptionId
+            const data = await this.getSubscriptionUseCase.OneDocumentById(subscriptionId!)
             if (data?.endDate && userDetails?.email) {
                 if (data?.endDate! < new Date()) {
-                    await this.updateUseCase.execute(userDetails?.email, { subscripctionId: "", role: "regular" })
+                    await this.updateUseCase.execute(userDetails?.email, { subscriptionId: "", role: "regular" })
                 }
-
+                
             }
-
+            
+            logger.info("subscrption Data", { data })
             res.status(200).json({ status: true, message: " subscription Details", data })
 
         } catch (error) {

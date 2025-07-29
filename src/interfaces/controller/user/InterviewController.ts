@@ -5,7 +5,7 @@ import { Interview } from "@/domain/entities/Interview";
 import { IScheduleInterviewUseCase } from "@/application/interfaces/use-cases/IScheduleInterviewUseCase"; 
 import { IInterViewRepository } from "@/domain/repositories/IInterViewRepository";
 import { IjoinInterViewUseCase } from "@/domain/repositories/IjoinInterViewUseCase"; 
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { AppError } from "@/domain/error/AppError";
 
 
@@ -40,7 +40,7 @@ export class InterviewController {
             const { id } = req.user as {id: string}
             const userCreatedInterview = await this.interViewRepository.findByField({ hostId: id })
 
-            const userInterviews = await this.interViewRepository.findByField({ partipantId: id })
+            const userInterviews = await this.interViewRepository.findByField({ participantId: id })
             console.log(userCreatedInterview,userInterviews);
             
             res.status(200).json({ status: true, message: "get all interview", interviews: { userInterviews, userCreatedInterview } })

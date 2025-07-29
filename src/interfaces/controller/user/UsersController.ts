@@ -21,7 +21,7 @@ export class UsersController {
             const limit = parseInt(req.query.limit as string) || 10;
             const role = req.query.role as string;
             const status = req.query.status as string;
-            const search = req.query.search as string;
+            const search = req.query.search as string; 
             
             const data = await this.getFilteredUsersUseCase.execute({ page, limit, role, status, search })
             // const data1=await this.userRepository.getFiltersUsers({page,limit,role,status,search})

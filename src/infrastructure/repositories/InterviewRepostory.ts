@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 import { Interview } from "../../domain/entities/Interview";
 import { IInterview, interviewModel } from "../database/InterviewModel";
-import { BaseRepository } from "./BaseRespositroy";
+import { BaseRepository } from "./BaseRepository";
 import { IInterViewRepository } from "../../domain/repositories/IInterViewRepository";
 
 
@@ -20,7 +20,7 @@ export class InterViewRepository extends BaseRepository<Interview,IInterview> im
     }
 
 
-    protected toEntity(data: (IInterview & Document<unknown, any, any>) | null): Interview | null {
+    protected toEntity(data: (IInterview & Document) | null): Interview | null {
         if(!data) return null
         console.log(data._id);
         
@@ -32,7 +32,7 @@ export class InterViewRepository extends BaseRepository<Interview,IInterview> im
             data.duration,
             data.notes,
             data.hostId,
-            data.partipantId,
+            data.participantId,
             data.id
         )
     }

@@ -12,7 +12,7 @@ export interface IInterview extends Document{
      duration: string,
      notes:string,
      hostId:string,
-     partipantId:string,
+     participantId:string,
      code?:string,
      status?:string
 }
@@ -26,14 +26,14 @@ const interviewSchema=new mongoose.Schema<IInterview>({
     duration:{type:String,required:true},
     notes:{type:String,required:true},
     hostId:{type:String,required:true},
-    partipantId:{type:String},
+    participantId:{type:String},
     code:{type:String},
     status:{type:Boolean,default:true}
 },{timestamps:true})
 
 
 
-export const interviewModel=mongoose.model<IInterview>("inteview",interviewSchema)
+export const interviewModel=mongoose.model<IInterview>("interview",interviewSchema)
 
 
 

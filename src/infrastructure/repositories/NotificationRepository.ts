@@ -1,9 +1,9 @@
 import { NotificationEntity } from "@/domain/entities/Notification";
-import { BaseRepository } from "./BaseRespositroy";
+import { BaseRepository } from "./BaseRepository";
 import { INotification, notificationModel } from "../database/NotificationModel";
 import { Document } from "mongoose";
 import { INotificationRepository } from "@/domain/repositories/INotificationRepository";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 
@@ -20,7 +20,7 @@ export class NotificationRepository extends BaseRepository<NotificationEntity, I
 
 
 
-    protected toEntity(data: (INotification & Document<unknown, any, any>) | null): NotificationEntity | null {
+    protected toEntity(data: (INotification & Document) | null): NotificationEntity | null {
         if (!data) return null
                 
         return new NotificationEntity(

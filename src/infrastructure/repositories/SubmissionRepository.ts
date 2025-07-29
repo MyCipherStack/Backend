@@ -2,8 +2,7 @@ import { Document } from "mongoose";
 import { Submission } from "../../domain/entities/Submission";
 import { ISubmissionRepository } from "../../domain/repositories/ISubmissionRepository";
 import { ISubmissionDocument, submissionModel } from "../database/SubmissionModel";
-import { BaseRepository } from "./BaseRespositroy";
-import { logger } from "@/logger";
+import { BaseRepository } from "./BaseRepository";
 import { Problem } from "@/domain/entities/Problem";
 
 
@@ -111,7 +110,7 @@ export class SubmissionRepository extends BaseRepository<Submission, ISubmission
     }
 
 
-    protected toEntity(data: (ISubmissionDocument & Document<unknown, any, any>) | null): Submission | null {
+    protected toEntity(data: (ISubmissionDocument & Document<unknown>) | null): Submission | null {
         if (!data) return null
         return new Submission(data.userId.toString(), data.problemId.toString(), data.code, data.language, data.status, data.runTime ?? 0, data.memory ?? 0, data.passedTestCases, data.totalTestCases, data.error ?? "", data.failingTestCaseResult, data.createdAt?.toString(), data._id.toString())
 

@@ -1,4 +1,4 @@
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { User } from "@/domain/entities/User";
 import { IUserRepository } from "@/domain/repositories/IUserRepository";
 import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm";
@@ -26,7 +26,7 @@ export class LoginUserUseCase implements ILoginUserUseCase {
         } 
         console.log(foundUser,"founduser");
           
-        if(!foundUser){
+        if(!foundUser?.password){
             throw new Error("User not found with this email or password");
         }
 

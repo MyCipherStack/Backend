@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { LoginDTO } from "../../../application/dto/LoginDTO";
 import { env } from "../../../config/env";
-import { logger } from "@/logger";
 import { AppError } from "@/domain/error/AppError";
 import { ILoginAdminUsecase } from "@/application/interfaces/use-cases/IAdminUseCase";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 export class AdminAuthController {
@@ -16,10 +16,6 @@ export class AdminAuthController {
     login = async (req: Request, res: Response) => {
         try {
 
-
-            console.log("admin login");
-
-            console.log(req.body);
 
 
             const data = new LoginDTO(req.body)
@@ -42,22 +38,23 @@ export class AdminAuthController {
             console.log(adminData);
             console.log(adminData.admin);
 
-            res.status(200).json({ status: true, message: " logged successfull", admin: adminData.admin })
+            res.status(HttpStatusCode.OK).json({ status: true, message: " logged successfull", admin: adminData.admin })
 
 
         } catch (error) {
             console.log(error);
-            res.status(400).json({ status: false, message: error.message })
+            res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message })
 
         }
 
     }
 
 
+
+
     logout = (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            console.log("logout controller is working");
 
             res.clearCookie('accessToken', {
                 httpOnly: true,
@@ -71,12 +68,12 @@ export class AdminAuthController {
             });
 
 
-            return res.status(200).json({ message: 'Logged out successfully' });
+            return res.status(HttpStatusCode.OK).json({ message: 'Logged out successfully' });
         }
 
         catch (error) {
-            logger.error("err in logout err", error)
-            next(new AppError("err in logout", 400))
+
+            next(new AppError("err in logout", HttpStatusCode.BAD_REQUEST))
         }
     }
 

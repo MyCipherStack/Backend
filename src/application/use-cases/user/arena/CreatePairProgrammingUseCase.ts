@@ -3,7 +3,7 @@ import { IPairProgramming } from "@/application/interfaces/IChallengeInterfaces"
 import { ICreatePairProgrammingUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases";
 import { IPairProgrammingRepository } from "@/domain/repositories/IPairProgrammingRepository";
 import { IProblemRepository } from "@/domain/repositories/IProblemRepository";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { INotificationSocket } from "@/domain/services/ISocketService";
 import { IGetUserDataBynameUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 import { INotificationRepository } from "@/domain/repositories/INotificationRepository";
@@ -26,19 +26,19 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
 
         // console.log("notification",this.notificationService,this.getUserDataBynameUseCase)
 
-
+        logger.info("pair programming type", { Problemtype: data.problemType })
         if (data.problemType === "random") {
             logger.info("random")
             const random = await this.problemRepository.getRadomDocument()
             logger.info("random", { random })
             if (random?._id) {
                 logger.info("random3")
-                data.problems = [random._id?.toString()]
+                data.problems = [random?._id?.toString()]
             }
         }
 
 
-        const createdJoinCode="cipher-" + nanoid() 
+        const createdJoinCode = "cipher-" + nanoid()
 
         if (data.invitedUsers) {
             data.invitedUsers.map(async (userName) => {
@@ -50,12 +50,12 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
                         message: "Requsted a pairProgam invite",
                         link: `pairProgramming/${createdJoinCode}`
                     }
+                    let userId = data._id.toString()
 
-                    const notification = await this.notificationRepository.create({ userId: data._id, ...notificationData })
+                    const notification = await this.notificationRepository.create({ userId, ...notificationData })
+
 
                     this.notificationService.emitNotification(notification?.userId, notification)
-
-
 
                 }
             })
@@ -63,7 +63,7 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
 
 
 
-        const createdChallenge = await this.pairProgrammingRepository.create({ ...data, duration: 1, joinCode:createdJoinCode })
+        const createdChallenge = await this.pairProgrammingRepository.create({ ...data, duration: 1, joinCode: createdJoinCode })
 
         console.log(createdChallenge);
 

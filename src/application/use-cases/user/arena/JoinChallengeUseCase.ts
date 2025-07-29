@@ -6,28 +6,31 @@ import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository
 import { IJoinChallengeUseCase } from "../../../interfaces/use-cases/IChallengeUseCases";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
+import { GroupChallenge } from "@/domain/entities/GroupChallenge";
 
 
-export class JoinChallengeUseCase<joinType> implements IJoinChallengeUseCase<joinType> {
+export class JoinChallengeUseCase implements IJoinChallengeUseCase {
     constructor(
-        private Repositoy: IChallengeRepository,
-        private leaderBoardRespository: ILeaderBoardRepository,
+        private Repository: IChallengeRepository,
+        private leaderBoardRepository: ILeaderBoardRepository,
     ) { }
 
 
 
-    async execute(joinCode: string, userId: string): Promise<joinType> {
+    async execute(joinCode: string, userId: string): Promise<GroupChallenge> {
         logger.info("joinCodeeeee", joinCode)
-        const respositoryData = await this.Repositoy.findOneChallenge({ joinCode })
+        const respositoryData = await this.Repository.findOneChallenge({ joinCode })
 
         console.log(respositoryData, joinCode, "joinedDATA");
 
-        
+        if(respositoryData?.isBlocked){
+                throw new AppError("Challenge is blocked by admin")
+        }
 
-        if (respositoryData) {
+        if (respositoryData?._id) {
 
-            const leaderBoards = await this.leaderBoardRespository.findAllWithUserDeatils({ challengeId: respositoryData._id })
+            const leaderBoards = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId: respositoryData._id })
 
 
 
@@ -38,11 +41,11 @@ export class JoinChallengeUseCase<joinType> implements IJoinChallengeUseCase<joi
             }
 
 
-            const leaderBoard = await this.leaderBoardRespository.findOne({ challengeId: respositoryData._id, userId })
+            const leaderBoard = await this.leaderBoardRepository.findOne({ challengeId: respositoryData._id, userId })
             console.log(leaderBoard, "total pratip ants");  // to calculate the number to enter limit is max after limet i want to reject
             // if (leaderBoard.participants)
             if (!leaderBoard) {
-                const joinedUser = await this.leaderBoardRespository.create({ challengeId: respositoryData._id, userId })
+                const joinedUser = await this.leaderBoardRepository.create({ challengeId: respositoryData._id, userId })
             }
 
             console.log(respositoryData, "challegen Data");
@@ -52,7 +55,8 @@ export class JoinChallengeUseCase<joinType> implements IJoinChallengeUseCase<joi
             let second = Math.floor(TimeUsed / 1000)
             let minutes = Math.floor(second / 60) + 60
             if (minutes < 0) {
-                throw new Error({ timer: minutes, message: "Challenge not started" })
+
+                throw new AppError("Challenge is full")
             }
 
             return respositoryData

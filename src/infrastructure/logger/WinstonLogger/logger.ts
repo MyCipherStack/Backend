@@ -1,4 +1,5 @@
 
+import { env } from "@/config/env";
 import winston, {createLogger, format, transports} from "winston"
 import LokiTransport from "winston-loki"
 
@@ -8,7 +9,7 @@ export const logger=createLogger({
     format:format.json(),
     transports:[
         new LokiTransport({
-            host:"http://localhost:3100",
+            host:env.LOKI_TRANSPORT_HOST,
             labels:{job:"express-backend"},
         }),
         // new transports.Console()
@@ -27,4 +28,4 @@ export const logger=createLogger({
 
     ]  
 
-})
+});

@@ -8,11 +8,11 @@ import { leaderBoard } from "@/domain/entities/LeaderBoard.js";
 
 
 export interface ICreateChallengeUseCase {
-    execute(challengeData: IGroupChallenge): Promise<string | null>
+    execute(challengeData: IGroupChallenge,userId:string): Promise<string | null>
 }
 
-export interface IJoinChallengeUseCase<joinType> {
-    execute(joinCode: string, userId: string): Promise<joinType>
+export interface IJoinChallengeUseCase {
+    execute(joinCode: string, userId: string): Promise<GroupChallenge>
 }
 export interface IJoinPairProgrammigUseCase {
     execute(joinCode: string, userId: string, userName: string): Promise<PairProgramming | null>

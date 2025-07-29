@@ -1,6 +1,6 @@
 
 
-export interface IChangeRespoStatusUseCase<Entity>{
+export interface IChangeRepoStatusUseCase<Entity>{
 
     execute(id:string,status:Partial<Entity>):Promise<Entity  |null>
 
@@ -10,7 +10,7 @@ export interface IChangeRespoStatusUseCase<Entity>{
 
 export interface IUpdateRepositoryDataUseCase<Entity>{
 
-    execute(id:string,status:Partial<Entity>):Promise<Entity  |null>
+    execute(id:string,updateData:Partial<Entity>):Promise<Entity  |null>
 
 }
 

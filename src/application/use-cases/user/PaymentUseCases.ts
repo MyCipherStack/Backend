@@ -3,7 +3,7 @@ import { IPaymentUseCases } from "../../interfaces/use-cases/IPaymentUseCases";
 import { verifyPaymentDTO } from "../../dto/VerifyPaymentDTO";
 import { ITransactionRepotitory } from "@/domain/repositories/ITransactionRepotitory";
 import { Transaction } from "@/domain/entities/Transaction";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 export class PaymentUseCases implements IPaymentUseCases {

@@ -1,7 +1,7 @@
 import { IGetAllRepoDataUsingFieldUseCase, IUpdateRepositoryDataUseCase } from "@/application/interfaces/use-cases/ISharedUseCase"
 import { NotificationEntity } from "@/domain/entities/Notification"
 import { AppError } from "@/domain/error/AppError"
-import { logger } from "@/logger"
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger"
 import { NextFunction, Request, Response } from "express"
 
 
@@ -24,7 +24,7 @@ export class NotificationController {
 
             logger.info("all notification",{allNotification})
             
-            res.status(200).json({ status: true, message: "problem submited", allNotification })
+            res.status(200).json({ status: true, message: "problem submitted", allNotification })
 
 
         } catch (error) {
@@ -46,7 +46,7 @@ export class NotificationController {
 
             const notification = await this.updateRepositoryDataUseCase.execute(notificationId, { isRead: true })
 
-            res.status(200).json({ status: true, message: "problem submited", notification })
+            res.status(200).json({ status: true, message: "problem submitted", notification })
 
 
         } catch (error) {

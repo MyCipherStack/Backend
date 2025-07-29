@@ -9,6 +9,7 @@ export class CreateSubscripctionDTO{
         transactionId:string
 
         name:string
+    
 
         price:number
 
@@ -22,8 +23,9 @@ export class CreateSubscripctionDTO{
 
         planId:string
 
-    constructor(data){  
-        console.log("plan details",data);
+    constructor(data:{
+
+    }){  
         
        this.userId=data.userId
        this.transactionId=data.transactionId

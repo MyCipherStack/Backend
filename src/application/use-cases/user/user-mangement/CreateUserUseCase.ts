@@ -3,7 +3,7 @@ import { IUserRepository } from "../../../../domain/repositories/IUserRepository
 import { User } from "../../../../domain/entities/User";
 import { IHashAlgorithm } from "../../../../domain/services/IHashAlgorithm";
 import { IPendingUserRepository } from "../../../../domain/repositories/IPendingUserRepository";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { ICreateUserUseCase } from "../../../interfaces/use-cases/IUserUseCase";
 
 export class CreateUserUseCase  implements ICreateUserUseCase {

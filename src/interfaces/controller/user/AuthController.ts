@@ -4,8 +4,9 @@ import { LoginDTO } from "@/application/dto/LoginDTO";
 import { env } from "@/config/env";
 import { ICreateUserUseCase, ILoginUserUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { ISendOtpUseCase } from "@/application/interfaces/use-cases/IOtpUseCases";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -47,7 +48,6 @@ export class AuthController{
 
             next(new AppError(error.message, 400))
 
-            // res.status(400).json({status:false,message:error.message })
         }
     }
 
@@ -55,11 +55,8 @@ export class AuthController{
         try {
 
             const loginData = new LoginDTO(req.body)
-
-            // const loginUsecase = new LoginUserUseCase(this.userRepository, this.hashService, this.JwtService)
             let loginUserData = await this.loginUserUseCase.execute(loginData.identifier, loginData.password)
-       
-
+    
 
             res.cookie("accessToken", loginUserData.accessToken, {
                 httpOnly: true,
@@ -76,15 +73,14 @@ export class AuthController{
                 path: "/"
             })
 
-            res.status(200).json({ status: true, message: "user logged success", user: loginUserData.user })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "user logged success", user: loginUserData.user })
 
         }
         catch (error: any) {
             logger.error(error.message);
 
-            next(new AppError(error.message, 400))
+            next(new AppError(error.message, HttpStatusCode.BAD_REQUEST))
 
-            // res.status(400).json({status:false,message:error.message })
         }
 
     }

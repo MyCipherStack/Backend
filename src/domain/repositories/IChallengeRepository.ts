@@ -8,7 +8,7 @@ export interface IChallengeRepository extends IBaseRepository<GroupChallenge> {
 
         findAllByFields(data: Partial<GroupChallenge>): Promise<GroupChallenge[] | null>
 
-        paginatedData(filters: {page:number,limit:number, type?: string; status?: string; search?: string; }): Promise<{
+        paginatedData(filters: {page:number,limit:number, isBlocked?:string ,search?: string,status?: string,type?: string}): Promise<{
             datas: GroupChallenge[];
             totalCount: number;
             totalPages: number;

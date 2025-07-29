@@ -3,18 +3,19 @@
 
 
 import { FilterDTO } from "@/application/dto/FilterDTO";
-import { IChangeRespoStatusUseCase } from "@/application/interfaces/use-cases/ISharedUseCase";
+import { IChangeRepoStatusUseCase } from "@/application/interfaces/use-cases/ISharedUseCase";
 import { IGetAllReportsUsecase } from "@/application/interfaces/use-cases/IReportUseCase";;
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { NextFunction, Request, Response } from "express";
+import { Report } from "@/domain/entities/Report";
 
 
 
-export class AdminReportController<Entity> {
+export class AdminReportController {
   constructor(
     private getAllReportsUsecase: IGetAllReportsUsecase,
-    private changeRespoStatusUseCase: IChangeRespoStatusUseCase<Entity>
+    private changeRespoStatusUseCase: IChangeRepoStatusUseCase<Report>
   ) { }
 
 
@@ -49,7 +50,7 @@ export class AdminReportController<Entity> {
   updateReportStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
       logger.info("updated reports data", { data: req.body.update })
-      const response = await this.changeRespoStatusUseCase.execute(req.body.update.id, req.body.update.status)
+      const response = await this.changeRespoStatusUseCase.execute(req.body.update.id, {status:req.body.update.status})
 
       res.status(200).json({ status: true, message: "user data fetched success", reportData: response })
 

@@ -12,13 +12,16 @@ export interface IProblemRepository extends IBaseRepository<Problem> {
 
     editProblem(id: string, problem: Problem): Promise<Problem | null>
 
-    findBytitle(title: string): Promise<Problem | null>
-    
+    findByTittle(title: string): Promise<Problem | null>
+
     getRadomDocument(): Promise<Problem | null>
-    
+
     // changeStatus(id:string,status:boolean):Promise<Problem | null>
 
-    updateAcceptence(id:string,submited:number,accepted:number):Promise<boolean>
+    updateAcceptance(id: string, submitted: number, accepted: number): Promise<boolean>
+
+    totalProblemsDifficulty(): Promise<{ difficulty: string; count: number }[]>
+
 
 
 

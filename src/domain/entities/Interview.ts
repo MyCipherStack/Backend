@@ -11,8 +11,9 @@ export class Interview{
         public duration: string,
         public notes:string,
         public hostId:string,
-        public partipantId:string,
+        public participantId:string,
         public id?:string,
         public code?:string,
     ){}
 }
+

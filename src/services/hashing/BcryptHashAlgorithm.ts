@@ -10,3 +10,4 @@ export class BcryptHashAlgorithm implements IHashAlgorithm {
         return await bcrypt.compare(password,hashedPassword)
     }
 }
+

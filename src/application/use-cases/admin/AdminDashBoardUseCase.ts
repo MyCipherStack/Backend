@@ -1,6 +1,6 @@
 
-import { logger } from "@/logger";
-import { IAdminDashBoardUseCase } from "../interfaces/use-cases/IAdminUseCase";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
+import { IAdminDashBoardUseCase } from "@/application/interfaces/use-cases/IAdminUseCase";
 import { IUserRepository } from "@/domain/repositories/IUserRepository";
 import { ITransactionRepotitory } from "@/domain/repositories/ITransactionRepotitory";
 
@@ -13,7 +13,8 @@ export class AdminDashBoardUseCase implements IAdminDashBoardUseCase {
         private transactionRepotitory: ITransactionRepotitory
     ) { }
 
-    async execute(range: string) {
+    async execute(range: string): Promise<{ userData: { range: string; usersCount: number; }[]; totalUsers: number; premiumUsers: number; transactions: { range: string; revenue: string; }[]; thisMonthRevenu: number; } | null> {
+
         logger.info("admin usecase")
         let startDate
         switch (range) {
@@ -42,13 +43,15 @@ export class AdminDashBoardUseCase implements IAdminDashBoardUseCase {
 
 
 
+        let totalUsers = data?.totalUser.totalUsers || 0
+        let premiumUsers = data?.totalUser.premiumUsers || 0
+        const thisMonthRevenu = transations?.thisMonth || 0
 
-        //  logger.info("dashBoardData",{data})
-        let totalUsers = data.totalUser[0].totalUsers
-        let premiumUsers = data.totalUser[0].premiumUsers
+        return { userData: data?.userDetails!, totalUsers, premiumUsers, transactions: transations?.transactionDetails!, thisMonthRevenu }
 
 
-        return { userData: data.userDetails, totalUsers, premiumUsers, transactions: transations.transactionDetails,thisMonthRevenu:transations.thisMonth }
+        new Error("data base is empty")
+
 
     }
 }

@@ -1,6 +1,6 @@
 import { IEndChallengeUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases";
 import { IBullmqQueueService } from "@/domain/services/IBullmqServices";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 

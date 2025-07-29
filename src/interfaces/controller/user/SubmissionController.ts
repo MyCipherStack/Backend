@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IGetAllSubmissionByProblemuseCase, IGetAllUsersSubmissionUseCase } from "../../../application/interfaces/use-cases/IGetAllSubmissionByProblemuseCase";
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { IGetRecentSubmissionUseCase } from "@/application/interfaces/use-cases/ISubmissoinUseCase";
 import { ProblemDTO } from "@/application/dto/ProblemDTO";
 import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
@@ -90,7 +90,7 @@ export class SubmissionController {
             const language = req.body.language
             let testCases = req.body.testCases  //this have only sampleTestCase
             const user = req.user as { id: string }
-            const ProblemWithAlltestCases = await this.getProblemDataUseCase.OneDocumentByid(problem._id)
+            const ProblemWithAlltestCases = await this.getProblemDataUseCase.OneDocumentById(problem._id)
             const AllTestCases = ProblemWithAlltestCases?.testCases ?? []
             const updatedTestCases = await this.runProblemUseCase.execute(AllTestCases, code, language, problem.memoryLimit, problem.timeLimit, problem.functionSignatureMeta, true)
 
@@ -99,7 +99,7 @@ export class SubmissionController {
 
             const submitData = await this.submitProblemUseCase.execute(updatedTestCases, user.id, problem._id, code, language, totalTestCases)
             console.log(submitData);
-            res.status(200).json({ status: true, message: "problem submited", submissions: submitData })
+            res.status(200).json({ status: true, message: "problem submitted", submissions: submitData })
 
 
         } catch (error) {

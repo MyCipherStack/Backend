@@ -2,8 +2,8 @@ import { Document } from "mongoose";
 import { IsolvedProblem, leaderBoard } from "../../domain/entities/LeaderBoard";
 import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository";
 import { ILeaderBoard, leaderBoardModel } from "../database/LeaderBoard";
-import { BaseRepository } from "./BaseRespositroy";
-import { logger } from "@/logger";
+import { BaseRepository } from "./BaseRepository";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBoard> implements ILeaderBoardRepository {
@@ -59,7 +59,7 @@ export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBo
 
     // }
 
-    protected toEntity(data: (ILeaderBoard & Document<unknown, any, any>) | null): leaderBoard | null {
+    protected toEntity(data: (ILeaderBoard & Document) | null): leaderBoard | null {
         if (!data) return null
         return new leaderBoard(
             data.challengeId,

@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
 import { env } from "@/config/env"; 
-import { IResetPassswordOtpUseCase } from "@/application/interfaces/use-cases/IUserPasswordUseCases";
+import { IResetPasswordOtpUseCase } from "@/application/interfaces/use-cases/IUserPasswordUseCases";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
 export class ForgotPasswordOtpController{
     constructor(
-        private resetPassswordOtpUseCase:IResetPassswordOtpUseCase
-        
+        private resetPassswordOtpUseCase:IResetPasswordOtpUseCase
     ){}
     sendOtp=async(req:Request,res:Response)=>{
         try{
@@ -31,7 +31,7 @@ export class ForgotPasswordOtpController{
     res.status(200).json({status:true,message:"otp sented"})
     
 }catch(error){
-            res.status(400).json({status:true,message:error.message})
+            res.status(HttpStatusCode.BAD_REQUEST).json({status:true,message:error.message})
             console.log(error);
             
         }

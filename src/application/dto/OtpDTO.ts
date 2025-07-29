@@ -7,7 +7,7 @@ export class OtpDTO{
         if(!data.otp){
             throw new Error("otp is empty")
         }
-        if(Array.isArray(data.otp)){
+        if(Array.isArray(data.otp)){    
             this.otp=data.otp.join("")
         }else{
             throw new Error("OTP must be an array of strings.");

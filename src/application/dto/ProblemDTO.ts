@@ -11,8 +11,8 @@ export class ProblemDTO {
     outputFormat: string;
     constraints: string;
     hint:string;
-    testCases: { input: string; output: string; isSample: boolean,explanation:string }[];
-    functionSignatureMeta:{
+    testCases: { input: string; output: string; isSample: boolean,explanation:string,testCaseNo:number }[];
+    functionSignatureMeta:{ 
     name:string,
     parameters:[],
     returnType:{type:string}}

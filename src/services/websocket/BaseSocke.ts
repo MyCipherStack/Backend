@@ -1,7 +1,7 @@
 
 
 import { Server, Socket } from "socket.io"
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 export abstract class BaseSocket{

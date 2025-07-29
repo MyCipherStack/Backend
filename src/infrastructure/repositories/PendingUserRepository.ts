@@ -2,7 +2,7 @@
 import { PendingUser } from "../../domain/entities/PendingUser";
 import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
 import { IPendingUser, PendingUserModel } from "../database/PendingUser";
-import { BaseRepository } from "./BaseRespositroy";
+import { BaseRepository } from "./BaseRepository";
 import { Document } from "mongoose";
 
 export class PendingUserRepository  extends BaseRepository<PendingUser,IPendingUser> implements IPendingUserRepository {
@@ -44,7 +44,7 @@ export class PendingUserRepository  extends BaseRepository<PendingUser,IPendingU
     }
 
 
-    protected toEntity(data: (IPendingUser & Document<unknown, any, any>) | null): PendingUser | null {
+    protected toEntity(data: (IPendingUser & Document) | null): PendingUser | null {
         if(!data) return null;
         return new PendingUser(data.name,data.email,data.password,data.createdAt,data.otp)
 

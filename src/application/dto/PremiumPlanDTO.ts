@@ -11,7 +11,6 @@ interface IPlan {
     _id:string
   }
 
-
 export class PremiumPlanDTO{
     name: string;
     price: number;

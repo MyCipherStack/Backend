@@ -15,8 +15,8 @@ export class ScheduleInterviewUseCase implements IScheduleInterviewUseCase {
         let finalData: Partial<Interview> = data
         if (data.sessionType == 'invite') {
             const response = await this.userRepository.findByUserName(data.invitedUsers[0])
-            const partipantId = response?._id
-            finalData.partipantId = partipantId?.toString()
+            const participantId = response?._id
+            finalData.participantId = participantId?.toString()
         } else {
             const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6);  //SET GROUP CHALLENGE
             finalData.code = `interview-${nanoid()}`

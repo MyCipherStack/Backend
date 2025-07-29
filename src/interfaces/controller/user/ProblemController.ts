@@ -3,7 +3,7 @@ import { IProblemRepository } from "@/domain/repositories/IProblemRepository";
 import { ProblemDTO } from "@/application/dto/ProblemDTO";
 import { IAcceptedUserProblemsUseCase, IRunProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases";
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { IGeneratePrompt, ISendToOllama } from "@/domain/services/IOllama";
 
 
@@ -12,7 +12,7 @@ import { IGeneratePrompt, ISendToOllama } from "@/domain/services/IOllama";
 
 export class ProblemController {
     constructor(
-        private problemRespository: IProblemRepository,
+        private problemRepository: IProblemRepository,
         private runProblemUseCase: IRunProblemUseCase,
         private acceptedUserProblemsUseCase: IAcceptedUserProblemsUseCase,
         private generatePrompt: IGeneratePrompt,
@@ -21,7 +21,7 @@ export class ProblemController {
     ) { }
     getData = async (req: Request, res: Response, next: NextFunction) => {
         try {
-
+            
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
             const difficulty = req.query.difficulty as string;
@@ -32,7 +32,7 @@ export class ProblemController {
             console.log(category, difficulty);
 
 
-            const data = await this.problemRespository.getFilterProblem({ page, limit, difficulty, status, search, category })
+            const data = await this.problemRepository.getFilterProblem({ page, limit, difficulty, status, search, category })
             //  console.log(data,"datasss");
             const problems = data.problems.map((problem) => {
                 return {
@@ -64,7 +64,7 @@ export class ProblemController {
 
 
 
-            let problem = await this.problemRespository.findBytitle(title)
+            let problem = await this.problemRepository.findByTittle(title)
 
             if (problem) {
 
@@ -136,7 +136,7 @@ export class ProblemController {
 
             const problemId = req.params.id
 
-            const problemDetails = await this.problemRespository.findById(problemId)
+            const problemDetails = await this.problemRepository.findById(problemId)
 
             const prompt = this.generatePrompt.createSolutionPrompt(problemDetails,"javascript")
 

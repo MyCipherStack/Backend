@@ -1,4 +1,4 @@
-import { BaseRepository } from "@/infrastructure/repositories/BaseRespositroy";
+import { BaseRepository } from "@/infrastructure/repositories/BaseRepository";
 import { Report } from "../entities/Report";
 import { IReports } from "@/infrastructure/database/ReportModel";
 

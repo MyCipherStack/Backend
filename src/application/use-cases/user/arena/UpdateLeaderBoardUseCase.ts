@@ -2,12 +2,12 @@ import { leaderBoard } from "@/domain/entities/LeaderBoard";
 import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 import { IUpdateLeaderBoardUsecase } from "@/application/interfaces/use-cases/ILeaderBoadrUseCase";
-import { logger } from "@/logger";
 import { IUserRepository } from "@/domain/repositories/IUserRepository";
 
 
 
 
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 export class UpdateLeaderBoardUseCase implements IUpdateLeaderBoardUsecase {
     constructor(
         private leaderBoardRepository: ILeaderBoardRepository,
@@ -19,6 +19,11 @@ export class UpdateLeaderBoardUseCase implements IUpdateLeaderBoardUsecase {
     async execute(userId: string, challengeId: string, updateData: { time: Date, problemId: string, submissionId: string }): Promise<leaderBoard | null> {
 
         const challengeData = await this.challengeReposiotry.findById(challengeId)
+
+        if(challengeData?.isBlocked){
+                        throw new Error("Challenge is blocked by admin")
+                }
+        
 
         const now = new Date()
 
@@ -54,7 +59,7 @@ export class UpdateLeaderBoardUseCase implements IUpdateLeaderBoardUsecase {
         logger.info("update leaderboard",{second, minutes, score});
 
         
-        const updatedData = await this.leaderBoardRepository.findOneAndUpdate({ userId, challengeId }, { time: minutes, problemId: updateData.problemId, submissionId: updateData.submissionId, score })
+        const updatedData = await this.leaderBoardRepository.findOneAndUpdate({ userId, challengeId }, { time: minutes.toString(), problemId: updateData.problemId, submissionId: updateData.submissionId, score })
         
         const updatedUserScore=await this.userRepository.updatePoints(userId,score)
 

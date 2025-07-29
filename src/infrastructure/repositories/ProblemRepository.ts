@@ -2,14 +2,13 @@ import { Document } from "mongoose";
 import { Problem } from "../../domain/entities/Problem";
 import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
 import { IProblem, problemModel } from "../database/ProblemModel";
-import { BaseRepository } from "./BaseRespositroy";
-import { logger } from "@/logger";
+import { BaseRepository } from "./BaseRepository";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 
 
 export class ProblemRepository extends BaseRepository<Problem, IProblem> implements IProblemRepository {
-
 
 
   constructor() {
@@ -46,7 +45,7 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
 
       return this.toEntity(problemData)
     }
-     return null
+    return null
   }
 
 
@@ -62,12 +61,12 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
 
 
 
-  async updateAcceptence(id: string, submited: number, accepted: number): Promise<boolean> {
+  async updateAcceptance(id: string, submitted: number, accepted: number): Promise<boolean> {
 
-    const data = await problemModel.updateOne({ _id: id }, { $inc: { "acceptence.submited": submited, "acceptence.accepted": accepted } })
+    const data = await problemModel.updateOne({ _id: id }, { $inc: { "acceptance.submitted": submitted, "acceptance.accepted": accepted } })
 
-    logger.info("update Acceptence", { data })
-    
+    logger.info("update Acceptance", { data })
+
     return data.modifiedCount > 0
 
 
@@ -75,32 +74,7 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
 
 
 
-
-
-
-  protected toEntity(data: (IProblem & Document<unknown, any, any>) | null): Problem | null {
-    if (!data) return null
-    return new Problem(
-      data.title,
-      data.problemId,
-      data.difficulty,
-      data.timeLimit,
-      data.memoryLimit,
-      data.tags,
-      data.statement,
-      data.inputFormat,
-      data.outputFormat,
-      data.constraints, data.testCases,
-      data.functionSignatureMeta,
-      data.acceptence,
-      data.hint,
-      data.starterCode,
-      data.id,
-    )
-  }
-
-
-  async findBytitle(title: string): Promise<Problem | null> {
+  async findByTittle(title: string): Promise<Problem | null> {
     const problemData = await problemModel.findOne({ title })
 
     if (problemData) {
@@ -112,13 +86,42 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
   }
 
 
-  // async changeStatus(id: string, status: boolean): Promise<Problem | null> {
 
-  //   const problemData=await problemModel.findOneAndUpdate({_id:id},{status:status},{new:true})
-  //   if(problemData){
-  //     return problemData
-  //   }return null
 
-  // }
+  async totalProblemsDifficulty(): Promise<{difficulty: string; count: number }[]> {
+
+    const problems = await problemModel.aggregate([{$match:{status:true}},{ $group: { _id: "$difficulty", count: { $sum: 1 } } },
+    {$project:{_id:0,difficulty:"$_id",count:1}}]);
+
+    return problems
+  }
+
+
+
+
+
+
+  protected toEntity(data: (IProblem & Document) | null): Problem | null {
+    if (!data) return null
+    return new Problem(
+      data.title,
+      data.problemId,
+      data.difficulty,
+      data.timeLimit,
+      data.memoryLimit,
+      data.tags,
+      data.statement,
+      data.inputFormat,
+      data.outputFormat,
+      data.constraints,
+       data.testCases,
+      data.functionSignatureMeta,
+      data.acceptance,
+      data.hint,
+      data.starterCode,
+      data._id,
+    )
+  }
+
 
 }

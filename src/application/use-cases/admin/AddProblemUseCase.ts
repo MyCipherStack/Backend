@@ -7,12 +7,12 @@ import { IAddProblemUseCase } from "../../interfaces/use-cases/IProblemUseCases"
 
 export class AddProblemUseCase implements IAddProblemUseCase {
     constructor(
-        private problemRespository: IProblemRepository
+        private problemRepository: IProblemRepository
     ) { }
 
     async execute(problem: Problem) {
 
-        const data = await this.problemRespository.create(problem)
+        const data = await this.problemRepository.create(problem)
         
         return data ?? null
     }

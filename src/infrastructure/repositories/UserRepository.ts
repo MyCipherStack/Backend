@@ -2,8 +2,8 @@ import { Document } from "mongoose";
 import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/repositories/IUserRepository";
 import UserModel, { IUser } from "../database/UserModel";
-import { BaseRepository } from "./BaseRespositroy";
-import { logger } from "@/logger";
+import { BaseRepository } from "./BaseRepository";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 
@@ -85,7 +85,8 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
     
 
 
-    async userGrowthByRange(format:string,startDate:Date): Promise<any | null> {
+    async userGrowthByRange(format: string, startDate: Date): Promise<{ userDetails: { range: string; usersCount: number; }[]; totalUser: { totalUsers: number; premiumUsers: number; }; } | null> {
+                
         logger.info("userRepodata",{format,startDate})
 
         const data=await UserModel.aggregate([{$match:{
@@ -103,7 +104,7 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
             }
         ])
         
-        const mapper=(data)=>{ return   data.map((obj=>({range:obj._id,usersCount:obj.userCount})))}
+        const mapper=(data:{_id:string,userCount:number}[])=>{ return   data.map((obj=>({range:obj._id,usersCount:obj.userCount})))}
         
         const user=await UserModel.aggregate([{
             $group:{
@@ -115,12 +116,12 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
         
         logger.info("ASDsdfsdf",{data})
 
-        return {userDetails:mapper(data),totalUser:user}
+        return {userDetails:mapper(data),totalUser:user[0]}
     }
 
 
 
-    protected toEntity(data: (IUser & Document<unknown, any, any>) | null): User | null {
+    protected toEntity(data: (IUser & Document<unknown>) | null): User | null {
         if(!data)return null
 
         return new User(data.name,
@@ -139,7 +140,8 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
             data.googleId,
             data.password,
             data.updated_at,
-            data.subscripctionId?.toString()
+            data.subscriptionId?.toString(),
+            data.createdContest
             )
 
     }

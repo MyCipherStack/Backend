@@ -13,7 +13,7 @@
     "baseUrl":"./src",
     "paths": {
       "@/*": ["*"]  
-    },
+    },  
     "types": ["node"],
     "sourceMap": false,
     "declaration": false

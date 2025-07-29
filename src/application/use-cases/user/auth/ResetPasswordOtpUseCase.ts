@@ -1,11 +1,11 @@
 import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository"; 
 import { IUserRepository } from "@/domain/repositories/IUserRepository"; 
 import { IOtpService } from "@/domain/services/IOtpService"; 
-import { IResetPassswordOtpUseCase } from "@/application/interfaces/use-cases/IUserPasswordUseCases"; 
+import { IResetPasswordOtpUseCase } from "@/application/interfaces/use-cases/IUserPasswordUseCases"; 
 
 
 
-export class ResetPassswordOtpUseCase implements IResetPassswordOtpUseCase {
+export class ResetPasswordOtpUseCase implements IResetPasswordOtpUseCase {
   constructor(
     private otpService: IOtpService,
     private pendingUserRepository: IPendingUserRepository,

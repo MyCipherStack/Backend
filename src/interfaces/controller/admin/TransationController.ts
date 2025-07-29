@@ -1,6 +1,7 @@
+import { FilterDTO } from "@/application/dto/FilterDTO";
 import { ITransactionUseCase } from "@/application/interfaces/use-cases/IAdminUseCase";
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { NextFunction, Request, Response } from "express";
 
 
@@ -20,8 +21,8 @@ export class TransationController {
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
             const status = req.query.status as string;
-            
-            const data = await this.TransactionUseCase.execute({ page, limit, status })
+             const filter=new FilterDTO({page,limit,status})
+            const data = await this.TransactionUseCase.execute(filter)
             
             logger.info("get all transation",{data})
             res.status(200).json({ status: true, message: "all transations", transactions: data });

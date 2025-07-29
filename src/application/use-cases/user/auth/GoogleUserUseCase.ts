@@ -21,7 +21,7 @@ export class GoogleUserUseCase implements IGoogleUserUseCase {
     }
 
     async execute(name: string, email: string, image: string, googleId: string): Promise<{
-        user: { name: string, email: string, _id: string },
+        user:User,
         accessToken: string, refreshToken: string
     }> {
 
@@ -39,7 +39,7 @@ export class GoogleUserUseCase implements IGoogleUserUseCase {
         }
         
 
-        let userData: { name: string, email: string, _id: string } = { name: "", email: "", _id: "" }
+        let userData: User = { name: "", email: ""}
         if (!existingUser) {
 
 

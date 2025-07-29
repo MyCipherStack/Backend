@@ -1,18 +1,5 @@
-import { Document, FilterQuery, Model, UpdateQuery } from "mongoose";
+import { Document, FilterQuery, Model } from "mongoose";
 import { IBaseRepository } from "../../domain/repositories/IBaseRepository";
-import { logger } from "@/logger";
-
-
-
-
-// export  interface BaseRepository<T>{
-//     create(data:T):Promise<T>;
-//     findById(Id:string):Promise<T|null>
-
-// }
-
-
-/// abstract class 
 
 
 
@@ -20,13 +7,14 @@ export abstract class BaseRepository<Entity, ModelSchema> implements IBaseReposi
     
     constructor(protected readonly model: Model<ModelSchema & Document>) { }
 
-    async create(data: Entity): Promise<Entity | null> {
+    async create(data: Entity): Promise<Entity> {
         const created = await this.model.create(data)
-        return this.toEntity(created)
+        return this.toEntity(created) as Entity;
     }
 
     async findById(id: string): Promise<Entity | null> {
-        const findedData = await this.model.findById(id).lean()
+        const findedData = await this.model.findById(id)     //removed .lean() any problem
+        if(!findedData) return null
         return this.toEntity(findedData)
     }
 
@@ -37,8 +25,8 @@ export abstract class BaseRepository<Entity, ModelSchema> implements IBaseReposi
     }
 
     async findAll(): Promise<Entity[] | null> {
-        const allDoucuments = await this.model.find()
-        return allDoucuments.map(data => this.toEntity(data)).filter(data => data != null)
+        const allDocuments = await this.model.find()
+        return allDocuments.map(data => this.toEntity(data)).filter(data => data != null)
     }
 
 

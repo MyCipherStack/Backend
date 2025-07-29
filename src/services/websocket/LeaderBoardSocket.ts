@@ -3,7 +3,7 @@ import { BaseSocket } from "./BaseSocke";
 import { ISubmissionRepository } from "@/domain/repositories/ISubmissionRepository";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 import { Server, Socket } from "socket.io";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
 import { GroupChallenge } from "@/domain/entities/GroupChallenge";
 
@@ -99,7 +99,7 @@ export class LeaderBoardSocket extends BaseSocket {
         socket.on("update-challenge-status", async (challengeId, updatedData) => {
 
 
-            //   const response=await  this.getChallengeDataUseCase.OneDocumentByid(challegeID)
+            //   const response=await  this.getChallengeDataUseCase.OneDocumentById(challegeID)
 
             io.to(challengeId).emit("update-challenge-status", updatedData)
 

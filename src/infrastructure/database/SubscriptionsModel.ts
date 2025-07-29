@@ -1,4 +1,4 @@
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import mongoose, { Document, SchemaTypes, Types } from "mongoose";
 
 
@@ -33,7 +33,7 @@ export interface ISubscription extends Document {
 
 
 
-const subscritpionSchema = new mongoose.Schema<ISubscription>({
+const SubscriptionSchema = new mongoose.Schema<ISubscription>({
 
     userId: { type: SchemaTypes.ObjectId, ref: "User", required: true },
 
@@ -61,7 +61,7 @@ const subscritpionSchema = new mongoose.Schema<ISubscription>({
 }, { timestamps: true })
 
 
-subscritpionSchema.pre("validate", function (next) {
+SubscriptionSchema.pre("validate", function (next) {
 
     logger.info("validate",{cycle:this.cycle})
 
@@ -85,4 +85,4 @@ subscritpionSchema.pre("validate", function (next) {
 })
 
 
-export const subscripctionModel = mongoose.model<ISubscription>("subscription", subscritpionSchema)
+export const subscriptionModel = mongoose.model<ISubscription>("subscription", SubscriptionSchema)

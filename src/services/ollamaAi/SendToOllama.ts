@@ -1,4 +1,4 @@
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import axios from "axios";
 
 

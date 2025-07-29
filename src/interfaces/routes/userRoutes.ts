@@ -15,9 +15,8 @@ import { ResendOtpController } from "../controller/user/ResendOtpController";
 import passport from "passport";
 import { LogoutController } from "../controller/user/LogoutController";
 import { GoogleAuthController } from "../controller/user/GoogleAuthController";
-import { ForgotPassVerifyOtpController } from "../controller/user/ForgotPassVerifyOtpContoller";
 import { ForgotPasswordOtpController } from "../controller/user/ForgotPassOtpController";
-import { ResetPasswordContoller } from "../controller/user/resetPasswordController";
+import { ResetPasswordController } from "../controller/user/resetPasswordController";
 import { ProblemController } from "../controller/user/ProblemController";
 import { IProblemRepository } from "../../domain/repositories/IProblemRepository";
 import { ProblemRepository } from "../../infrastructure/repositories/ProblemRepository";
@@ -43,7 +42,7 @@ import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository
 import { JoinChallengeUseCase } from "../../application/use-cases/user/arena/JoinChallengeUseCase";
 import { ILeaderBoardRepository } from "../../domain/repositories/ILeaderBoardRepository";
 import { LeaderBoardRepository } from "../../infrastructure/repositories/LeaderBoardRepository";
-import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepsitory";
+import { PairProgrammingRepository } from "../../infrastructure/repositories/PairProgrammingRepository";
 import { CreatePairProgrammingUseCase } from "@/application/use-cases/user/arena/CreatePairProgrammingUseCase";
 import { IGroupChallenge } from "../../application/interfaces/IChallengeInterfaces";
 import { UsersController } from "../controller/user/UsersController";
@@ -55,13 +54,12 @@ import { GetFilteredUsersUseCase } from "@/application/use-cases/user/user-mange
 import { joinInterViewUseCase } from "../../application/use-cases/user/arena/JoinInterviewUseCase";
 import { StreakService } from "../../services/streak/Streak";
 import { SubscriptionController } from "../controller/user/SubscriptionController";
-import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepostiroy";
+import { PremiumPlanRepository } from "../../infrastructure/repositories/premiumPlanRepository";
 import { PremiumPlan } from "@/domain/entities/PremiumPlan";
 import { PaymentUseCases } from "../../application/use-cases/user/PaymentUseCases";
 import { RazorpayServices } from "../../services/razorpay/RazorpayServices";
 import { PaymentController } from "../controller/user/PaymentController";
 import { TransactionRespotitory } from "@/infrastructure/repositories/TransactionsRespositoy";
-import { SubscritpionRepository } from "@/infrastructure/repositories/SubscritpionRepository";
 import { RoleMiddleware } from "@/middlewares/RoleMiddleware";
 import { AuthMiddlwareBundler } from "@/middlewares/AuthMiddlwareBundler";
 import { ReportController } from "../controller/user/ReportController";
@@ -70,7 +68,7 @@ import { GetUserDataBynameUseCase } from "@/application/use-cases/user/user-mang
 import { LoginUserUseCase } from "@/application/use-cases/user/auth/LoginUserUseCase";
 import { CreateUserUseCase } from "@/application/use-cases/user/user-mangement/CreateUserUseCase";
 import { SendOtpUseCase } from "@/application/use-cases/user/auth/SendOtpUseCase";
-import { ResetPassswordOtpUseCase } from "@/application/use-cases/user/auth/ResetPasswordOtpUseCase";
+import { ResetPasswordOtpUseCase } from "@/application/use-cases/user/auth/ResetPasswordOtpUseCase";
 import { ResetPassverifyOtpUseCase } from "@/application/use-cases/user/auth/ResetPassverifyOtpUseCase";
 import { VerifyOtpUseCase } from "@/application/use-cases/user/auth/VerifyUseCase";
 import { RegisterUserFromPendingUseCase } from "@/application/use-cases/user/auth/RegisterUserFromPendingUseCase";
@@ -98,6 +96,8 @@ import { LeaderBoardUseCase } from "@/application/use-cases/user/arena/LeaderBoa
 import { AcceptedUserProblemsUseCase } from "@/application/use-cases/user/problem-mangement/AcceptedUserProblemsUseCase"; 
 import { SendToOllama } from "@/services/ollamaAi/SendToOllama";
 import { GeneratePrompt } from "@/services/ollamaAi/GeneratePrompt";
+import { SubscriptionRepository } from "@/infrastructure/repositories/SubscritpionRepository";
+import { ForgotPassVerifyOtpController } from "../controller/user/ForgotPassVerifyOtpController";
 
 
 
@@ -115,7 +115,7 @@ const pairProgrammingRepository = new PairProgrammingRepository()
 const interViewRespository = new InterViewRepository()
 const premiumPlanRepository = new PremiumPlanRepository()
 const transactionRepository = new TransactionRespotitory()
-const subscritpionRepository = new SubscritpionRepository()
+const subscriptionRepository = new SubscriptionRepository()
 const reportRepository = new ReportRepository()
 const notificationRepository = new NotificationRepository()
 
@@ -157,7 +157,7 @@ const getUserDataBynameUseCase = new GetUserDataBynameUseCase(userRepository)
 const loginUserUseCase = new LoginUserUseCase(userRepository, hashService, jwtService)
 const createUserUseCase = new CreateUserUseCase(userRepository, hashService, pendingUserRepository);
 const sendOtpUseCase = new SendOtpUseCase(otpService, pendingUserRepository)
-const resetPassswordOtpUseCase = new ResetPassswordOtpUseCase(otpService, pendingUserRepository, userRepository)
+const resetPassswordOtpUseCase = new ResetPasswordOtpUseCase(otpService, pendingUserRepository, userRepository)
 const resetPassverifyOtpUseCase = new ResetPassverifyOtpUseCase(pendingUserRepository)
 const googleUserUseCase = new GoogleUserUseCase(userRepository, hashService, jwtService)
 const verifyOtpUseCase = new VerifyOtpUseCase(pendingUserRepository, otpService);
@@ -174,7 +174,7 @@ const getAllUsersSubmissionUseCase = new GetAllUsersSubmissionUseCase(submission
 const challengeResultsUseCase = new ChallengeResultsUseCase(leaderBoardRespository)
 const getRecentSubmissionUseCase = new GetRecentSubmissionUseCase(submissionRespository)
 const leaderBoardUseCase = new LeaderBoardUseCase(leaderBoardRespository)
-const acceptedUserProblems=new AcceptedUserProblemsUseCase(submissionRespository)
+const acceptedUserProblems=new AcceptedUserProblemsUseCase(submissionRespository,problemRespository)
 
 
 
@@ -185,13 +185,13 @@ const acceptedUserProblems=new AcceptedUserProblemsUseCase(submissionRespository
 const getUserRepositoryDataUseCase = new GetRepositoryDataUseCase<User>(userRepository)
 const getProblemDataUseCase = new GetRepositoryDataUseCase<Problem>(problemRespository)
 const getPremiumPlanUseCase = new GetRepositoryDataUseCase<PremiumPlan>(premiumPlanRepository)
-const getSubcriptionUseCase = new GetRepositoryDataUseCase<SubscriptionEntity>(subscritpionRepository)
+const getSubcriptionUseCase = new GetRepositoryDataUseCase<SubscriptionEntity>(subscriptionRepository)
 const getChallengeDataUseCase = new GetRepositoryDataUseCase<GroupChallenge>(challengeRepository)
 
 // COMMON USECASES
 const getFilteredUsersUseCase = new GetFilteredUsersUseCase(userRepository)
 const createRepoUseCase = new CreateRepoUseCase(interViewRespository)
-const createSubscritionUseCase = new CreateRepoUseCase(subscritpionRepository)
+const createSubscritionUseCase = new CreateRepoUseCase(subscriptionRepository)
 const createResportUseCase = new CreateRepoUseCase(reportRepository)
 
 const updateNotificationDataUseCase = new UpdateRepositoryDataUseCase(notificationRepository)
@@ -215,34 +215,6 @@ const bullmqQueueService = new BullmqQueueService()
 const endChallengeUseCase = new EndChallengeUseCase(bullmqQueueService)
 
 
-// evaluateWinnerUsecase.execute("6868f343669b1a33d4bc3873")//
-
-// const myQueue = new Queue("evaluate-winners", { connection: redisConnection });
-
-// let getJobs = async () => {
-
-//       // To get all waiting (queued) jobs
-
-//       const waitingJobs = await myQueue.getJobs(["delayed"]);
-//       console.log("evaluate-winners-jobs", waitingJobs)
-//       // console.log("all jobs", Jobs)
-//       const jobs = await myQueue.getJobs(["delayed"]);
-
-
-//       jobs.forEach(job => {
-//             const readyAt = job.timestamp + job.opts.delay;
-//             const now = Date.now();
-
-//             const timeLeft = Math.floor((readyAt - now) / 1000);
-
-//             console.log(`Job ${job.id}`);
-//             console.log(`  Ready at: ${new Date(readyAt).toLocaleString()}`);
-//             console.log(`  Time left: ${timeLeft <= 0 ? "OVERDUE" : timeLeft + " seconds"} ${timeLeft} `);
-
-//       })
-// }
-// getJobs()
-
 
 //OllamAi
 const ollamaAi=new SendToOllama()
@@ -257,7 +229,7 @@ const resendOtpController = new ResendOtpController(sendOtpUseCase)
 const logoutController = new LogoutController()
 const googleAuthController = new GoogleAuthController(googleUserUseCase)
 const forgotPasswordVerify = new ForgotPassVerifyOtpController(resetPassverifyOtpUseCase)
-const resetPassword = new ResetPasswordContoller(resetPasswordUseCase)
+const resetPassword = new ResetPasswordController(resetPasswordUseCase)
 const forgotPasswordOtpController = new ForgotPasswordOtpController(resetPassswordOtpUseCase)
 const problemController = new ProblemController(problemRespository, runProblemUseCase,acceptedUserProblems,generatePrompt,ollamaAi)
 const profileController = new ProfileController(updateUserUseCase, getUserRepositoryDataUseCase, verifyUserPasswordUseCase, resetPasswordUseCase)
@@ -287,12 +259,12 @@ const notificationController = new NotificationController(updateNotificationData
 
 
 
-//MIDDLEWARE--FOR AUTHENCATION AND AUTHORIZE
+//MIDDLEWARE--FOR AUTHENTICATION AND AUTHORIZE
+
+// (this way we can create any number of role Authentication  and authorize)
 let authenticate = new Authenticate(jwtService, getUserRepositoryDataUseCase)
 let authorize = new RoleMiddleware()
 let auth = new AuthMiddlwareBundler(authenticate, authorize, "user")
-
-
 
 
 
@@ -368,7 +340,7 @@ router.post("/joinInterView", auth.verify(), interviewController.joinInterview)
 
 //PREMIUM
 router.get("/allPlans", subscriptionController.getPlans)
-router.get("/subscriptionData", auth.verify(), subscriptionController.getSubcriptionData)
+router.get("/subscriptionData", auth.verify(), subscriptionController.getSubscriptionData)
 
 //PAYMENT 
 router.post("/createPayment", paymentController.createPayment)

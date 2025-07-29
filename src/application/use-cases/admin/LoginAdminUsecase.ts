@@ -1,4 +1,4 @@
-import { Admin } from "../../../domain/entities/Admin";
+import { Admin } from "@/domain/entities/Admin";
 import { IAdminRepository } from "../../../domain/repositories/IAdminRepository";
 import { IHashAlgorithm } from "../../../domain/services/IHashAlgorithm";
 import { IJwtService } from "../../../domain/services/IJwtService";
@@ -32,8 +32,8 @@ export class LoginAdminUsecase implements ILoginAdminUsecase {
         if(!passCheck){ throw new Error("Incorrect password. Please try again.");
         }
         
-        const accessToken= this.JwtService.signAccessToken({name:foundAdmin.name,role:"admin",id:foundAdmin._id})
-        const refreshToken= this.JwtService.signRefereshToken({name:foundAdmin.name,role:"admin",id:foundAdmin._id})
+        const accessToken= this.JwtService.signAccessToken({name:foundAdmin.name,role:"admin",id:foundAdmin.id})
+        const refreshToken= this.JwtService.signRefereshToken({name:foundAdmin.name,role:"admin",id:foundAdmin.id})
         const storeToken=await this.adminRepository.updateOneById(foundAdmin.id,{refreshToken})
         console.log(accessToken,refreshToken);
         

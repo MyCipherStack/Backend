@@ -1,5 +1,5 @@
-import { Basepository } from "../../infrastructure/repositories/BaseRespositroy.js";
-import { Admin } from "../entities/admin.js";
+
+import { Admin } from "../entities/Admin";
 import { IBaseRepository } from "./IBaseRepository.js";
 
 

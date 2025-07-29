@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { UpdateUserDTO } from "../../../application/dto/UpdateUserDTO";
-import { IGetFilteredUsersUseCase } from "../../../application/interfaces/use-cases/IGetFilteredUsersUseCase";
-import { logger } from "@/logger";
+import { UpdateUserDTO } from "@/application/dto/UpdateUserDTO";
+import { IGetFilteredUsersUseCase } from "@/application/interfaces/use-cases/IGetFilteredUsersUseCase";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { AppError } from "@/domain/error/AppError";
 import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 

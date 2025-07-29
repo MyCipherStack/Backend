@@ -3,6 +3,7 @@ import { OtpDTO } from "@/application/dto/OtpDTO";
 import { Request, Response } from "express"
 import { IResetPassverifyOtpUseCase } from "@/application/interfaces/use-cases/IUserPasswordUseCases";
 import { env } from "@/config/env";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 export class ForgotPassVerifyOtpController{
   constructor(
@@ -28,9 +29,8 @@ export class ForgotPassVerifyOtpController{
       res.json({status:true,message:"otp  verified"})
       
     } catch (error:any) {
-      console.log(error);
-      
-      return res.status(400).json({ status: false, message:error.message}); 
+
+      return res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message:error.message}); 
     }
   };
 }

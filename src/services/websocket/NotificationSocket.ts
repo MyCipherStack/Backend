@@ -1,6 +1,6 @@
 import { Socket, Server } from "socket.io";
 import { BaseSocket } from "./BaseSocke";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 

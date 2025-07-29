@@ -1,7 +1,7 @@
 import { IEvaluateWinnerUsecase } from "@/application/interfaces/use-cases/IChallengeUseCases";
 import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
 
 
@@ -20,21 +20,43 @@ export class EvaluateWinnerUsecase implements IEvaluateWinnerUsecase {
 
         const challenges = await this.leaderBoardRepository.findAllwithField({ challengeId })
 
-        logger.info("challeges in evaluate", { challenges })
 
-        const winner = challenges?.reduce((acc, data) => {
-            if (acc.totalscore < data.totalscore) {
+            logger.info("challeges in evaluate", { challenges })
+            
+            const winner = challenges?.reduce((acc, data) => {
+            if (acc.totalscore  < data?.totalscore) {
                 return data
             }
             return acc
         }, challenges[0])
 
-        logger.info("winner", { winner })
-
-        logger.info("winner", { id: winner.challengeId })
-        
+      if(winner?.challengeId)
         await this.challengeRepositry.updateOneById(winner.challengeId, { status: "ended", winner: winner?.userId })
     }
 
 
 }
+
+
+
+
+
+
+
+// class myClass{
+
+//     constructor(callback){
+
+
+
+
+
+//     }
+
+// }
+
+// const obj=new myClass((resolve,reb){
+
+// }
+// )
+

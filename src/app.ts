@@ -17,13 +17,14 @@ import { Server } from "socket.io"
 import http from "http"
 import { SubmissionRepository } from "./infrastructure/repositories/SubmissionRepository"
 import { ChallengeRepository } from "./infrastructure/repositories/ChallengeRespository"
-import { logger } from "./logger"
+import { logger } from "./infrastructure/logger/WinstonLogger/logger"
 import { ErrorHandler } from "./middlewares/errorHandler"
 import { LeaderBoardSocket } from "./services/websocket/LeaderBoardSocket"
 import { PairProgramSocket } from "./services/websocket/PairProgramming"
 import { InterviewSocket } from "./services/websocket/InterviewSocket"
 import { notificationSocket } from "./services/websocket/NotificationSocket"
 import { UserRepository } from "./infrastructure/repositories/UserRepository"
+import { env } from "./config/env"
 
 
 
@@ -32,13 +33,13 @@ const app = express();
 const httpServer = http.createServer(app)
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3000", credentials: true
+        origin:env.FRONTEND_URL, credentials: true
     }
 })
 app.use(cookieParser())
-app.use(cors({ origin: "http://localhost:3000", credentials: true }))
+app.use(cors({ origin:env.FRONTEND_URL, credentials: true }))
 app.use(express.json());
-app.use(session({ secret: 'your_secret', resave: false, saveUninitialized: true }));
+app.use(session({ secret:env.SESSION_SECRET, resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -50,12 +51,12 @@ const userRepository=new UserRepository()
 const updateLeaderBoardUseCase = new UpdateLeaderBoardUseCase(leaderBoardRepository, challengeReposiotry,userRepository)
 const leaderBoardSocket = new LeaderBoardSocket(updateLeaderBoardUseCase, submissionRepository, leaderBoardRepository)
 const pairProgramSocket = new PairProgramSocket()
-const intetviewSocket = new InterviewSocket()
+const interViewSocket = new InterviewSocket()
 
 
 leaderBoardSocket.register(io)
 pairProgramSocket.register(io)
-intetviewSocket.register(io)
+interViewSocket.register(io)
 notificationSocket.register(io)
 
 

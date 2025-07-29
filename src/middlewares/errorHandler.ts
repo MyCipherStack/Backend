@@ -1,5 +1,5 @@
 
-import { logger } from "../logger";
+import { logger } from "../infrastructure/logger/WinstonLogger/logger";
 import { AppError } from "../domain/error/AppError";
 import { NextFunction, Request, Response } from "express";
 import { error } from "console";

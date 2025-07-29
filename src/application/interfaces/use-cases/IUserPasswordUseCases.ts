@@ -7,7 +7,7 @@ export interface IVerifyUserPasswordUseCase {
 }
 
 
-export interface IResetPassswordOtpUseCase {
+export interface IResetPasswordOtpUseCase {
     execute(email: string): Promise<PendingUser | null>
 }
 

@@ -11,13 +11,13 @@ export class NotificationEntity {
 
         public message: string,
 
-        public isRead: boolean,
+        public isRead?: boolean,
         
-        public time:string,
+        public time?:string,
         
-        public link:string,
+        public link?:string,
 
-        public id:string
+        public id?:string
 
     ) { }
 }

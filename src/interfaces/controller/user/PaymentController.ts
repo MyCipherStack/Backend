@@ -1,6 +1,6 @@
 import { AppError } from "@/domain/error/AppError"; 
 import { IPaymentUseCases } from "@/application/interfaces/use-cases/IPaymentUseCases";
-import { logger } from "@/logger"; 
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger"; 
 import { NextFunction, Request, Response } from "express";
 import { PremiumPlan } from "@/domain/entities/PremiumPlan";
 import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
@@ -18,7 +18,7 @@ export class PaymentController {
         try {
 
             let id = req.body.id
-            const planDetails = await this.getPremiumPlanUseCase.OneDocumentByid(id)
+            const planDetails = await this.getPremiumPlanUseCase.OneDocumentById(id)
             logger.info("subscrition eee", { asd: planDetails._id })
 
             if (planDetails) {
@@ -52,7 +52,7 @@ export class PaymentController {
             
             let IsVerifiedSuccess = data.status
             if (IsVerifiedSuccess) {
-            const planDetails = await this.getPremiumPlanUseCase.OneDocumentByid(data.planId)
+            const planDetails = await this.getPremiumPlanUseCase.OneDocumentById(data.planId)
             
             res.locals.planDetails = planDetails
             

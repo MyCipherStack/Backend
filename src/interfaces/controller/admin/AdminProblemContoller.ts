@@ -27,7 +27,8 @@ addProblem=async(req:Request,res:Response)=>{
         
         
     }catch(error){
-        console.log(error);
+
+        if(error instanceof Error)
         
         res.status(400).json({status:false,message:error.message })
     

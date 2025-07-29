@@ -1,7 +1,8 @@
+import { Document } from "mongoose"
 import { PremiumPlan } from "../../domain/entities/PremiumPlan"
 import { IpremiumPlanRepository } from "../../domain/repositories/IPremiumPlanRepositroy"
 import { IPlanDocument, premiumPlanModel } from "../database/PremiumPlanModel"
-import { BaseRepository } from "./BaseRespositroy"
+import { BaseRepository } from "./BaseRepository"
 
 
 
@@ -30,7 +31,7 @@ export class PremiumPlanRepository extends BaseRepository<PremiumPlan,IPlanDocum
         return allPlans.map(doc=>this.toEntity(doc)).filter(doc=>doc!=null)
     }
         
-    protected toEntity(data: any): PremiumPlan | null {
+    protected toEntity(data:IPlanDocument & Document<unknown>): PremiumPlan | null {
         if(!data) return null
         return new PremiumPlan(
             data.name,
@@ -39,7 +40,7 @@ export class PremiumPlanRepository extends BaseRepository<PremiumPlan,IPlanDocum
             data.features,
             data.trial,
             data.status,
-            data._id
+            data._id?.toString()
         )
     }
 

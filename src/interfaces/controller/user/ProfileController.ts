@@ -7,7 +7,7 @@ import { IVerifyUserPasswordUseCase } from "../../../application/interfaces/use-
 import { ResetPasswordDTO } from "../../../application/dto/ResetPasswordDTO";
 import { IResetPasswordUseCase } from "../../../application/interfaces/use-cases/IResetPasswordUseCase";
 import { User } from "../../../domain/entities/User.js";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { AppError } from "@/domain/error/AppError";
 
 export class ProfileController {
@@ -40,7 +40,7 @@ export class ProfileController {
             console.log("get profile data")
             const user = req.user as { email: string, id: string }
 
-            const profile = await this.getRepositoryDataUseCase.OneDocumentByid(user.id.toString())
+            const profile = await this.getRepositoryDataUseCase.OneDocumentById(user.id.toString())
             if (profile) {
                 console.log(profile, "profiledata");
                 return res.status(200).json({ status: true, message: "Problems fetched success", user: profile })

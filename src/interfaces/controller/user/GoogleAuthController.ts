@@ -44,13 +44,11 @@ export class GoogleAuthController{
                         })
             res.redirect(`${env.GOOGLE_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}&id=${encodeURIComponent(createdUser.user._id)}`)
 
-            // res.status(200).json({status:true,message:"user logged success",user:{name:createdUser.name,email:createdUser.email}})
 
 
 
 
         }catch(error:any){
-            // res.status(400).json({status:false,message:error.message })
 
             next(new AppError(error.messag,400))
         }

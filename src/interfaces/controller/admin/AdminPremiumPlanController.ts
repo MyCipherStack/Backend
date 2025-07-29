@@ -29,7 +29,7 @@ export class AdminPremiumPlanController {
 
         } catch (error) {
 
-            if (error.code == 11000) {
+            if (error.code == 11000) {                                        // review this code later
                 return next(new AppError("plan name alreay exits", 409))
             }
             next(new AppError("erro in creating new plan", 409))
@@ -60,7 +60,7 @@ export class AdminPremiumPlanController {
 
     getPlans = async (req: Request, res: Response) => {
         try {
-            const response = await this.getPremiumDataUseCase.allDoucuments()
+            const response = await this.getPremiumDataUseCase.allDocuments()
             if (response) {
                 const plans = response.filter(plan => plan.status != "deleted")
                 res.status(200).json({ status: true, message: " fetched all Plans", plans })

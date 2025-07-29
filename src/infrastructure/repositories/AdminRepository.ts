@@ -1,8 +1,8 @@
 import { Document } from "mongoose";
-import { Admin } from "../../domain/entities/admin";
-import { IAdminRepository } from "../../domain/repositories/IadminRepository";
 import adminModel, { IAdmin } from "../database/AdminModel";
-import { BaseRepository } from "./BaseRespositroy";
+import { BaseRepository } from "./BaseRepository";
+import { IAdminRepository } from "@/domain/repositories/IAdminRepository";
+import { Admin } from "@/domain/entities/Admin";
 
 export class AdminRepository extends BaseRepository<Admin,IAdmin> implements IAdminRepository{
 
@@ -23,7 +23,7 @@ export class AdminRepository extends BaseRepository<Admin,IAdmin> implements IAd
 //     }
 
 
-protected toEntity(data: (IAdmin & Document<unknown, any, any>) | null): Admin | null {
+protected toEntity(data: (IAdmin & Document) | null): Admin | null {
     if(!data) return null
     return new Admin(
         data.name,

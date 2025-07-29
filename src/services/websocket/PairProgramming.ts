@@ -33,7 +33,7 @@ export class PairProgramSocket extends BaseSocket {
         })
   
         socket.on("send-message", ({ roomId, userName, text, time }) => {
-            console.log(roomId, text);
+            console.log(roomId, text,"in pariprogamming");
 
             socket.to(roomId).emit("receive-message", { userName, text, time })
         })

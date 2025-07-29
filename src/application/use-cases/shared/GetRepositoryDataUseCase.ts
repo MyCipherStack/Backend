@@ -9,12 +9,12 @@ export class GetRepositoryDataUseCase<T> implements IGetRepositoryDataUseCase<T>
         private respository:IBaseRepository<T>
     ){}
 
-    async OneDocumentByid(id: string): Promise<T| null> {
+    async OneDocumentById(id: string): Promise<T| null> {
         const data= await this.respository.findById(id)
         return data ?? null
     }
 
-    async allDoucuments():Promise<T[]|null>{
+    async allDocuments():Promise<T[]|null>{
         const data=await this.respository.findAll()
         return data ?? null
     }

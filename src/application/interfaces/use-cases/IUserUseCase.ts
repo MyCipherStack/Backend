@@ -23,7 +23,7 @@ export interface ILoginUserUseCase {
 
 export interface IGoogleUserUseCase {
     execute(name: string, email: string, image: string, googleId: string): Promise<{
-        user: { name: string, email: string, _id: string },
+        user:User,
         accessToken: string, refreshToken: string
     }>
 

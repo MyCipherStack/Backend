@@ -3,7 +3,7 @@ import { ISubmissionRepository } from "@/domain/repositories/ISubmissionReposito
 import { IStreakService } from "@/domain/services/IStreakService";
 import { ITestCase } from "@/application/interfaces/ITestCase";
 import { IsubmitProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { IProblemRepository } from "@/domain/repositories/IProblemRepository";
 
 
@@ -59,10 +59,10 @@ export class SubmitProblemUseCase implements IsubmitProblemUseCase {
 
         //Calculation And Update Acceptance
         if (status == "Accepted") {
-         await  this.problemRepository.updateAcceptence(problemId, 1, 1)
+         await  this.problemRepository.updateAcceptance(problemId, 1, 1)
             
         }else{
-          await  this.problemRepository.updateAcceptence(problemId, 1, 0)
+          await  this.problemRepository.updateAcceptance(problemId, 1, 0)
         }
 
 

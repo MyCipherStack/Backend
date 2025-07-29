@@ -4,6 +4,7 @@ import mongoose, { Document, Schema } from "mongoose";
 
 
 export interface IProblem extends Document {
+  _id:string
   title: string;
   problemId: string;
   difficulty: string;
@@ -27,7 +28,7 @@ export interface IProblem extends Document {
     returnType: { type: string }
   },
   starterCode: {},
-  acceptence: {submited:number,accepted:number},
+  acceptance: {submitted:number,accepted:number},
   status: boolean
 }
 
@@ -74,9 +75,9 @@ const problemsSchema = new Schema({
 
   testCases: { type: [TestCaseSchema], default: [] },
 
-  acceptence: {
-    type: { submited: Number, accepted: Number }, default: {
-      submited: 0, accepted: 0
+  acceptance: {
+    type: { submitted: Number, accepted: Number }, default: {
+      submitted: 0, accepted: 0
     }
   },
 

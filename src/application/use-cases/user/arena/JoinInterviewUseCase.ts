@@ -3,28 +3,34 @@ import { IInterViewRepository } from "../../../../domain/repositories/IInterView
 import { IjoinInterViewUseCase } from "../../../../domain/repositories/IjoinInterViewUseCase";
 
 
-export class joinInterViewUseCase implements IjoinInterViewUseCase{
+
+
+export type  IInterview= Interview & { isHost: boolean }
+export class joinInterViewUseCase implements IjoinInterViewUseCase {
 
     constructor(
-        private interviewRespositroy:IInterViewRepository
-    ){}
-   async execute(userId: any,interviewId: any):Promise<Interview | null > {
-        const response=await this.interviewRespositroy.findById(interviewId)
-     
-        if(response){
+        private interviewRespositroy: IInterViewRepository
+    ) { }
+    async execute(userId: string, interviewId: string): Promise<IInterview | null> {
+        const response = await this.interviewRespositroy.findById(interviewId)
 
-            if(response?.hostId===userId){
-                response.isHost=true
-                return response
-            }else if(response?.partipantId===userId){
+
+
+        if (response) {
+
+            if (response?.hostId === userId) {
+
+                return { ...response, isHost: true }
+            } else if (response?.participantId === userId) {
                 console.log("Participants");
-                response.isHost=false
-                return response
+
+                return { ...response, isHost: false }
+
             }
-            else{
+            else {
                 return null
             }
+        }
+        return null
     }
-    return null
-}
 }

@@ -9,4 +9,15 @@ export class CreateUserDTO{
         this.email=data.email.trim().toLowerCase();
         this.password=data.password
     }
+
 }
+
+
+export class  const first = useRef(second)
+
+
+
+
+
+
+

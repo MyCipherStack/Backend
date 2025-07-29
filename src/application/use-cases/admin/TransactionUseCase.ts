@@ -11,7 +11,7 @@ export  class TransactionUseCase implements ITransactionUseCase {
     ) {
         
     }
-  async  execute(filters: FilterDTO): Promise<{ transaction: Transaction[]; totalTransaction: number; totalPages: number; }> {
+  async  execute(filters:FilterDTO): Promise<{ transaction: Transaction[]; totalTransaction: number; totalPages: number; }> {
         
     const response=await    this.transactionRepotitory.getFiltersTrasations(filters)
         

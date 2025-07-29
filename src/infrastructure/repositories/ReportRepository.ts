@@ -1,5 +1,5 @@
 import { Report } from "@/domain/entities/Report";
-import { BaseRepository } from "./BaseRespositroy";
+import { BaseRepository } from "./BaseRepository";
 import { IReports, reportModel } from "../database/ReportModel";
 import { Document } from "mongoose";
 import { IReportRepository } from "@/domain/repositories/IReportRepository";
@@ -60,7 +60,7 @@ export class ReportRepository extends BaseRepository<Report, IReports> implement
 
 
 
-    protected toEntity(data: (IReports & Document<unknown, any, any>) | null): Report | null {
+    protected toEntity(data: (IReports & Document<unknown>) | null): Report | null {
         if (!data) return null
         return new Report(
             data.reportType,

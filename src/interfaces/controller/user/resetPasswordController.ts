@@ -2,14 +2,11 @@
 
 
 import { NextFunction, Request, Response } from "express";
-import { ResetPasswordUseCase } from "../../../application/use-cases/ResetPasswordUsecase";
-import { IUserRepository } from "../../../domain/repositories/IUserRepository";
-import { IHashAlgorithm } from "../../../domain/services/IHashAlgorithm";
 import { IResetPasswordUseCase } from "@/application/interfaces/use-cases/IResetPasswordUseCase";
 import { AppError } from "@/domain/error/AppError";
 
 
-export class ResetPasswordContoller {
+export class ResetPasswordController {
     constructor(
 
         private resetPasswordUseCase: IResetPasswordUseCase
@@ -25,7 +22,6 @@ export class ResetPasswordContoller {
             console.log(data.password, "password");
 
             if (!cookie) {
-                console.log("ASdfasdfasdfasdf");
                 throw new Error("Session expired.Please request OTP again.")
             }
             // const isValid=await this.jwtService.varifyAccessToken(cookie)

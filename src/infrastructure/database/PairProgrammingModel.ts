@@ -1,3 +1,4 @@
+import { StreamName } from "bullmq";
 import mongoose, { Document, ObjectId, Types } from "mongoose";
 import { customAlphabet } from "nanoid"
 
@@ -23,6 +24,7 @@ export interface IPairProgramming extends Document {
   invitedUsers:string[],
   createdAt?: string,
   updatedAt?: string
+  isBlocked?:string
 
 };
 
@@ -52,6 +54,9 @@ const PairProgramingSchema = new mongoose.Schema<IPairProgramming>({
   invitedUsers:[{type:String}],
 
   status: { type: String, enum: ["waiting", "started", "ended", "blocked"], default: "waiting" },
+
+  isBlocked: { type: Boolean, default: false }
+
 
 
   

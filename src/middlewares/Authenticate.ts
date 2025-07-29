@@ -1,15 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { IJwtService } from "../domain/services/IJwtService";
 import { env } from "../config/env";
-import { IBaseRepository } from "@/domain/repositories/IBaseRepository";
-import { logger } from "@/logger";
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
 import { AppError } from "@/domain/error/AppError";
 
 
 
-// ADMIN AND USER HAVE SAME Authenticate CONTROLLLER (
-
+// ADMIN AND USER HAVE SAME Authenticate CONTROLLER (
 
 export class Authenticate<Entity>{
     constructor(
@@ -39,7 +37,7 @@ export class Authenticate<Entity>{
                 logger.info("TokenDAsat",tokenData)
                 // const userPayload=this.jwtService.varifyAccessToken(accessToken)
                 if(tokenData){
-                    const foundUser=await this.getRepositoryDataUseCase.OneDocumentByid(tokenData.userId)
+                    const foundUser=await this.getRepositoryDataUseCase.OneDocumentById(tokenData.userId)
                 
               
                 logger.info("access token valid")
@@ -65,6 +63,7 @@ export class Authenticate<Entity>{
                      
                         
                         req.user={role:tokenData.role,email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn
+                        
                         return   next()
                     }else{
                         res.clearCookie('accessToken', {
@@ -96,7 +95,7 @@ export class Authenticate<Entity>{
                         maxAge:1000 * 60 * 15,
                         path:"/"   
                     })
-                    const foundUser=await this.getRepositoryDataUseCase.OneDocumentByid(userPayload.userId)
+                    const foundUser=await this.getRepositoryDataUseCase.OneDocumentById(userPayload.userId)
                
                     if(foundUser){
                         req.user={role:payload.role,email:foundUser.email,name:foundUser.name,id:foundUser._id}   // i can use other routesn

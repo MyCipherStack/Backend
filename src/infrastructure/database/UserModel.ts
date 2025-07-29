@@ -28,8 +28,9 @@ export interface IUser extends Document {
         showActivity: false,
       },
     streak:{lastActiveDate:Date,currentStreak:number,higestStreak:number},
-    subscripctionId:Types.ObjectId
+    subscriptionId:Types.ObjectId
     rankingPoints:number
+    createdContest:{count:string,date:Date}
 }
 
 
@@ -87,9 +88,11 @@ const UserSchema=new Schema<IUser>({
 
     streak:{lastActiveDate:Date,currentStreak:Number,higestStreak:Number},
 
-    subscripctionId:{type:Schema.ObjectId,default:null,ref:"subscription"},
+    subscriptionId:{type:Schema.ObjectId,default:null,ref:"subscription"},
 
-    rankingPoints:{type:Number}
+    rankingPoints:{type:Number},
+
+    createdContest:{type:{count:String,date:Date},default:0}
 
 },{timestamps:true})
 

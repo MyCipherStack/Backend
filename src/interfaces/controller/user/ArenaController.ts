@@ -8,14 +8,14 @@ import { IUpdateRepositoryDataUseCase } from "@/application/interfaces/use-cases
 import { GroupChallenge } from "@/domain/entities/GroupChallenge";
 import { User } from "@/domain/entities/User";
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/logger";  
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";  
 import { NextFunction, Request, Response } from "express";
 
 
 export class ArenaController {
     constructor(
         private createChallengeUseCase: ICreateChallengeUseCase,
-        private joinChallengeUseCase: IJoinChallengeUseCase<IGroupChallenge>,
+        private joinChallengeUseCase: IJoinChallengeUseCase,
         private createPairProgrammingUseCase: ICreatePairProgrammingUseCase,
         private joinPairProgarmmingUseCase: IJoinPairProgrammigUseCase,
         private activePrivateChallengeUsecase: IActivePrivateChallengeUsecase,
@@ -34,7 +34,7 @@ export class ArenaController {
             const challengeData = new GroupChallengeDTO(req.body)
             const userId = req.user as { id: string }
             const joinCode = await this.createChallengeUseCase.execute({ ...challengeData, hostId: userId.id })
-
+            
             console.log(joinCode, "joinCode");
             res.status(200).json({ status: true, message: "challenge created", joinCode })
         } catch (error) {
@@ -105,7 +105,7 @@ export class ArenaController {
 
                 const response = await this.joinPairProgarmmingUseCase.execute(joinCode.toString(), user.id, user.name)
 
-                const userData = await this.getUserDataUseCase.OneDocumentByid(response?.hostId)
+                const userData = await this.getUserDataUseCase.OneDocumentById(response?.hostId)
 
                 res.status(200).json({ status: true, message: "joined groupChallenge ", challengeData: response, hostname: userData?.name })
 
@@ -160,7 +160,7 @@ export class ArenaController {
 
             const id = req.user?.id
 
-            const challengeData = await this.getChallengeDataUseCase.OneDocumentByid(challengeId)
+            const challengeData = await this.getChallengeDataUseCase.OneDocumentById(challengeId)
 
             if (challengeData?.hostId?.toString() !== id?.toString()) {
 
@@ -236,22 +236,6 @@ export class ArenaController {
     }
 
 
-
-
-    // pairProgrammingRequest = async (req: Request, res: Response, next: NextFunction) => {
-    //     try {
-
-
-    //         this.AllPariprogrammingDataUseCase.execute({ invitedUser })
-
-
-    //     } catch (error) {
-
-
-    //         return next()
-
-    //     }
-    // }
 
 
 }
