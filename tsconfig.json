@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "baseUrl":"./src",
     "paths": {
-      "@/*": ["*"]  
+      "@/*": ["./*"]  
     },  
     "types": ["node"],
     "sourceMap": false,

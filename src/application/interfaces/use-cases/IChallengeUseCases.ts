@@ -53,7 +53,7 @@ export interface IChallengeResultsUseCase {
 }
 export interface ILeaderBoardUseCase {
     execute(challengeId: string): Promise< {
-    userName: any;
+    userName: string;
     totalScore: number | undefined;
     solvedCount: number;
     isLive:boolean;

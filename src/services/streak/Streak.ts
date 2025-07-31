@@ -1,7 +1,7 @@
-import { AppError } from "@/domain/error/AppError.js";
-import { IUserRepository } from "../../domain/repositories/IUserRepository.js";
-import { IStreakService } from "../../domain/services/IStreakService.js";
-import { HttpStatusCode } from "@/shared/constants/HttpStatusCode.js";
+import { AppError } from "@/domain/error/AppError";
+import { IUserRepository } from "@/domain/repositories/IUserRepository"
+import { IStreakService } from "@/domain/services/IStreakService"; 
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 

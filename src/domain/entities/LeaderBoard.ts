@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+
 import { User } from "./User";
 
 export interface IsolvedProblem{
@@ -8,9 +8,9 @@ export interface IsolvedProblem{
 export class leaderBoard{
     constructor(
         public challengeId:string,
-        public userId:User| string ,
+        public userId:User | string ,
         public totalscore?:number,
         public rank?:number,
-        public solvedProblems?:[IsolvedProblem],       
+        public solvedProblems?:IsolvedProblem[],       
     ){}
 }

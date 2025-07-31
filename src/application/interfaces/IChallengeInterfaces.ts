@@ -2,7 +2,7 @@
 export type IGroupChallenge = {
   // hostId: string
   challengeName: string;
-  participants: number
+  // participants: number
   duration: number
   problems:string[],
   type: string,
@@ -15,7 +15,7 @@ export type IGroupChallenge = {
 
 export type IPairProgramming = {
   hostId: string
-  // type: string
+  type: string
   challengeName: string;
   problems: string[]
   // duration: number

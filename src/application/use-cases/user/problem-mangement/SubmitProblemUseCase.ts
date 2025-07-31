@@ -22,10 +22,10 @@ export class SubmitProblemUseCase implements IsubmitProblemUseCase {
 
 
         const totalMemoryUsed = updatedTestCases.reduce((acc, testCase) => {
-            return acc += testCase.memory ?? 0
+            return acc += testCase?.memory ?? 0
         }, 0)
         const totalTimeUsed = updatedTestCases.reduce((acc, testCase) => {
-            return acc += Number(testCase.runtime) ?? 0
+            return acc += Number(testCase?.runtime) ?? 0
         }, 0)
 
 
@@ -36,7 +36,7 @@ export class SubmitProblemUseCase implements IsubmitProblemUseCase {
         let error = ""
 
         const isFailed = updatedTestCases.filter(testCase => {
-            if (testCase.status == false)
+            if (testCase?.status == false)
                 return testCase
         })
         const failedTestCase = isFailed[0]

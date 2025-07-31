@@ -141,7 +141,7 @@ export class UserRepository extends BaseRepository<User,IUser> implements IUserR
             data.password,
             data.updated_at,
             data.subscriptionId?.toString(),
-            data.createdContest
+            // data.createdContest
             )
 
     }

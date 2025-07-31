@@ -9,11 +9,11 @@ import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 export class AdminAuthController {
 
     constructor(
-        private loginAdminUsecase:ILoginAdminUsecase
+        private loginAdminUsecase: ILoginAdminUsecase
     ) { }
 
 
-    login = async (req: Request, res: Response) => {
+    login = async (req: Request, res: Response, next: NextFunction) => {
         try {
 
 
@@ -42,8 +42,14 @@ export class AdminAuthController {
 
 
         } catch (error) {
-            console.log(error);
-            res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message })
+
+            if (error instanceof AppError) {
+                
+                next(new AppError(error.message, HttpStatusCode.BAD_REQUEST))
+            } else {
+                next(new AppError("Internal server error", HttpStatusCode.INTERNAL_SERVER_ERROR))
+
+            }
 
         }
 

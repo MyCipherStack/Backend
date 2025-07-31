@@ -4,7 +4,7 @@ export class UpdateUserDTO{
     status?:string
 
     
-    constructor(data:Partial<UpdateUserDTO>){
+    constructor(data:{name:string,status:string}){
         this.name=data.name
         this.status=data.status
 

@@ -1,5 +1,6 @@
 import { ILeaderBoardUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases"
 import { leaderBoard } from "@/domain/entities/LeaderBoard"
+import { User } from "@/domain/entities/User";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository"
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 
@@ -13,7 +14,7 @@ export class LeaderBoardUseCase implements ILeaderBoardUseCase {
         
     }
 
-async execute(challengeId: string): Promise<{ userName: any; totalScore: number | undefined; solvedCount: number; isLive: boolean; image: string; rank: number; }[] | null> {
+async execute(challengeId: string): Promise<{ userName: string; totalScore: number | undefined; solvedCount: number; isLive: boolean; image: string; rank: number; }[] | null> {
         
         const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId })
         
@@ -22,17 +23,20 @@ async execute(challengeId: string): Promise<{ userName: any; totalScore: number 
             
             let rank = 1
             
-            const response = leaderBoard.map(data => {
+            const response = leaderBoard
+            .map(data => {
                 
                 logger.info("leaderboard", { data })
-                return {
-                    userName: data.userId.name,
-                    totalScore: data.totalscore,
-                    solvedCount: data.solvedProblems?.length ?? 0,
-                    isLive:false,
-                    image: data.userId.image,
-                    rank: rank++
-                }
+                    return {
+                        userName: (data.userId as User) .name ,
+                        totalScore: data.totalscore,
+                        solvedCount: data.solvedProblems?.length ?? 0,
+                        isLive:false,
+                        image: (data.userId as User).image || "",
+                        rank: rank++
+                    }
+    
+                
             })
             
           return  response

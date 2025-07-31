@@ -62,11 +62,13 @@ export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBo
     protected toEntity(data: (ILeaderBoard & Document) | null): leaderBoard | null {
         if (!data) return null
         return new leaderBoard(
-            data.challengeId,
-            data.userId,
+            data.challengeId?.toString(),
+            data.userId?.toString(),
             data.totalScore,
             data.rank,
-            data.solvedProblems,
+            data.solvedProblems.map(problem=>{
+                return {...problem,problemId:problem.problemId.toString(),submissionId:problem.submissionId.toString()}
+            })
         )
     }
 }

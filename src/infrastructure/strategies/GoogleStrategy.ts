@@ -14,8 +14,10 @@ passport.use(new GoogleStrategy({
   const user = {
     googleid: profile.id,
     name: profile.displayName,
-    email: profile.emails?.[0].value,
-    image:profile.photos?.[0]?.value
+    email: profile.emails?.[0].value || "",
+    image:profile.photos?.[0]?.value,
+    id:profile.id,
+    role:"regular"
 
   };
   console.log("strategy",user);
@@ -23,10 +25,15 @@ passport.use(new GoogleStrategy({
   return done(null, user); // success
 }));
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
 
-passport.deserializeUser((user: any, done) => {
-  done(null, user);
-});
+
+// not need this methord iam using jwt
+
+
+// passport.serializeUser((user, done) => {
+//   done(null, user);
+// });
+
+// passport.deserializeUser((user:unknown, done) => {
+//   done(null, user);
+// });

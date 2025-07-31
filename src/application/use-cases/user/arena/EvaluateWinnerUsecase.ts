@@ -1,5 +1,4 @@
 import { IEvaluateWinnerUsecase } from "@/application/interfaces/use-cases/IChallengeUseCases";
-import { leaderBoard } from "@/domain/entities/LeaderBoard";
 import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository";
 import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
@@ -32,7 +31,7 @@ export class EvaluateWinnerUsecase implements IEvaluateWinnerUsecase {
         }, challenges[0])
 
         if (winner?.challengeId)
-            await this.challengeRepositry.updateOneById(winner.challengeId, { status: "ended", winner: winner?.userId })
+            await this.challengeRepositry.updateOneById(winner.challengeId, { status: "ended", winner: winner?.userId as string })
     }
 
 

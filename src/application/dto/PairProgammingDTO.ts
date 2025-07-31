@@ -10,6 +10,7 @@ export class PairProgramingDTO {
     problems: string[]
     sessionType: string
     invitedUsers: string[]
+    type: string
     problemType: string
 
     constructor(data: {
@@ -24,6 +25,7 @@ export class PairProgramingDTO {
         this.problems = data.problems.map((data: { id: string }) => data.id)
         this.invitedUsers = data.invitedUsers
         this.sessionType = data.sessionType
+        this.type = data.problemType
         this.problemType = data.problemType
 
     }

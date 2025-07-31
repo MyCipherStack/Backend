@@ -32,27 +32,26 @@ export class ReportRepository extends BaseRepository<Report, IReports> implement
         const skip = (filters.page - 1) * filters.limit
         const totalReports = await reportModel.countDocuments(query);
         const totalPages = Math.ceil(totalReports / filters.limit);
-        let users = await reportModel.find(query).populate("submittedBy").populate("reportedUser").skip(skip).limit(filters.limit).lean().sort({createdAt:-1})
+        let users = await reportModel.find(query).populate("submittedBy").populate("reportedUser").skip(skip).limit(filters.limit).lean().sort({ createdAt: -1 })
         let updatedUser = users.map(data => {
 
             return {
-                id:data._id,
+                id: data._id,
                 reportType: data.reportType,
                 description: data.description,
-                submittedUser:data.submittedBy?.name,
-                submittedId:data.submittedBy?._id,
+                submittedUser: data.submittedBy,
+                submittedId: data.submittedBy?._id,
                 pageInfo: data.pageInfo,
                 status: data.status,
-                reportedUserId:data.reportedUser?._id,
-                reportedUserDetails:  data?.reportedUser?.name,
+                reportedUserDetails: data?.reportedUser,
                 createdAt: data.createdAt,
                 updatedAt: data.updatedAt,
-                role:data.submittedBy?.role
+
             }
 
         })
 
-        return { reports: updatedUser, totalReports, totalPages } 
+        return { reports: updatedUser, totalReports, totalPages }
     }
 
 

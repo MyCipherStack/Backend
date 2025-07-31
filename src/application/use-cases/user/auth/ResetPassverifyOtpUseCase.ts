@@ -15,7 +15,7 @@ export class ResetPassverifyOtpUseCase implements IResetPassverifyOtpUseCase {
         
         if(pendingUser){
             let now=new Date()
-            let expireTime=new Date(pendingUser.createdAt.getTime()+5*60*1000)
+            let expireTime=new Date(pendingUser.createdAt!.getTime()+5*60*1000)
             if(now>expireTime){
                 throw new Error("Otp has expired ")
             }

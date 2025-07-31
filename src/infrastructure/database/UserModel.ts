@@ -30,7 +30,7 @@ export interface IUser extends Document {
     streak:{lastActiveDate:Date,currentStreak:number,higestStreak:number},
     subscriptionId:Types.ObjectId
     rankingPoints:number
-    createdContest:{count:string,date:Date}
+    // createdContest:{count:string,date:Date}
 }
 
 
@@ -92,7 +92,7 @@ const UserSchema=new Schema<IUser>({
 
     rankingPoints:{type:Number},
 
-    createdContest:{type:{count:String,date:Date},default:0}
+    // createdContest:{type:{count:String,date:Date},default:0}
 
 },{timestamps:true})
 
