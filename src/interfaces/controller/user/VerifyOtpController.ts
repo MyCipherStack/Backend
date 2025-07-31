@@ -3,6 +3,7 @@ import { OtpDTO } from "../../../application/dto/OtpDTO"
 import { IVerifyOtpUseCase } from "@/application/interfaces/use-cases/IOtpUseCases";
 import { IRegisterUserFromPendingUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 import { AppError } from "@/domain/error/AppError";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -22,15 +23,15 @@ export class VerifyOtpController {
 
       if (!isValid) {
 
-        return res.status(400).json({ status: false, message: "Invalid or expired OTP" });
+        return res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: "Invalid or expired OTP" });
       }
 
       const userData = await this.registerUserFromPendingUseCase.execute(data.email)
       
-      res.json({ status: true, message: "user created Successfully", user: { name: userData.name, email: userData.email } })
+      res.json({ status: true, message: "user created Successfully", user: { name: userData?.name, email: userData?.email } })
     } catch (error: any) {
 
-      next(new AppError(error.message, 500))
+      next(new AppError(error.message, HttpStatusCode.INTERNAL_SERVER_ERROR))
 
       // return res.status(500).json({ status: false, message:error.message });
     }

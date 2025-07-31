@@ -1,3 +1,4 @@
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 import { Request, Response } from "express";
 
 
@@ -17,7 +18,7 @@ export class LogoutController {
             sameSite: 'strict',
             secure: process.env.NODE_ENV === 'production'
         });
-        return res.status(200).json({ message: 'Logged out successfully' });
+        return res.status(HttpStatusCode.OK).json({ message: 'Logged out successfully' });
     }
 
 

@@ -7,6 +7,7 @@ import { ProblemDTO } from "@/application/dto/ProblemDTO";
 import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
 import { Problem } from "@/domain/entities/Problem";
 import { IRunProblemUseCase, IsubmitProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -33,7 +34,7 @@ export class SubmissionController {
 
             const submissions = await this.getAllSubmissionByProblemuseCase.execute(user.id, problemId)
 
-            res.status(200).json({ status: true, message: "test submissiondata by problem", submissions })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "test submissiondata by problem", submissions })
 
         } catch (error) {
 
@@ -72,7 +73,7 @@ export class SubmissionController {
 
             logger.info("recent submission", { recentSubmissions })
 
-            res.status(200).json({ status: true, message: "all user Submission", submissions: recentSubmissions })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "all user Submission", submissions: recentSubmissions })
 
 
         } catch (error) {
@@ -99,12 +100,12 @@ export class SubmissionController {
 
             const submitData = await this.submitProblemUseCase.execute(updatedTestCases, user.id, problem._id, code, language, totalTestCases)
             console.log(submitData);
-            res.status(200).json({ status: true, message: "problem submitted", submissions: submitData })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "problem submitted", submissions: submitData })
 
 
         } catch (error) {
             logger.error("err", error)
-            next(new AppError("Something went wrong", 500))
+            next(new AppError("Something went wrong", HttpStatusCode.BAD_REQUEST))
 
 
 

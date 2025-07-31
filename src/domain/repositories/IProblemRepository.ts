@@ -6,7 +6,7 @@ import { IBaseRepository } from "./IBaseRepository.js";
 export interface IProblemRepository extends IBaseRepository<Problem> {
 
     getFilterProblem(filters: { page: number, limit: number, difficulty?: string, status?: string, search?: string, category: string }): Promise<{
-        problems: any[],
+        problems:Problem[],
         totalProblems: number, totalPages: number
     }>
 

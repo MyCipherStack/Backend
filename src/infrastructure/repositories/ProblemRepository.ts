@@ -15,7 +15,7 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
     super(problemModel)
   }
 
-  async getFilterProblem(filters: { page: number; limit: number, difficulty?: string; status?: string; search?: string; category?: string; }): Promise<{ problems: any[]; totalProblems: number; totalPages: number; }> {
+  async getFilterProblem(filters: { page: number; limit: number, difficulty?: string; status?: string; search?: string; category?: string; }): Promise<{ problems: Problem[]; totalProblems: number; totalPages: number; }> {
     let query: any = {}
     if (filters.difficulty) {
       query.difficulty = filters.difficulty

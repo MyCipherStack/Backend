@@ -4,6 +4,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IResetPasswordUseCase } from "@/application/interfaces/use-cases/IResetPasswordUseCase";
 import { AppError } from "@/domain/error/AppError";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 export class ResetPasswordController {
@@ -33,14 +34,16 @@ export class ResetPasswordController {
 
             await this.resetPasswordUseCase.execute(cookie.email, data.password)
 
-            res.status(200).json({ status: true, message: "password changed" })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "password changed" })
 
-        } catch (error: any) {
+        } catch (error: unknown) {
+            if(error instanceof AppError){
 
-
-            next(new AppError(error.message, 500))
-
-            // res.status(400).json({status:false,message:error.message })
+                next(new AppError(error.message, HttpStatusCode.BAD_REQUEST))
+            }else{
+                next(new AppError("Internal server error", HttpStatusCode.INTERNAL_SERVER_ERROR))
+                
+            }
         }
 
     }

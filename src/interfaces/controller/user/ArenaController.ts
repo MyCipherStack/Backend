@@ -8,8 +8,10 @@ import { IUpdateRepositoryDataUseCase } from "@/application/interfaces/use-cases
 import { GroupChallenge } from "@/domain/entities/GroupChallenge";
 import { User } from "@/domain/entities/User";
 import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/infrastructure/logger/WinstonLogger/logger";  
+import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 import { NextFunction, Request, Response } from "express";
+import { nextTick } from "process";
 
 
 export class ArenaController {
@@ -33,19 +35,19 @@ export class ArenaController {
         try {
             const challengeData = new GroupChallengeDTO(req.body)
             const userId = req.user as { id: string }
-            const joinCode = await this.createChallengeUseCase.execute({ ...challengeData, hostId: userId.id })
-            
+            const joinCode = await this.createChallengeUseCase.execute({ ...challengeData }, userId.id)
+
             console.log(joinCode, "joinCode");
-            res.status(200).json({ status: true, message: "challenge created", joinCode })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "challenge created", joinCode })
         } catch (error) {
             console.log(error);
 
-            res.status(400).json({ status: false, message: error })
+            res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error })
         }
     }
 
 
-    joinGroupChallenge = async (req: Request, res: Response) => {
+    joinGroupChallenge = async (req: Request, res: Response, next: NextFunction) => {
         try {
             console.log("joinchallengecontroller");
 
@@ -60,15 +62,21 @@ export class ArenaController {
 
                 const isHost = response.hostId == user.id.toString()
                 logger.info("ishost", { isHost, host: typeof response.hostId, id: typeof user.id })
-                res.status(200).json({ status: true, message: "joined groupChallenge ", challengeData: { ...response, isHost } })
+                res.status(HttpStatusCode.OK).json({ status: true, message: "joined groupChallenge ", challengeData: { ...response, isHost } })
 
 
             }
 
 
         } catch (error) {
-            console.log(error);
-            res.status(400).json({ status: false, message: error.message })
+
+            if (error instanceof AppError) {
+                res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
+            } else {
+
+                next(new AppError("server error", HttpStatusCode.INTERNAL_SERVER_ERROR))
+
+            }
 
         }
     }
@@ -85,17 +93,16 @@ export class ArenaController {
             const joinCode = await this.createPairProgrammingUseCase.execute({ ...data, hostId: userId.id })
 
             console.log(joinCode, "joinCode");
-            res.status(200).json({ status: true, message: "Challenge created", joinCode })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "Challenge created", joinCode })
         } catch (error) {
-            console.log(error);
 
-            res.status(400).json({ status: false, message: error })
+            res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error })
         }
     }
 
 
 
-    joinPairProgramming = async (req: Request, res: Response) => {
+    joinPairProgramming = async (req: Request, res: Response, next: NextFunction) => {
         try {
 
             const joinCode = req.query.joinCode
@@ -105,15 +112,20 @@ export class ArenaController {
 
                 const response = await this.joinPairProgarmmingUseCase.execute(joinCode.toString(), user.id, user.name)
 
-                const userData = await this.getUserDataUseCase.OneDocumentById(response?.hostId)
+                const userData = await this.getUserDataUseCase.OneDocumentById(response?.hostId!)
 
-                res.status(200).json({ status: true, message: "joined groupChallenge ", challengeData: response, hostname: userData?.name })
+                res.status(HttpStatusCode.OK).json({ status: true, message: "joined groupChallenge ", challengeData: response, hostname: userData?.name })
 
 
             }
         } catch (error) {
+            if (error instanceof AppError) {
+                return next(error)
+            } else {
+
+                next(new AppError("Internal server error",HttpStatusCode.INTERNAL_SERVER_ERROR))
+            }
             console.log(error);
-            res.status(400).json({ status: false, message: error.message })
 
         }
     }
@@ -138,14 +150,14 @@ export class ArenaController {
 
 
 
-            res.status(200).json({ status: true, message: "users challenges ", privateChallenges, publicChallenges })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "users challenges ", privateChallenges, publicChallenges })
 
 
         } catch (error) {
             logger.error("err", error)
-            return next(new AppError("Intenal error ", 500))
+            return next(new AppError("Intenal error ", HttpStatusCode.INTERNAL_SERVER_ERROR))
 
-        }   
+        }
     }
 
 
@@ -165,7 +177,7 @@ export class ArenaController {
             if (challengeData?.hostId?.toString() !== id?.toString()) {
 
 
-                return res.status(403).json({ status: false, message: "you are not a host", })
+                return res.status(HttpStatusCode.FORBIDDEN).json({ status: false, message: "you are not a host", })
 
             }
 
@@ -181,7 +193,7 @@ export class ArenaController {
 
             logger.info("startd Challed data", { response })
 
-            res.status(200).json({ status: true, message: "Challenge Started ", challengeData: { ...response, isHost: true } })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "Challenge Started ", challengeData: { ...response, isHost: true } })
 
 
 
@@ -189,7 +201,7 @@ export class ArenaController {
         } catch (error) {
 
             logger.error("start challenge err", { error })
-            return next(new AppError("Intenal error ", 500))
+            return next(new AppError("Intenal error ",HttpStatusCode.INTERNAL_SERVER_ERROR ))
 
 
         }
@@ -209,7 +221,7 @@ export class ArenaController {
 
         } catch (error) {
 
-            return next(new AppError("Intenal error ", 500))
+            return next(new AppError("Intenal error ", HttpStatusCode.INTERNAL_SERVER_ERROR))
 
         }
     }
@@ -226,11 +238,11 @@ export class ArenaController {
             logger.info("leaderboard", { data: response })
 
 
-            res.status(200).json({ status: true, message: "leaderBoard deatils", response })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "leaderBoard deatils", response })
 
         } catch (error) {
             logger.info("err", error)
-            return next(new AppError("Intenal error ", 500))
+            return next(new AppError("Intenal error ", HttpStatusCode.INTERNAL_SERVER_ERROR))
 
         }
     }

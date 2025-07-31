@@ -9,6 +9,7 @@ import { IResetPasswordUseCase } from "../../../application/interfaces/use-cases
 import { User } from "../../../domain/entities/User.js";
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { AppError } from "@/domain/error/AppError";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 export class ProfileController {
     constructor(
@@ -27,7 +28,7 @@ export class ProfileController {
 
             const data = await this.updateUseCase.execute(user.email, profileData)
             if (data)
-                res.status(200).json({ status: true, message: "problems fetched success", user: { name: data.name, email: data.email, image: data.image } })
+                res.status(HttpStatusCode.OK).json({ status: true, message: "problems fetched success", user: { name: data.name, email: data.email, image: data.image } })
         } catch (error: any) {
             res.status(400).json({ status: false, message: error.message })
         }
@@ -43,7 +44,7 @@ export class ProfileController {
             const profile = await this.getRepositoryDataUseCase.OneDocumentById(user.id.toString())
             if (profile) {
                 console.log(profile, "profiledata");
-                return res.status(200).json({ status: true, message: "Problems fetched success", user: profile })
+                return res.status(HttpStatusCode.OK).json({ status: true, message: "Problems fetched success", user: profile })
             } else {
             next(new AppError("Something went wrong", 500))
 
@@ -72,7 +73,7 @@ export class ProfileController {
             if (isValid) {
                 this.resetPasswordUseCase.execute(data.email, data.password)
 
-                res.status(200).json({ status: true, message: "password updated" })
+                res.status(HttpStatusCode.OK).json({ status: true, message: "password updated" })
 
             } else {
                 next(new AppError("Incorrect current password", 409))

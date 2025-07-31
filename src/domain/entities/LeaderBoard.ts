@@ -11,7 +11,6 @@ export class leaderBoard{
         public userId:User| string ,
         public totalscore?:number,
         public rank?:number,
-        public solvedProblems?:[IsolvedProblem],
-       
+        public solvedProblems?:[IsolvedProblem],       
     ){}
 }

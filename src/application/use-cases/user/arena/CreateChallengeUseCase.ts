@@ -3,21 +3,19 @@ import { customAlphabet } from "nanoid";
 import { IGroupChallenge } from "@/application/interfaces/IChallengeInterfaces";
 import { ICreateChallengeUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases";
 import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository";
-import { IUserRepository } from "@/domain/repositories/IUserRepository";
+
 
 
 
 export class CreateChallengeUseCase implements ICreateChallengeUseCase {
     constructor(
         private challengeRepository: IChallengeRepository,
-        private userRepository: IUserRepository
-
     ) { }
     async execute(challengeData: IGroupChallenge,userId:string): Promise<string | null> {
 
         const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6);  //SET GROUP 
 
-   const userData = this.userRepository.findById(userId)
+//    const userData = this.userRepository.findById(userId)
 
    const today=new Date().toDateString()
 

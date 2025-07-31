@@ -7,8 +7,6 @@ import { IEditPlanUseCase } from "@/application/interfaces/use-cases/IPlanUseCas
 export class EditPlanUseCase implements IEditPlanUseCase{
     constructor(
         private  premiumPlanRepository:IpremiumPlanRepository ,
-
-
     ) { }
 
 

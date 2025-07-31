@@ -5,7 +5,7 @@ interface IPlan {
     name: string;
     price: number;
     cycle: string;
-    features: string[];
+    features:{text:String,enabled:Boolean}[],
     trial: number;
     status: string;
     _id:string
@@ -15,10 +15,11 @@ export class PremiumPlanDTO{
     name: string;
     price: number;
     cycle: string;
-    features: string[];
+    features:{text:String,enabled:Boolean}[]
     trial: number;
     status: string;
     _id:string
+
     constructor(data:IPlan){
         this.name=data.name
         this.price=data.price

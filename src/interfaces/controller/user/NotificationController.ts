@@ -2,6 +2,7 @@ import { IGetAllRepoDataUsingFieldUseCase, IUpdateRepositoryDataUseCase } from "
 import { NotificationEntity } from "@/domain/entities/Notification"
 import { AppError } from "@/domain/error/AppError"
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger"
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode"
 import { NextFunction, Request, Response } from "express"
 
 
@@ -24,7 +25,7 @@ export class NotificationController {
 
             logger.info("all notification",{allNotification})
             
-            res.status(200).json({ status: true, message: "problem submitted", allNotification })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "problem submitted", allNotification })
 
 
         } catch (error) {
@@ -46,12 +47,12 @@ export class NotificationController {
 
             const notification = await this.updateRepositoryDataUseCase.execute(notificationId, { isRead: true })
 
-            res.status(200).json({ status: true, message: "problem submitted", notification })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "problem submitted", notification })
 
 
         } catch (error) {
 
-            return next(new AppError("server error", 500))
+            return next(new AppError("server error", HttpStatusCode.INTERNAL_SERVER_ERROR))
 
         }
     }

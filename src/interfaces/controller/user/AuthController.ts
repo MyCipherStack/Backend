@@ -36,17 +36,22 @@ export class AuthController{
 
                 await this.sentOtpUsecase.execute(createdUserEmail)
 
-                res.status(201).json({ status: true, message: "OTP sented" })
+                res.status(HttpStatusCode.CREATED).json({ status: true, message: "OTP sented" })
             } else {
 
-                next(new AppError('Something wentwrong', 400))
+                next(new AppError('Something wentwrong', HttpStatusCode.BAD_REQUEST))
 
             }
-        } catch (error: any) {
+        } catch (error:unknown) {
+            if(error instanceof Error){
 
-            logger.error(error.message, "backe end err in auth controller");
-
-            next(new AppError(error.message, 400))
+                logger.error(error.message, "backe end err in auth controller");
+                
+                next(new AppError(error.message, HttpStatusCode.BAD_REQUEST))
+            }else{
+                
+                next(new AppError("Internal server error", HttpStatusCode.INTERNAL_SERVER_ERROR))
+            }
 
         }
     }
@@ -78,7 +83,6 @@ export class AuthController{
         }
         catch (error: any) {
             logger.error(error.message);
-
             next(new AppError(error.message, HttpStatusCode.BAD_REQUEST))
 
         }

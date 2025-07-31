@@ -9,6 +9,7 @@ import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { NextFunction, Request, Response } from "express";
 import { Report } from "@/domain/entities/Report";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -33,14 +34,14 @@ export class AdminReportController {
 
       const allData = await this.getAllReportsUsecase.execute(filter)
 
-      res.status(200).json({ status: true, message: "user data fetched success", reportsData: allData })
+      res.status(HttpStatusCode.OK).json({ status: true, message: "user data fetched success", reportsData: allData })
 
 
     } catch (error) {
 
       logger.error("err in reports", { err: error })
 
-      return next(new AppError("err in get all reports", 400))
+      return next(new AppError("err in get all reports", HttpStatusCode.BAD_REQUEST))
 
     }
   }
@@ -55,8 +56,8 @@ export class AdminReportController {
       res.status(200).json({ status: true, message: "user data fetched success", reportData: response })
 
     } catch (error) {
-      logger.error("error", error)
-      return next(new AppError("err in update report status", 400))
+
+      return next(new AppError("err in update report status", HttpStatusCode.BAD_REQUEST))
 
     }
   }

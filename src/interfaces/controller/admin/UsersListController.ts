@@ -4,6 +4,7 @@ import { IGetFilteredUsersUseCase } from "@/application/interfaces/use-cases/IGe
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { AppError } from "@/domain/error/AppError";
 import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -11,10 +12,10 @@ import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/IUserUseC
 export class UsersListController {
   constructor(
     private getFilteredUsersUseCase: IGetFilteredUsersUseCase,
-    private updateUserUseCase:IUpdateUserUseCase
+    private updateUserUseCase: IUpdateUserUseCase
 
   ) { }
-  getData = async (req: Request, res: Response) => {
+  getData = async (req: Request, res: Response,next:NextFunction) => {
     try {
 
       const page = parseInt(req.query.page as string) || 1;
@@ -24,42 +25,43 @@ export class UsersListController {
       const search = req.query.search as string;
 
 
-      const data =await this.getFilteredUsersUseCase.execute({ page, limit, role, status, search })
+      const data = await this.getFilteredUsersUseCase.execute({ page, limit, role, status, search })
 
       // const data1=await this.userRepository.getFiltersUsers({page,limit,role,status,search})
 
-      res.status(200).json({ status: true, message: "user data fetched success", usersData: data })
+      res.status(HttpStatusCode.OK).json({ status: true, message: "user data fetched success", usersData: data })
       return
     } catch (error) {
-      console.log(error);
+      
+      return next(new AppError("Internal server error", HttpStatusCode.INTERNAL_SERVER_ERROR))
 
     }
   }
 
 
-  updateUser = async (req: Request, res: Response,next:NextFunction) => {
+  updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const userEmail = req.params.email;
-      
-      const updateData = new UpdateUserDTO(req.body)
-      console.log("updateData",updateData);
 
-      console.log(req.params,"params");
-      
+      const updateData = new UpdateUserDTO(req.body)
+      console.log("updateData", updateData);
+
+      console.log(req.params, "params");
+
       // logger.info("update user ",{update:updateData}) 
-      
+
       const updatedUser = await this.updateUserUseCase.execute(userEmail, updateData)
 
       if (!updatedUser) {
-        return next(new AppError("User not found",404))
+        return next(new AppError("User not found", 404))
       }
 
-      res.status(200).json({ status: true, message: "User updated", user: updatedUser });
+      res.status(HttpStatusCode.OK).json({ status: true, message: "User updated", user: updatedUser });
     } catch (err) {
 
       logger.error(err);
 
-      return next(new AppError("Internal server error",500))
+      return next(new AppError("Internal server error", HttpStatusCode.INTERNAL_SERVER_ERROR))
     }
   };
 

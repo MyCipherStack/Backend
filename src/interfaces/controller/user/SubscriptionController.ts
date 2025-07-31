@@ -8,6 +8,7 @@ import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { AppError } from "@/domain/error/AppError";
 import { IUpdateUserUseCase } from "@/application/interfaces/use-cases/IUserUseCase";
 import { User } from "@/domain/entities/User";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -71,7 +72,7 @@ export class SubscriptionController {
 
         
   
-            res.status(200).json({ status: true, message: "create subscription" })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "create subscription" })
 
 
         } catch (error) {
@@ -99,11 +100,11 @@ export class SubscriptionController {
             }
             
             logger.info("subscrption Data", { data })
-            res.status(200).json({ status: true, message: " subscription Details", data })
+            res.status(HttpStatusCode.OK).json({ status: true, message: " subscription Details", data })
 
         } catch (error) {
 
-            next(new AppError("fetchig failed failed", 500))
+            next(new AppError("fetchig failed failed", HttpStatusCode.BAD_REQUEST))
 
 
         }

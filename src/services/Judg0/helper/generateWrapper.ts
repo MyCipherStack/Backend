@@ -5,7 +5,7 @@
 
 
 
-export const generateWrapper = (code, meta, language) => {
+export const generateWrapper = (code: string, meta: { name: string }, language: string) => {
   switch (language) {
     case 'javascript':
       return `

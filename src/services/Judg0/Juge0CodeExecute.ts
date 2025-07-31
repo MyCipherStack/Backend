@@ -17,7 +17,7 @@ export default class Juge0CodeExecute {
         expectedOutput: string,
         memoryLimit: number = 128,
         timeLimit: number = 1000,
-        functionSignatureMeta: {}
+        functionSignatureMeta: {name:string}
     ) {
         try {
             // console.log(expectedOutput,"Expeted output");

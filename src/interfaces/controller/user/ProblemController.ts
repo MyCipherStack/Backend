@@ -5,6 +5,8 @@ import { IAcceptedUserProblemsUseCase, IRunProblemUseCase } from "@/application/
 import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { IGeneratePrompt, ISendToOllama } from "@/domain/services/IOllama";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
+import { urlToHttpOptions } from "url";
 
 
 
@@ -21,7 +23,7 @@ export class ProblemController {
     ) { }
     getData = async (req: Request, res: Response, next: NextFunction) => {
         try {
-            
+
             const page = parseInt(req.query.page as string) || 1;
             const limit = parseInt(req.query.limit as string) || 10;
             const difficulty = req.query.difficulty as string;
@@ -44,11 +46,11 @@ export class ProblemController {
 
             // logger.info("problem",{sampleTestCasesOnlyData})
 
-            res.status(200).json({ status: true, message: "problems fetched success", problemData: sampleTestCasesOnlyData })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "problems fetched success", problemData: sampleTestCasesOnlyData })
             return
         } catch (error) {
             console.log(error);
-            next(new AppError("Something went wrong", 500))
+            next(new AppError("Something went wrong", HttpStatusCode.INTERNAL_SERVER_ERROR))
 
 
         }
@@ -77,12 +79,12 @@ export class ProblemController {
 
             logger.info("problem", problem)
 
-            res.status(200).json({ status: true, message: "problems fetched success", problem })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "problems fetched success", problem })
             return
 
         } catch (error) {
             console.log(error);
-            next(new AppError("Something went wrong", 500))
+            next(new AppError("Something went wrong", HttpStatusCode.INTERNAL_SERVER_ERROR))
 
 
         }
@@ -101,11 +103,11 @@ export class ProblemController {
             const updatedTestCases = await this.runProblemUseCase.execute(testCases, code, language, problem.memoryLimit, problem.timeLimit, problem.functionSignatureMeta, false)
             console.log(updatedTestCases);
 
-            res.status(200).json({ status: true, message: "test cases runned successfuly", testResult: updatedTestCases })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "test cases runned successfuly", testResult: updatedTestCases })
 
         } catch (error) {
             console.log(error);
-            next(new AppError("Something went wrong", 500))
+            next(new AppError("Something went wrong", HttpStatusCode.INTERNAL_SERVER_ERROR))
 
         }
     }
@@ -119,11 +121,11 @@ export class ProblemController {
             logger.info("accepted problem", id)
             const acceptedData = await this.acceptedUserProblemsUseCase.execute(id!)
 
-            res.status(200).json({ status: true, message: "accepted user problem", acceptedData: acceptedData })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "accepted user problem", acceptedData: acceptedData })
 
         } catch (error) {
 
-            next(new AppError("Something went wrong", 500))
+            next(new AppError("Something went wrong", HttpStatusCode.BAD_REQUEST))
 
 
         }
@@ -138,22 +140,23 @@ export class ProblemController {
 
             const problemDetails = await this.problemRepository.findById(problemId)
 
-            const prompt = this.generatePrompt.createSolutionPrompt(problemDetails,"javascript")
+            const prompt = this.generatePrompt.createSolutionPrompt(problemDetails!, "javascript")
 
             logger.info("problemId", { problemId })
             logger.info("prompt", { prompt })
-            
-            
-            const ollamoutput=await this.ollamaAi.generateResponse(prompt)
+            res.status(HttpStatusCode.OK).json({ status: true, message: "ollama solution" })
 
-            
+
+            const ollamoutput = await this.ollamaAi.generateResponse(prompt)
+
+
             console.log(ollamoutput);
-            
-            
-            
-            logger.info("ollamoutput", {ollamoutput})
+
+
+
+            logger.info("ollamoutput", { ollamoutput })
         } catch (error) {
-            logger.error("gettiing solution errr",error)
+            logger.error("gettiing solution errr", error)
             next(new AppError("Something went wrong", 500))
 
 

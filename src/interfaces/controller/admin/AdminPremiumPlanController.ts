@@ -5,6 +5,7 @@ import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IG
 import { IEditPlanUseCase } from "@/application/interfaces/use-cases/IPlanUseCases";
 import { PremiumPlan } from "@/domain/entities/PremiumPlan";
 import { AppError } from "@/domain/error/AppError";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -25,11 +26,11 @@ export class AdminPremiumPlanController {
 
             const response = await this.createPremiumRepoUseCase.execute(data)
 
-            res.status(200).json({ status: true, message: "new premium plan created", response })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "new premium plan created", response })
 
-        } catch (error) {
-
-            if (error.code == 11000) {                                        // review this code later
+        } catch (error: unknown) {
+            const err = error as { code: number }
+            if (err.code == 11000) {                                       // review this code later
                 return next(new AppError("plan name alreay exits", 409))
             }
             next(new AppError("erro in creating new plan", 409))
@@ -46,14 +47,14 @@ export class AdminPremiumPlanController {
 
             const response = await this.EditPlanUseCase.execute(data._id, data)
 
-            res.status(200).json({ status: true, message: "new premium plan created", response })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "new premium plan created", response })
 
-        } catch (error) {
-
-            if (error.code == 11000) {
+        } catch (error: unknown) {
+            const err = error as { code: number }
+            if (err.code == 11000) {
                 return next(new AppError("plan name alreay exits", 409))
             }
-            res.status(400).json({ status: false, message: error })
+            res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error })
         }
     }
 
@@ -63,11 +64,11 @@ export class AdminPremiumPlanController {
             const response = await this.getPremiumDataUseCase.allDocuments()
             if (response) {
                 const plans = response.filter(plan => plan.status != "deleted")
-                res.status(200).json({ status: true, message: " fetched all Plans", plans })
+                res.status(HttpStatusCode.OK).json({ status: true, message: " fetched all Plans", plans })
             }
 
         } catch (error) {
-            res.status(400).json({ status: false, message: error })
+            res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error })
         }
     }
 }

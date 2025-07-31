@@ -6,6 +6,7 @@ import { Server, Socket } from "socket.io";
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
 import { GroupChallenge } from "@/domain/entities/GroupChallenge";
+import { User } from "@/domain/entities/User";
 
 
 
@@ -43,15 +44,15 @@ export class LeaderBoardSocket extends BaseSocket {
             socket.join(challengeId) // here join room with room id is challenge id
 
             // logger.info("joinchallnege",{challengeId,userId})
-            
+
             if (!this.activeUsersMap.has(challengeId)) {
                 // logger.info("not  active user",{challengeId})
 
                 // logger.info("added a user", { userId })
-                
+
                 this.activeUsersMap.set(challengeId, new Set())
-            }else{
-                
+            } else {
+
                 logger.info("active user", { userId })
             }
             this.activeUsersMap.get(challengeId)?.add(userId)
@@ -68,7 +69,7 @@ export class LeaderBoardSocket extends BaseSocket {
         // console.log(socket.listenerCount("update-submit"), "update-submitcout"// )
         socket.removeAllListeners("update-submit")
 
-        socket.on("update-submit", async (challengeId: string, userId: string, time: number, problemId, submissionId) => {
+        socket.on("update-submit", async (challengeId: string, userId: string, time:Date, problemId, submissionId) => {
             try {
                 console.log(challengeId, "challegeID in socker on");
 
@@ -80,7 +81,7 @@ export class LeaderBoardSocket extends BaseSocket {
 
                         // console.log("problem Accepted ");
 
-                        console.log(new Date(submissionDetails.createdAt).toTimeString(), "Date");
+                        // console.log(new Date(submissionDetails.createdAt).toTimeString(), "Date");
 
 
                         await this.updateLeaderBoardUseCase.execute(userId, challengeId, { time, problemId: submissionDetails.problemId, submissionId })
@@ -144,12 +145,13 @@ export class LeaderBoardSocket extends BaseSocket {
 
             const response = leaderBoard.map(data => {
 
+                const user = data.userId as User
                 return {
-                    userName: data.userId.name,
+                    userName: user.name,
                     totalScore: data.totalscore,
                     solvedCount: data.solvedProblems?.length ?? 0,
-                    isLive: this.activeUsersMap.get(challengeId)?.has(data.userId._id.toString()) || false,
-                    image: data.userId.image,
+                    isLive: this.activeUsersMap.get(challengeId)?.has(user._id!.toString()) || false,
+                    image: user.image,
                     rank: rank++
                 }
             })

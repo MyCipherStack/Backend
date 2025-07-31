@@ -14,7 +14,7 @@ export class SubscriptionEntity {
 
         public cycle: string,
 
-        public features: [{ text: String, enabled: Boolean }],
+        public features: { text: String, enabled: Boolean }[],
 
         public trial: number,
 

@@ -4,6 +4,7 @@ import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { NextFunction, Request, Response } from "express";
 import { IChallengeRepository } from "@/domain/repositories/IChallengeRepository";
 import { GroupChallenge } from "@/domain/entities/GroupChallenge";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -19,10 +20,7 @@ export class ChallengeController {
     allGroupChallenges = async (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            const parseBoolean=(str:string)=>{
-                return  str==="true"
-            }
-
+        
             const page = parseInt(req.query.page as string) || 1;
             const search = req.query.search as string 
             const limit = parseInt(req.query.limit as string) || 10
@@ -32,11 +30,11 @@ export class ChallengeController {
             logger.info("page", {isBlocked,search})
             const data = await this.challengeRepository.paginatedData({ page, limit,isBlocked,search, status })
 
-            res.status(200).json({ message: "all group challenge data fetched", challenges: data })
+            res.status(HttpStatusCode.OK).json({ message: "all group challenge data fetched", challenges: data })
 
         } catch (error) {
-            logger.error("err", error)
-            next(new AppError("err in getting data", 400))
+
+            next(new AppError("err in getting data", HttpStatusCode.BAD_REQUEST))
         }
 
     }
@@ -52,12 +50,12 @@ export class ChallengeController {
 
             const data = await this.updateRepositoryDataUseCase.execute(req.body.id,{isBlocked:req.body.isBlocked})
             logger.info("data", data)
-            res.status(200).json({ message: "status changed", challenge: data })
+            res.status(HttpStatusCode.OK).json({ message: "status changed", challenge: data })
 
 
         } catch (error) {
-            logger.error(error)
-            return next(new AppError("err in change status", 500))
+            
+            return next(new AppError("err in change status", HttpStatusCode.BAD_REQUEST))
 
         }
     }

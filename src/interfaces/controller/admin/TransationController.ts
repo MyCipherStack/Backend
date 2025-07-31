@@ -2,6 +2,7 @@ import { FilterDTO } from "@/application/dto/FilterDTO";
 import { ITransactionUseCase } from "@/application/interfaces/use-cases/IAdminUseCase";
 import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 import { NextFunction, Request, Response } from "express";
 
 
@@ -24,14 +25,11 @@ export class TransationController {
              const filter=new FilterDTO({page,limit,status})
             const data = await this.TransactionUseCase.execute(filter)
             
-            logger.info("get all transation",{data})
-            res.status(200).json({ status: true, message: "all transations", transactions: data });
+            res.status(HttpStatusCode.OK).json({ status: true, message: "all transations", transactions: data });
 
         } catch (error) {
 
-
-            logger.error("er", { error })
-            return next(new AppError("Internal server error", 500))
+            return next(new AppError("Error in getting all transations", HttpStatusCode.BAD_REQUEST))
 
 
         }

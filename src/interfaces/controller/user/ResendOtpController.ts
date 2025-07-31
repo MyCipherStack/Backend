@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { IOtpService } from "@/domain/services/IOtpService";
-import { SendOtpUseCase } from "@/application/use-cases/SendOtpUseCase";
-import { IPendingUserRepository } from "@/domain/repositories/IPendingUserRepository";
 import { ISendOtpUseCase } from "@/application/interfaces/use-cases/IOtpUseCases";
 import { AppError } from "@/domain/error/AppError";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 export class ResendOtpController {
@@ -23,7 +21,7 @@ export class ResendOtpController {
             let data = req.body
 
             await this.sendOtpUseCase.execute(data.email)
-            res.status(200).json({ status: true, message: "OTP sented" })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "OTP sented" })
 
         } catch (error: any) {
 

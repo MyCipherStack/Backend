@@ -1,6 +1,21 @@
 version: '3'
 
 services:
+
+  backend:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      - NODE_ENV=development
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
   loki:
     image: grafana/loki:2.9.0
     ports:
@@ -8,13 +23,14 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - loki-storage:/loki
-v
   grafana:
     image: grafana/grafana:latest
     ports:
       - "3001:3000"
     volumes:
       - grafana-storage:/var/lib/grafana
+
+  
 
 volumes:
   grafana-storage:

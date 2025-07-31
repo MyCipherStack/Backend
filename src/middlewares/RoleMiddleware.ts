@@ -11,7 +11,7 @@ export class RoleMiddleware{
             if(!user){
              next(new AppError("Not authenticated",401))
             }
-            if(!roles.includes(user.role)){
+            if(!roles.includes(user?.role!)){
                 next(new AppError("Access denied: insufficient permission",403))
 
             }

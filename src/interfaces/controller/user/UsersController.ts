@@ -4,6 +4,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IGetFilteredUsersUseCase } from "../../../application/interfaces/use-cases/IGetFilteredUsersUseCase";
 import { AppError } from "@/domain/error/AppError";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -26,11 +27,11 @@ export class UsersController {
             const data = await this.getFilteredUsersUseCase.execute({ page, limit, role, status, search })
             // const data1=await this.userRepository.getFiltersUsers({page,limit,role,status,search})
 
-            res.status(200).json({ status: true, message: "user data fetched success", usersData: data })
+            res.status(HttpStatusCode.OK).json({ status: true, message: "user data fetched success", usersData: data })
             return
         } catch (error) {
 
-            next(new AppError("create subcription failed", 500))
+            next(new AppError("create subcription failed", HttpStatusCode.BAD_REQUEST))
 
         }
     }

@@ -1,10 +1,14 @@
-import { IPairProgramming } from "../interfaces/IChallengeInterfaces.js";
+
+
+
+
+
 
 
 export class PairProgramingDTO {
     challengeName: string
     problems: string[]
-    type: string
+    sessionType: string
     invitedUsers: string[]
     problemType: string
 
@@ -19,7 +23,7 @@ export class PairProgramingDTO {
         this.challengeName = data.challengeName
         this.problems = data.problems.map((data: { id: string }) => data.id)
         this.invitedUsers = data.invitedUsers
-        this.type = data.sessionType
+        this.sessionType = data.sessionType
         this.problemType = data.problemType
 
     }

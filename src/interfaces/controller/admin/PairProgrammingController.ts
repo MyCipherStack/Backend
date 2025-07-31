@@ -4,6 +4,7 @@ import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { NextFunction, Request, Response } from "express";
 import { IPairProgrammingRepository } from "@/domain/repositories/IPairProgrammingRepository";
+import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
 
 
 
@@ -35,10 +36,10 @@ export class PairProgrammingController {
 
             const data = await this.pairProgrammingRepo.paginatedData({ page, limit, status,search,isBlocked })
 
-            res.status(200).json({ message: "all pairPrograrmming data fetched", pairProgram: data })
+            res.status(HttpStatusCode.OK).json({ message: "all pairPrograrmming data fetched", pairProgram: data })
 
         } catch (error) {
-            next(new AppError("err in getting data", 400))
+            next(new AppError("err in getting data", HttpStatusCode.BAD_REQUEST))
         }
 
     }
@@ -51,12 +52,12 @@ export class PairProgrammingController {
 
             const data = await this.updateRepositoryDataUseCase.execute(req.body.id, { isBlocked: req.body?.isBlocked })
             logger.info("data", data)
-            res.status(200).json({ message: "status changed", challenge: data })
+            res.status(HttpStatusCode.OK).json({ message: "status changed", challenge: data })
 
 
         } catch (error) {
             logger.error(error)
-            return next(new AppError("err in change status", 500))
+            return next(new AppError("err in change status", HttpStatusCode.BAD_REQUEST))
 
         }
     }
