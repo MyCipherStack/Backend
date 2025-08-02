@@ -78,5 +78,5 @@ app.use(ErrorHandler)
 const PORT = process.env.PORT || 5000
 
 httpServer.listen(PORT, () => {
-    logger.info(`server running on prot ${PORT}`)
+    logger.info(`server running on port ${PORT}`)
 })

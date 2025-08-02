@@ -6,7 +6,7 @@ import { IHashAlgorithm } from "../../domain/services/IHashAlgorithm";
 import { HashService } from "../../services/hashing/HashService";
 import { BcryptHashAlgorithm } from "../../services/hashing/BcryptHashAlgorithm";
 import { JwtService } from "../../services/jwt/JwtService";
-import { env } from "../../config/env";
+import { env } from "@/config/env";
 import { IPendingUserRepository } from "../../domain/repositories/IPendingUserRepository";
 import { PendingUserRepository } from "../../infrastructure/repositories/PendingUserRepository";
 import { OtpService } from "../../services/otp/OtpService";

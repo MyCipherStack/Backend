@@ -1,4 +1,3 @@
-import { IProblem } from "@/infrastructure/database/ProblemModel"
 import { Problem } from "../entities/Problem"
 
 

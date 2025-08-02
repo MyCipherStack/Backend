@@ -4,7 +4,7 @@
   "main": "app.js",
   "scripts": {
     "build": "tsc && tsc-alias",
-    "start": "node -r tsconfig-paths/register dist/app.js",
+    "start": "node dist/app.js",
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/app.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

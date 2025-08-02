@@ -6,7 +6,6 @@ import { AppError } from "@/domain/error/AppError";
 import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
 import { IGeneratePrompt, ISendToOllama } from "@/domain/services/IOllama";
 import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
-import { urlToHttpOptions } from "url";
 
 
 
