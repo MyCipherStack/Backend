@@ -6,15 +6,15 @@ import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IG
 import { AppError } from '@/domain/error/AppError';
 
 interface IRepoData {
-    status: string, email: string, name: string, _id: string
+  status: string, email: string, name: string, _id: string
 }
 
 // ADMIN AND USER HAVE SAME Authenticate CONTROLLER (
 
 export class Authenticate<Entity> {
   constructor(
-        private jwtService: IJwtService,
-        private getRepositoryDataUseCase: IGetRepositoryDataUseCase<Entity>,
+    private jwtService: IJwtService,
+    private getRepositoryDataUseCase: IGetRepositoryDataUseCase<Entity>,
   ) { }
 
   verify = async (req: Request, res: Response, next: NextFunction) => {
@@ -41,19 +41,24 @@ export class Authenticate<Entity> {
 
           logger.info('access token valid');
 
+          const isProduction = env.NODE_ENV === "production"
+
           if (foundUser?.status && foundUser?.status === 'banned') {
             logger.info('user blocked');
 
             res.clearCookie('accessToken', {
               httpOnly: true,
               sameSite: 'none',
-              secure: process.env.NODE_ENV === 'production',
+              secure: isProduction,
+              domain: isProduction ? env.COOKIE_DOMAIN : undefined,
+
             });
 
             res.clearCookie('refreshToken', {
               httpOnly: true,
               sameSite: 'none',
-              secure: process.env.NODE_ENV === 'production',
+              secure: isProduction,
+              domain: isProduction ? env.COOKIE_DOMAIN : undefined,
             });
 
             return res.status(401).json({ status: false, message: 'This Account is banned' });
@@ -65,16 +70,20 @@ export class Authenticate<Entity> {
 
             return next();
           }
+
+
           res.clearCookie('accessToken', {
             httpOnly: true,
-            sameSite: 'strict',
-            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            secure: isProduction,
           });
 
           res.clearCookie('refreshToken', {
             httpOnly: true,
-            sameSite: 'strict',
-            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'none',
+            secure: isProduction,
+            domain: isProduction ? env.COOKIE_DOMAIN : undefined,
+
           });
           return next(new AppError('user not found: Unauthorized ', 401));
         }
@@ -85,12 +94,16 @@ export class Authenticate<Entity> {
         const { exp, iat, ...payload } = userPayload;
         if (userPayload) {
           const createAccesstoken = this.jwtService.signAccessToken(payload);
+          
+          const isProduction = env.NODE_ENV === "production"
+
           res.cookie('accessToken', createAccesstoken, {
             httpOnly: true,
             secure: env.NODE_ENV === 'production',
-            sameSite: 'strict',
+            sameSite: 'none',
             maxAge: 1000 * 60 * 15,
-            path: '/',
+
+            domain: isProduction ? env.COOKIE_DOMAIN : undefined,
           });
           const foundUser = await this.getRepositoryDataUseCase.OneDocumentById(userPayload.userId) as IRepoData;
 

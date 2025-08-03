@@ -12,9 +12,9 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class AuthController {
   constructor(
-        private createUserUseCase: ICreateUserUseCase,
-        private sentOtpUsecase:ISendOtpUseCase,
-        private loginUserUseCase:ILoginUserUseCase,
+    private createUserUseCase: ICreateUserUseCase,
+    private sentOtpUsecase: ISendOtpUseCase,
+    private loginUserUseCase: ILoginUserUseCase,
 
   ) { }
 
@@ -35,7 +35,7 @@ export class AuthController {
       } else {
         next(new AppError('Something wentwrong', HttpStatusCode.BAD_REQUEST));
       }
-    } catch (error:unknown) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         logger.error(error.message, 'backe end err in auth controller');
 
@@ -51,18 +51,24 @@ export class AuthController {
       const loginData = new LoginDTO(req.body);
       const loginUserData = await this.loginUserUseCase.execute(loginData.identifier, loginData.password);
 
+
+      const isProduction = env.NODE_ENV === "production"
+
+
       res.cookie('accessToken', loginUserData.accessToken, {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 1000 * 60 * 15,
+        domain: isProduction ? env.COOKIE_DOMAIN : undefined,
         path: '/',
       });
       res.cookie('refreshToken', loginUserData.refreshToken, {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 1000 * 60 * 60 * 24 * 7,
+        domain: isProduction ? env.COOKIE_DOMAIN : undefined,
         path: '/',
       });
 

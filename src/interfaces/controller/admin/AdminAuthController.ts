@@ -15,19 +15,22 @@ export class AdminAuthController {
       const data = new LoginDTO(req.body);
       const adminData = await this.loginAdminUsecase.execute(data.identifier, data.password);
 
+          const isProduction=env.NODE_ENV==="production"
+
+
+
       res.cookie('accessToken', adminData.accessToken, {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 1000 * 60 * 15,
-        path: '/',
+        domain:
       });
       res.cookie('refreshToken', adminData.refreshToken, {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        sameSite: 'none',
         maxAge: 1000 * 60 * 60 * 24 * 7,
-        path: '/',
       });
       console.log(adminData);
       console.log(adminData.admin);
@@ -46,12 +49,12 @@ export class AdminAuthController {
     try {
       res.clearCookie('accessToken', {
         httpOnly: true,
-        sameSite: 'strict',
+        sameSite: 'none',
         secure: process.env.NODE_ENV === 'production',
       });
       res.clearCookie('refreshToken', {
         httpOnly: true,
-        sameSite: 'strict',
+        sameSite: 'none',
         secure: process.env.NODE_ENV === 'production',
       });
 
