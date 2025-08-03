@@ -56,7 +56,7 @@ export class AdminAuthController {
       res.clearCookie('accessToken', {
         httpOnly: true,
         sameSite: 'none',
-        secure: process.env.NODE_ENV === 'production',,
+        secure: process.env.NODE_ENV === 'production',
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
 
       });
