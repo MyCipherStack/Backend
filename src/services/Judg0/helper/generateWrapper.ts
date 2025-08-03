@@ -1,9 +1,4 @@
-
-
-
-// Here add RESULT for that 
-
-
+// Here add RESULT for that
 
 export const generateWrapper = (code: string, meta: { name: string }, language: string) => {
   switch (language) {

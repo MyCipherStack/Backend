@@ -1,38 +1,16 @@
-
-
-
-
-
-import { IGetAllRepoDataUsingFieldUseCase } from "@/application/interfaces/use-cases/ISharedUseCase";
-import { IBaseRepository } from "@/domain/repositories/IBaseRepository";
+import { IGetAllRepoDataUsingFieldUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
+import { IBaseRepository } from '@/domain/repositories/IBaseRepository';
 
 export class GetAllRepoDataUsingFieldUseCase<Entity> implements IGetAllRepoDataUsingFieldUseCase<Entity> {
-    constructor(
-        private repository: IBaseRepository<Entity>
-    ) { }
+  constructor(
+        private repository: IBaseRepository<Entity>,
+  ) { }
 
-    async execute(field: Partial<Entity>): Promise<Entity[] | null> {
+  async execute(field: Partial<Entity>): Promise<Entity[] | null> {
+    const filterData = await this.repository.findAllwithField({ ...field, isRead: false });
 
-
-        const filterData = await this.repository.findAllwithField({ ...field,isRead:false })
-
-        return filterData ?? null
-
-    }
-
-
+    return filterData ?? null;
+  }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-GetAllRepoDataUsingFieldUseCase
+GetAllRepoDataUsingFieldUseCase;

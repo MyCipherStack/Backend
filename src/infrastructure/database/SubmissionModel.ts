@@ -1,8 +1,6 @@
-import mongoose, { Document, SchemaTypes, Types } from "mongoose";
+import mongoose, { Document, SchemaTypes, Types } from 'mongoose';
 
-
-
-export  interface ISubmissionDocument extends Document{
+export interface ISubmissionDocument extends Document{
     userId:Types.ObjectId,
     problemId:Types.ObjectId,
     code:string,
@@ -23,45 +21,38 @@ export  interface ISubmissionDocument extends Document{
     updatedAt?:Date
     _id:string
 
-
 }
 
+const submissionSchema = new mongoose.Schema<ISubmissionDocument>({
 
+  userId: { type: SchemaTypes.ObjectId, ref: 'User', required: true },
 
+  problemId: { type: SchemaTypes.ObjectId, ref: 'Problem', required: true },
 
+  code: { type: String, required: true },
 
-const submissionSchema=new mongoose.Schema<ISubmissionDocument>({
+  language: { type: String, required: true },
 
-    userId:{type:SchemaTypes.ObjectId,ref:"User",required:true},
+  status: { type: String, enum: ['Accepted', 'Wrong Answer', 'Compilation Error', 'RunTime Error'], required: true },
 
-    problemId:{type:SchemaTypes.ObjectId,ref:"Problem",required:true},
+  runTime: { type: Number },
 
-    code:{type:String,required:true},
+  memory: { type: Number },
 
-    language:{type:String,required:true},
+  failingTestCaseResult: {
+    input: { type: String },
+    output: { type: String },
+    compile_output: { type: String },
+  },
 
-    status:{type:String,enum:["Accepted","Wrong Answer","Compilation Error","RunTime Error"],required:true},
+  passedTestCases: { type: Number, required: true },
 
-    runTime:{type:Number},
+  totalTestCases: { type: Number, required: true },
 
-    memory:{type:Number},
+  error: { type: String },
 
-    failingTestCaseResult:{
-        input:{type:String},
-        output:{type:String},
-        compile_output:{type:String}
-    },
+}, { timestamps: true });
 
-    passedTestCases:{type:Number,required:true},
+submissionSchema.index({ user: 1, createdAt: -1 });
 
-    totalTestCases:{type:Number,required:true},
-
-    error:{type:String}
-
-
-},{timestamps:true})
-
-submissionSchema.index({user:1,createdAt:-1})
-
-
-export const submissionModel=mongoose.model<ISubmissionDocument>("submission",submissionSchema)
+export const submissionModel = mongoose.model<ISubmissionDocument>('submission', submissionSchema);

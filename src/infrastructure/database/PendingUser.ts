@@ -1,5 +1,4 @@
-import mongoose, { Document } from "mongoose"
-
+import mongoose, { Document } from 'mongoose';
 
 export interface IPendingUser extends Document{
     name:string,
@@ -9,14 +8,12 @@ export interface IPendingUser extends Document{
     createdAt?:Date
 }
 
+const OtpSchema = new mongoose.Schema<IPendingUser>({
+  name: { type: String },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  otp: { type: String },
+  createdAt: { type: Date, default: Date.now, expires: 300 },
+});
 
-
-const OtpSchema=new  mongoose.Schema<IPendingUser>({
-    name:{type:String},
-    email:{type:String,required:true},
-    password:{type:String,required:true},
-    otp:{type:String},
-    createdAt:{type:Date,default:Date.now,expires:300}
-})
-
-export const PendingUserModel=mongoose.model<IPendingUser>("Otp",OtpSchema)
+export const PendingUserModel = mongoose.model<IPendingUser>('Otp', OtpSchema);

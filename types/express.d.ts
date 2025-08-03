@@ -1,6 +1,3 @@
-
-
-
 declare global {
 
     namespace Express {
@@ -18,4 +15,4 @@ declare global {
     }
 }
 
-export {}   //make the file a module 
+export {}; // make the file a module

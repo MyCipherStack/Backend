@@ -1,13 +1,8 @@
-import { Problem } from "@/domain/entities/Problem";
-
-
-
+import { Problem } from '@/domain/entities/Problem';
 
 export class GeneratePrompt {
-
-    createSolutionPrompt(problemDetails: Problem, language: string): string {
-
-        return `You are a coding assistant. Given the problem details, generate a solution prompt.
+  createSolutionPrompt(problemDetails: Problem, language: string): string {
+    return `You are a coding assistant. Given the problem details, generate a solution prompt.
 
             problem:${problemDetails.title}
             
@@ -19,7 +14,7 @@ export class GeneratePrompt {
 
 
             user this signature:
-            ${problemDetails.starterCode!["javascript"]}
+            ${problemDetails.starterCode!.javascript}
 
             write a complete JavaScript solution using the above signature.
 
@@ -35,7 +30,6 @@ export class GeneratePrompt {
             "timeComplexity": "O(n)",
             "spaceComplexity": "O(1)"     
             }
-`
-    }
-
+`;
+  }
 }

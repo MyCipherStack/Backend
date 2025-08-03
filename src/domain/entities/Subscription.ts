@@ -1,9 +1,5 @@
-
-
-
 export class SubscriptionEntity {
-
-    constructor(
+  constructor(
         public userId: string,
 
         public transactionId: string,
@@ -14,7 +10,7 @@ export class SubscriptionEntity {
 
         public cycle: string,
 
-        public features: { text: String, enabled: Boolean }[],
+        public features: { text: string, enabled: boolean }[],
 
         public trial: number,
 
@@ -26,8 +22,7 @@ export class SubscriptionEntity {
 
         public endDate:Date,
 
-        public _id:string
+        public _id:string,
 
-
-    ) { }
+  ) { }
 }

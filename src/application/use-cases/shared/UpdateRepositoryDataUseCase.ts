@@ -1,21 +1,15 @@
-
-
-import { IBaseRepository } from "@/domain/repositories/IBaseRepository.js";
-import { IUpdateRepositoryDataUseCase } from "@/application/interfaces/use-cases/ISharedUseCase";
-
-
+import { IBaseRepository } from '@/domain/repositories/IBaseRepository.js';
+import { IUpdateRepositoryDataUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 
 export class UpdateRepositoryDataUseCase<Entity> implements IUpdateRepositoryDataUseCase<Entity> {
-    constructor(
-        private repository: IBaseRepository<Entity>
+  constructor(
+        private repository: IBaseRepository<Entity>,
 
-    ) { }
+  ) { }
 
+  async execute(id: string, updateData: Partial<Entity>): Promise<Entity | null> {
+    const data = await this.repository.updateOneById(id, updateData);
 
-    async execute(id: string, updateData: Partial<Entity>): Promise<Entity | null> {
-        const data = await this.repository.updateOneById(id, updateData)
-
-        return data ?? null
-    }
-
+    return data ?? null;
+  }
 }

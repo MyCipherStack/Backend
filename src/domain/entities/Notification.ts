@@ -1,9 +1,5 @@
-
-
-
 export class NotificationEntity {
-
-    constructor(
+  constructor(
 
         public userId: string,
 
@@ -12,12 +8,12 @@ export class NotificationEntity {
         public message: string,
 
         public isRead?: boolean,
-        
+
         public time?:string,
-        
+
         public link?:string,
 
-        public id?:string
+        public id?:string,
 
-    ) { }
+  ) { }
 }

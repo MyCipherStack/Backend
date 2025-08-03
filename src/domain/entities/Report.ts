@@ -1,8 +1,5 @@
-
-
-
 export class Report {
-    constructor(
+  constructor(
         public reportType: string,
         public descriptions: string,
         public submittedBy: string,
@@ -10,6 +7,6 @@ export class Report {
         public status: string,
         public reportedUser?: string,
         public createdAt?:Date,
-        public updatedAt?:Date
-    ) { }
+        public updatedAt?:Date,
+  ) { }
 }

@@ -1,54 +1,26 @@
+import { Server, Socket } from 'socket.io';
+import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 
-
-import { Server, Socket } from "socket.io"
-import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
-
-
-export abstract class BaseSocket{
-  
-
-
-    protected abstract connectSocket(socket:Socket,io:Server):Promise<void >
+export abstract class BaseSocket {
+    protected abstract connectSocket(socket:Socket, io:Server):Promise<void >
 
     public register(io: Server) {
+      io.on('connection', (socket) => {
+        this.connectSocket(socket, io);
 
+        // ------------------------------------------------------------------------------------------------------
 
-        io.on("connection", (socket,) => {
+        // Best Implimetation for WEBTRC
 
-    
-            this.connectSocket(socket,io)
+        socket.on('join-user-name', (userId) => {
+          socket.join(userId);
 
+          logger.info('userjoind', userId);
+        });
 
+        socket.on('discount-user-room', () => {
 
-            // ------------------------------------------------------------------------------------------------------
-
-
-
-
-
-            //Best Implimetation for WEBTRC 
-
-        
-
-
-
-            socket.on("join-user-name",(userId)=>{
-
-                socket.join(userId)
-                
-                logger.info("userjoind",userId)
-
-            })
-
-            
-            
-            
-            socket.on("discount-user-room",()=>{
-                
-            })
-
-
-        })
-
+        });
+      });
     }
 }

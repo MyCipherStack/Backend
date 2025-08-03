@@ -1,14 +1,11 @@
-
-import { FilterDTO } from "@/application/dto/FilterDTO.js";
-import { GroupChallenge } from "../../../domain/entities/GroupChallenge.js";
-import { IGroupChallenge, IPairProgramming } from "../IChallengeInterfaces.js";
-import { PairProgramming } from "@/domain/entities/PairProgramming.js";
-import { leaderBoard } from "@/domain/entities/LeaderBoard.js";
-
-
+import { FilterDTO } from '@/application/dto/FilterDTO.js';
+import { GroupChallenge } from '../../../domain/entities/GroupChallenge.js';
+import { IGroupChallenge, IPairProgramming } from '../IChallengeInterfaces.js';
+import { PairProgramming } from '@/domain/entities/PairProgramming.js';
+import { leaderBoard } from '@/domain/entities/LeaderBoard.js';
 
 export interface ICreateChallengeUseCase {
-    execute(challengeData: IGroupChallenge,userId:string): Promise<string | null>
+    execute(challengeData: IGroupChallenge, userId:string): Promise<string | null>
 }
 
 export interface IJoinChallengeUseCase {
@@ -18,27 +15,22 @@ export interface IJoinPairProgrammigUseCase {
     execute(joinCode: string, userId: string, userName: string): Promise<PairProgramming | null>
 }
 
-
 export interface ICreatePairProgrammingUseCase {
-    execute(data: IPairProgramming): Promise<String | null>
+    execute(data: IPairProgramming): Promise<string | null>
 }
-
 
 export interface IActivePrivateChallengeUsecase {
     execute(id: string): Promise<GroupChallenge[] | null>
 }
-
 
 export interface IActivePublicChallengeUsecase {
     execute(data: FilterDTO): Promise<{ datas: GroupChallenge[], totalCount: number, totalPages: number } | null>
 
 }
 
-
 export interface IEndChallengeUseCase {
     execute(challengeId: string, delay: number): Promise<void>
 }
-
 
 export interface IEvaluateWinnerUsecase {
 }

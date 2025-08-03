@@ -1,5 +1,3 @@
-
-
 export interface PersonalInfo {
     displayName: string;
     username: string;
@@ -10,19 +8,19 @@ export interface PersonalInfo {
     linkedin: string;
     avatar: string;
   }
-  
-  export interface AppearanceSettings {
+
+export interface AppearanceSettings {
     theme: string;
   }
-  
-  export interface SecuritySettings {
+
+export interface SecuritySettings {
     currentPassword: string;
     newPassword: string;
     confirmPassword: string;
     twoFactorEnabled: boolean;
   }
-  
-  export interface UserPreferences {
+
+export interface UserPreferences {
     emailNotifications: boolean;
     interviewReminders: boolean;
     contestReminders: boolean;
@@ -31,5 +29,3 @@ export interface PersonalInfo {
     publicProfile: boolean;
     showActivity: boolean;
   }
-  
-

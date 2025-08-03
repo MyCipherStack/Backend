@@ -1,5 +1,4 @@
-import mongoose,{Schema,Document,Types} from "mongoose"
-
+import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IAdmin extends Document {
     _id:Types.ObjectId
@@ -8,22 +7,21 @@ export interface IAdmin extends Document {
     refreshToken:string
 }
 
+const adminSchema = new Schema<IAdmin>({
+  name: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
 
-const adminSchema=new Schema<IAdmin>({
-    name:{
-        type:String,
-        required:true
-    },
-    password:{
-        type:String,
-        required:true
-    },
+  refreshToken: {
+    type: String,
+  },
+}, { timestamps: true });
 
-    refreshToken:{
-        type:String
-    },
-},{timestamps:true})
+const adminModel = mongoose.model<IAdmin>('admin', adminSchema);
 
-const adminModel=mongoose.model<IAdmin>("admin",adminSchema)
-
-export default adminModel
+export default adminModel;

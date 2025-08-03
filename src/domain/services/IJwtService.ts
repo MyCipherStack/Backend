@@ -1,4 +1,3 @@
-
 export interface IJwtService{
     signAccessToken(payload:object):string;
     signRefereshToken(payload:object):string;

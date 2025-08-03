@@ -1,9 +1,5 @@
-
-
-
-
-export class Interview{
-    constructor(
+export class Interview {
+  constructor(
         public position: string,
         public interviewType:string,
         public date:string,
@@ -14,6 +10,5 @@ export class Interview{
         public participantId:string,
         public id?:string,
         public code?:string,
-    ){}
+  ) {}
 }
-

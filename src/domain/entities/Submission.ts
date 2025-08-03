@@ -1,8 +1,5 @@
-
-
-export class Submission{
-   
-    constructor(
+export class Submission {
+  constructor(
         public userId:string,
 
         public problemId:string,
@@ -10,11 +7,11 @@ export class Submission{
         public code:string,
 
         public language:string,
-    
+
         public status:string,
-    
-        public  runTime:number,
-    
+
+        public runTime:number,
+
         public memory:number,
 
         public passedTestCases:number,
@@ -22,16 +19,15 @@ export class Submission{
         public totalTestCases:number,
 
         public error:string,
-        
+
         public failingTestCaseResult?:{
-            input?:string | null ,
+            input?:string | null,
             output?:string |null
             compile_output?:string |null
         } | null,
-        
 
         public createdAt?: string,
-        
-        public id?:string
-    ){}
+
+        public id?:string,
+  ) {}
 }

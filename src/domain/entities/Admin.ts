@@ -1,17 +1,16 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
-export class Admin{
-    constructor(
+export class Admin {
+  constructor(
         public name:string,
         public password:string,
         public id:string,
-        public refreshToken?:string
-    ){}
+        public refreshToken?:string,
+  ) {}
 
-    toDTO(){
-        return {
-            name:this.name,
-        }
-    }
-
+  toDTO() {
+    return {
+      name: this.name,
+    };
+  }
 }

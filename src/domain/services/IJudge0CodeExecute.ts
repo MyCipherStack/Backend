@@ -1,4 +1,3 @@
-
 export interface IJuge0CodeExecute{
 
     codeSubmitToJudge0(
@@ -23,6 +22,4 @@ export interface IJuge0CodeExecute{
 
     }>
 
-
 }
-

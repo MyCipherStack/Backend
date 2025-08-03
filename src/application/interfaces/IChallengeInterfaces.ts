@@ -1,4 +1,3 @@
-
 export type IGroupChallenge = {
   // hostId: string
   challengeName: string;
@@ -8,10 +7,7 @@ export type IGroupChallenge = {
   type: string,
   maxParticipants: number,
 
-
 };
-
-
 
 export type IPairProgramming = {
   hostId: string

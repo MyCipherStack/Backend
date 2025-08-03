@@ -1,7 +1,5 @@
-import { Problem } from "../entities/Problem.js";
-import { IBaseRepository } from "./IBaseRepository.js";
-
-
+import { Problem } from '../entities/Problem.js';
+import { IBaseRepository } from './IBaseRepository.js';
 
 export interface IProblemRepository extends IBaseRepository<Problem> {
 
@@ -21,8 +19,5 @@ export interface IProblemRepository extends IBaseRepository<Problem> {
     updateAcceptance(id: string, submitted: number, accepted: number): Promise<boolean>
 
     totalProblemsDifficulty(): Promise<{ difficulty: string; count: number }[]>
-
-
-
 
 }

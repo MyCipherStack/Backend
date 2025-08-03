@@ -1,5 +1,3 @@
-
-
 export interface IGoogleUser {
     googleid: string
     name: string,

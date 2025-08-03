@@ -1,29 +1,25 @@
-interface Features { text: string, enabled: Boolean }
-
-
+interface Features { text: string, enabled: boolean }
 
 export class CreateSubscripctionDTO {
+  userId: string;
 
-    userId: string
+  transactionId: string;
 
-    transactionId: string
+  name: string;
 
-    name: string
+  price: number;
 
+  cycle: string;
 
-    price: number
+  features: Features[];
 
-    cycle: string
+  trial: number;
 
-    features: Features[]
+  status: string;
 
-    trial: number
+  planId: string;
 
-    status: string
-
-    planId: string
-
-    constructor(data: {
+  constructor(data: {
         userId: string
         transactionId: string
         name: string
@@ -35,15 +31,14 @@ export class CreateSubscripctionDTO {
         _id: string
 
     }) {
-
-        this.userId = data.userId
-        this.transactionId = data.transactionId
-        this.name = data.name
-        this.price = data.price
-        this.cycle = data.cycle
-        this.features = data.features as Features[]
-        this.trial = data.trial
-        this.status = data.status
-        this.planId = data._id
-    }
+    this.userId = data.userId;
+    this.transactionId = data.transactionId;
+    this.name = data.name;
+    this.price = data.price;
+    this.cycle = data.cycle;
+    this.features = data.features as Features[];
+    this.trial = data.trial;
+    this.status = data.status;
+    this.planId = data._id;
+  }
 }

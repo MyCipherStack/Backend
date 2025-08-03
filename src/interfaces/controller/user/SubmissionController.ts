@@ -1,21 +1,16 @@
-import { NextFunction, Request, Response } from "express";
-import { IGetAllSubmissionByProblemuseCase, IGetAllUsersSubmissionUseCase } from "../../../application/interfaces/use-cases/IGetAllSubmissionByProblemuseCase";
-import { AppError } from "@/domain/error/AppError";
-import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
-import { IGetRecentSubmissionUseCase } from "@/application/interfaces/use-cases/ISubmissoinUseCase";
-import { ProblemDTO } from "@/application/dto/ProblemDTO";
-import { IGetRepositoryDataUseCase } from "@/application/interfaces/use-cases/IGetRepositoryDataUseCase";
-import { Problem } from "@/domain/entities/Problem";
-import { IRunProblemUseCase, IsubmitProblemUseCase } from "@/application/interfaces/use-cases/IProblemUseCases";
-import { HttpStatusCode } from "@/shared/constants/HttpStatusCode";
-
-
-
-
+import { NextFunction, Request, Response } from 'express';
+import { IGetAllSubmissionByProblemuseCase, IGetAllUsersSubmissionUseCase } from '../../../application/interfaces/use-cases/IGetAllSubmissionByProblemuseCase';
+import { AppError } from '@/domain/error/AppError';
+import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
+import { IGetRecentSubmissionUseCase } from '@/application/interfaces/use-cases/ISubmissoinUseCase';
+import { ProblemDTO } from '@/application/dto/ProblemDTO';
+import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IGetRepositoryDataUseCase';
+import { Problem } from '@/domain/entities/Problem';
+import { IRunProblemUseCase, IsubmitProblemUseCase } from '@/application/interfaces/use-cases/IProblemUseCases';
+import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class SubmissionController {
-
-    constructor(
+  constructor(
         private getAllSubmissionByProblemuseCase: IGetAllSubmissionByProblemuseCase,
         private getAllUsersSubmissionUseCase: IGetAllUsersSubmissionUseCase,
         private getRecentSubmissionUseCase: IGetRecentSubmissionUseCase,
@@ -23,101 +18,72 @@ export class SubmissionController {
         private submitProblemUseCase: IsubmitProblemUseCase,
         private runProblemUseCase: IRunProblemUseCase,
 
-    ) { }
+  ) { }
 
+  getSubmissionData = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { problemId } = req.query as { problemId: string };
 
-    getSubmissionData = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const { problemId } = req.query as { problemId: string }
+      const user = req.user as { id: 'string' };
 
-            const user = req.user as { id: "string" }
+      const submissions = await this.getAllSubmissionByProblemuseCase.execute(user.id, problemId);
 
-            const submissions = await this.getAllSubmissionByProblemuseCase.execute(user.id, problemId)
+      res.status(HttpStatusCode.OK).json({ status: true, message: 'test submissiondata by problem', submissions });
+    } catch (error) {
+      next(new AppError('Something went wrong', 500));
 
-            res.status(HttpStatusCode.OK).json({ status: true, message: "test submissiondata by problem", submissions })
-
-        } catch (error) {
-
-            next(new AppError("Something went wrong", 500))
-
-            // res.status(400).json({status:false,message:"Something went wrong"})
-        }
+      // res.status(400).json({status:false,message:"Something went wrong"})
     }
+  };
 
+  getUserSubmissonsCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = req.user as { id: 'string' };
 
+      const submissions = await this.getAllUsersSubmissionUseCase.execute(user.id);
 
-    getUserSubmissonsCount = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const user = req.user as { id: "string" }
+      logger.info('allsubmmsion with date', submissions);
+      res.status(200).json({ status: true, message: 'all user Submission', submissions });
+    } catch (error) {
+      logger.error('err', { error });
 
-            const submissions = await this.getAllUsersSubmissionUseCase.execute(user.id)
-
-            logger.info("allsubmmsion with date", submissions)
-            res.status(200).json({ status: true, message: "all user Submission", submissions })
-
-        } catch (error) {
-            logger.error("err", { error })
-
-            return next(new AppError("Something went wrong", 500))
-
-
-        }
+      return next(new AppError('Something went wrong', 500));
     }
+  };
 
+  recentSubmissions = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const user = req.user as { id: 'string' };
 
-    recentSubmissions = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const user = req.user as { id: "string" }
+      const recentSubmissions = await this.getRecentSubmissionUseCase.execute(user.id, 10);
 
-            const recentSubmissions = await this.getRecentSubmissionUseCase.execute(user.id, 10)
+      logger.info('recent submission', { recentSubmissions });
 
-            logger.info("recent submission", { recentSubmissions })
-
-            res.status(HttpStatusCode.OK).json({ status: true, message: "all user Submission", submissions: recentSubmissions })
-
-
-        } catch (error) {
-
-            return next(new AppError("Something went wrong", 500))
-
-
-        }
+      res.status(HttpStatusCode.OK).json({ status: true, message: 'all user Submission', submissions: recentSubmissions });
+    } catch (error) {
+      return next(new AppError('Something went wrong', 500));
     }
+  };
 
-    submitProblem = async (req: Request, res: Response, next: NextFunction) => {
-        try {
-            const problem = new ProblemDTO(req.body.problemDetails)
-            const code = req.body.code
-            const language = req.body.language
-            let testCases = req.body.testCases  //this have only sampleTestCase
-            const user = req.user as { id: string }
-            const ProblemWithAlltestCases = await this.getProblemDataUseCase.OneDocumentById(problem._id)
-            const AllTestCases = ProblemWithAlltestCases?.testCases ?? []
-            const updatedTestCases = await this.runProblemUseCase.execute(AllTestCases, code, language, problem.memoryLimit, problem.timeLimit, problem.functionSignatureMeta, true)
+  submitProblem = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const problem = new ProblemDTO(req.body.problemDetails);
+      const { code } = req.body;
+      const { language } = req.body;
+      const { testCases } = req.body; // this have only sampleTestCase
+      const user = req.user as { id: string };
+      const ProblemWithAlltestCases = await this.getProblemDataUseCase.OneDocumentById(problem._id);
+      const AllTestCases = ProblemWithAlltestCases?.testCases ?? [];
+      const updatedTestCases = await this.runProblemUseCase.execute(AllTestCases, code, language, problem.memoryLimit, problem.timeLimit, problem.functionSignatureMeta, true);
 
-            const totalTestCases = ProblemWithAlltestCases?.testCases.length ?? 0
+      const totalTestCases = ProblemWithAlltestCases?.testCases.length ?? 0;
 
-
-            const submitData = await this.submitProblemUseCase.execute(updatedTestCases, user.id, problem._id, code, language, totalTestCases)
-            console.log(submitData);
-            res.status(HttpStatusCode.OK).json({ status: true, message: "problem submitted", submissions: submitData })
-
-
-        } catch (error) {
-            logger.error("err", error)
-            next(new AppError("Something went wrong", HttpStatusCode.BAD_REQUEST))
-
-
-
-        }
+      const submitData = await this.submitProblemUseCase.execute(updatedTestCases, user.id, problem._id, code, language, totalTestCases);
+      console.log(submitData);
+      res.status(HttpStatusCode.OK).json({ status: true, message: 'problem submitted', submissions: submitData });
+    } catch (error) {
+      logger.error('err', error);
+      next(new AppError('Something went wrong', HttpStatusCode.BAD_REQUEST));
     }
-
-
-    
-
-
-
-
-
-
+  };
 }

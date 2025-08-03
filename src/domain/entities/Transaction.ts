@@ -1,11 +1,8 @@
+export class Transaction {
+  constructor(
 
-
-
-export class Transaction{
-    constructor(
-         
         public userId:string,
-        
+
         public amount:number,
 
         public paymentMethord:string,
@@ -16,6 +13,6 @@ export class Transaction{
 
         public status:string,
 
-        public _id?:string
-    ){}
+        public _id?:string,
+  ) {}
 }

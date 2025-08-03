@@ -1,7 +1,5 @@
-
-
 export class GroupChallenge {
-    constructor(
+  constructor(
         public challengeName: string,
         public maxParticipants: number,
         public duration: number,
@@ -16,6 +14,6 @@ export class GroupChallenge {
         public updatedAt?: string,
         public hostId?: string,
         public isBlocked?: boolean,
-        public winner?: string
-    ) { }
+        public winner?: string,
+  ) { }
 }

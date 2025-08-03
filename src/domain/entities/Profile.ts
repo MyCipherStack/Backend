@@ -1,5 +1,3 @@
-
-
 // export class Profile{
 //             name: string;
 //             displayname: string;
@@ -20,6 +18,5 @@
 //         this.email=profileData.email
 
 //     }
-
 
 // }

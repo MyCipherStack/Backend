@@ -1,7 +1,4 @@
-import mongoose, { Document, Schema } from "mongoose";
-
-
-
+import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IProblem extends Document {
   _id:string
@@ -20,7 +17,7 @@ export interface IProblem extends Document {
 
   testCases: ITestCase[];
   functionSignatureMeta: {
-    name: { type: String },
+    name: { type: string },
     parameters: {
       name: string,
       type: string
@@ -28,7 +25,7 @@ export interface IProblem extends Document {
     returnType: { type: string }
   },
   starterCode: {},
-  acceptance: {submitted:number,accepted:number},
+  acceptance: {submitted:number, accepted:number},
   status: boolean
 }
 
@@ -37,7 +34,7 @@ const TestCaseSchema: Schema = new Schema({
   input: { type: String, required: true },
   output: { type: String, required: true },
   isSample: { type: Boolean, default: false },
-  explanation: { type: String }
+  explanation: { type: String },
 });
 
 export interface ITestCase {
@@ -69,30 +66,29 @@ const problemsSchema = new Schema({
 
   outputFormat: { type: String, required: true },
 
-  constraints: { type: String, required: true },  
+  constraints: { type: String, required: true },
 
   hint: { type: String },
 
   testCases: { type: [TestCaseSchema], default: [] },
 
   acceptance: {
-    type: { submitted: Number, accepted: Number }, default: {
-      submitted: 0, accepted: 0
-    }
+    type: { submitted: Number, accepted: Number },
+    default: {
+      submitted: 0, accepted: 0,
+    },
   },
 
   functionSignatureMeta: {
     name: { type: String },
     parameters: { type: Array },
-    returnType: { type: String }
+    returnType: { type: String },
   },
 
   starterCode: { type: Object },
 
-  status: { type: Boolean, default: true }
+  status: { type: Boolean, default: true },
 
-}, { timestamps: true }
+}, { timestamps: true });
 
-)
-
-export const problemModel = mongoose.model<IProblem>("problem", problemsSchema)
+export const problemModel = mongoose.model<IProblem>('problem', problemsSchema);

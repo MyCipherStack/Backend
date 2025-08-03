@@ -1,9 +1,7 @@
-
-
 export interface ITestCase {
     testCaseNo:number;
     input: string;
-    output: string; 
+    output: string;
     isSample: boolean;
     compile_output?:string
     error?:string

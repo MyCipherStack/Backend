@@ -1,23 +1,17 @@
-import { IChallengeResultsUseCase } from "@/application/interfaces/use-cases/IChallengeUseCases";
-import { leaderBoard } from "@/domain/entities/LeaderBoard";
-import { ILeaderBoardRepository } from "@/domain/repositories/ILeaderBoardRepository";
-
-
-
-
+import { IChallengeResultsUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases';
+import { leaderBoard } from '@/domain/entities/LeaderBoard';
+import { ILeaderBoardRepository } from '@/domain/repositories/ILeaderBoardRepository';
 
 export class ChallengeResultsUseCase implements IChallengeResultsUseCase {
+  constructor(
+        private leaderBoardRepository: ILeaderBoardRepository,
 
-    constructor(
-        private leaderBoardRepository: ILeaderBoardRepository
+  ) {
+  }
 
-    ) {
-    }
+  async execute(userId: string): Promise<leaderBoard[] | null> {
+    const response = await this.leaderBoardRepository.findAllwithChallengeDetails(userId);
 
-    async execute(userId: string): Promise<leaderBoard[] | null> {
-        
-        const response = await this.leaderBoardRepository.findAllwithChallengeDetails(userId)
-
-        return response ?? null
-    }
+    return response ?? null;
+  }
 }

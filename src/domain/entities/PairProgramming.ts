@@ -1,8 +1,5 @@
-
-
-
-export class PairProgramming{
-    constructor(
+export class PairProgramming {
+  constructor(
         public hostId:string,
         public challengeName:string,
         public duration:number,
@@ -13,10 +10,10 @@ export class PairProgramming{
         public endTime?:string,
         public _id?:string,
         public status?:string,
-        public navigator?:{name:string,id:string},
+        public navigator?:{name:string, id:string},
         public createdAt?:string,
         public updatedAt?:string,
-        public isBlocked?:string
-        
-    ){}
+        public isBlocked?:string,
+
+  ) {}
 }

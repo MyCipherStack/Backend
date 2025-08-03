@@ -1,42 +1,38 @@
-import test from "node:test";
-import { IOtpService } from "../../domain/services/IOtpService.js";
-import nodemailer from "nodemailer";
-import SMTPTransport from "nodemailer/lib/smtp-transport/index.js";
+import test from 'node:test';
+import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport/index.js';
+import { IOtpService } from '../../domain/services/IOtpService.js';
 
 export class OtpService implements IOtpService {
   constructor(
     private sender_email: string,
-    private email_pass: string
+    private email_pass: string,
   ) { }
 
   createOtp(length: number): string {
-    let otp = "";
+    let otp = '';
     for (let i = 0; i < length; i++) {
       otp += Math.floor(Math.random() * 10).toString();
     }
     return otp;
   }
 
-
   async sendOtp(
     email: string,
-    otp: string
+    otp: string,
   ): Promise<SMTPTransport.SentMessageInfo> {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      service: 'gmail',
       auth: {
         user: this.sender_email,
         pass: this.email_pass,
       },
     });
 
-
-    
-
     const mailOptions = {
       from: `"CipherStack Support" <${this.sender_email}>`,
       to: email,
-      subject: "Verify Your Email Address – OTP Inside",
+      subject: 'Verify Your Email Address – OTP Inside',
       text: `Your OTP is ${otp}. It expires in 5 minutes.`,
       html: `
     <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #eaeaea; border-radius: 10px; max-width: 500px; margin: auto;">
@@ -62,15 +58,12 @@ export class OtpService implements IOtpService {
       <p style="font-size: 12px; color: #888;">Need help? Contact support@cipherstack.com</p>
       <p style="font-size: 12px; color: #aaa;">© 2025 CipherStack. All rights reserved.</p>
     </div>
-  `
+  `,
     };
-
-
-
 
     try {
       const info = await transporter.sendMail(mailOptions);
-      console.log("EMAIL send successfully", info.response);
+      console.log('EMAIL send successfully', info.response);
       return info;
     } catch (error: any) {
       throw error;
@@ -78,7 +71,6 @@ export class OtpService implements IOtpService {
   }
 
   verifyOtp(enterdOtp: string, dbOtp: string): boolean {
-    return enterdOtp.trim() === dbOtp.trim()
-
+    return enterdOtp.trim() === dbOtp.trim();
   }
 }

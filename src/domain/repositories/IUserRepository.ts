@@ -1,11 +1,7 @@
-import { User } from "../entities/User.js";
-import { IBaseRepository } from "./IBaseRepository.js";
-
+import { User } from '../entities/User.js';
+import { IBaseRepository } from './IBaseRepository.js';
 
 export interface IUserRepository extends IBaseRepository<User> {
-
-
-
 
   findByEmail(email: string): Promise<User | null>;
 
@@ -31,14 +27,9 @@ export interface IUserRepository extends IBaseRepository<User> {
     }
   } | null>
 
-
   updatePoints(id: string, points: number): Promise<User | null>
 
-
-
 }
-
-
 
 export interface IAuthRepository {
   login(email: string, password: string): Promise<{ token: string, user: User }>

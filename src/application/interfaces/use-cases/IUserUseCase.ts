@@ -1,16 +1,12 @@
-import { User } from "@/domain/entities/User";
-
-
+import { User } from '@/domain/entities/User';
 
 export interface IGetUserDataBynameUseCase {
     exectue(name: string): Promise<User | null>
 }
 
-
 export interface ICreateUserUseCase {
     execute(name: string, email: string, password: string): Promise<string | null>
 }
-
 
 export interface ILoginUserUseCase {
     execute(identifier: string, password: string): Promise<{
@@ -20,7 +16,6 @@ export interface ILoginUserUseCase {
     }>
 }
 
-
 export interface IGoogleUserUseCase {
     execute(name: string, email: string, image: string, googleId: string): Promise<{
         user:User,
@@ -28,7 +23,6 @@ export interface IGoogleUserUseCase {
     }>
 
 }
-
 
 export interface IRegisterUserFromPendingUseCase{
     execute(email:string):Promise<User | null>

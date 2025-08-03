@@ -1,13 +1,7 @@
-
-
-
-import { RedisOptions } from 'ioredis'
-
-
-
+import { RedisOptions } from 'ioredis';
 
 export const redisConnection: RedisOptions = {
-    // host: 'localhost',
-    host: 'redis',
-    port: 6379
-}
+  // host: 'localhost',
+  host: 'redis',
+  port: 6379,
+};

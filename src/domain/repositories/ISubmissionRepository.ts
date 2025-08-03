@@ -1,8 +1,7 @@
-import { ISubmissionDocument } from "../../infrastructure/database/SubmissionModel.js";
-import { BaseRepository } from "../../infrastructure/repositories/BaseRepository.js";
-import { Problem } from "../entities/Problem.js";
-import { Submission } from "../entities/Submission.js";
-
+import { ISubmissionDocument } from '../../infrastructure/database/SubmissionModel.js';
+import { BaseRepository } from '../../infrastructure/repositories/BaseRepository.js';
+import { Problem } from '../entities/Problem.js';
+import { Submission } from '../entities/Submission.js';
 
 export interface ISubmissionRepository extends BaseRepository<Submission, ISubmissionDocument> {
 
@@ -13,6 +12,5 @@ export interface ISubmissionRepository extends BaseRepository<Submission, ISubmi
     getAllRecentSubmission(userId: string, limit: number): Promise<Submission[]>
 
     userAcceptedSubmission(userId: string): Promise<Problem[]>
-
 
 }

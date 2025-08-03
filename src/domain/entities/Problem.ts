@@ -1,6 +1,4 @@
-
-
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
 
 export class Problem {
   constructor(
@@ -14,12 +12,11 @@ export class Problem {
     public inputFormat: string,
     public outputFormat: string,
     public constraints: string,
-    public testCases: { testCaseNo:number,input: string; output: string; isSample: boolean }[] = [],
-    public functionSignatureMeta:Object,
-    public acceptance?:{submitted:number,accepted:number},
+    public testCases: { testCaseNo:number, input: string; output: string; isSample: boolean }[] = [],
+    public functionSignatureMeta:object,
+    public acceptance?:{submitted:number, accepted:number},
     public hint?:string,
-    public starterCode?: Record<string,string>,
-    public _id?: string
+    public starterCode?: Record<string, string>,
+    public _id?: string,
   ) {}
-
 }

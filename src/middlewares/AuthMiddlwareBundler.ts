@@ -1,22 +1,15 @@
-import { Authenticate } from "./Authenticate";
+import { Authenticate } from './Authenticate';
 
-
-
-
-export class AuthMiddlwareBundler{
-    constructor(
+export class AuthMiddlwareBundler {
+  constructor(
         private authenticate:any,
         private authorize:any,
-        private role:string
-    ){}
+        private role:string,
+  ) {}
 
-    verify=()=>{
-        return [
+  verify = () => [
 
-        this.authenticate.verify,
-        this.authorize.requireRole([this.role])
-        ]
-    }
-  
-
+    this.authenticate.verify,
+    this.authorize.requireRole([this.role]),
+  ];
 }

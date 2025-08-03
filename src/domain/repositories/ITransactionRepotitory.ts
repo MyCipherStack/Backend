@@ -1,6 +1,5 @@
-import { Transaction } from "../entities/Transaction";
-import { IBaseRepository } from "./IBaseRepository";
-
+import { Transaction } from '../entities/Transaction';
+import { IBaseRepository } from './IBaseRepository';
 
 export interface ITransactionRepotitory extends IBaseRepository<Transaction> {
 
@@ -17,6 +16,5 @@ export interface ITransactionRepotitory extends IBaseRepository<Transaction> {
         totalPages: number
     }
     >
-
 
 }

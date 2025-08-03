@@ -1,6 +1,4 @@
-import mongoose, { Document } from "mongoose";
-
-
+import mongoose, { Document } from 'mongoose';
 
 export interface INotification extends Document{
 
@@ -17,21 +15,18 @@ export interface INotification extends Document{
     createdAt:string
 }
 
+const notificaionSchema = new mongoose.Schema<INotification>({
 
-const notificaionSchema=new mongoose.Schema<INotification>({
+  userId: { type: String, required: true },
 
-    userId:{type:String,required:true},
+  title: { type: String, required: true },
 
-    title:{type:String,required:true},
+  message: { type: String, required: true },
 
-    message:{type:String,required:true},
+  link: { type: String },
 
-    link:{type:String},
+  isRead: { type: Boolean, default: false },
 
-    isRead:{type:Boolean,default:false},
+}, { timestamps: true });
 
-},{timestamps:true})
-
-
-
-export const notificationModel=mongoose.model<INotification>("notification",notificaionSchema)
+export const notificationModel = mongoose.model<INotification>('notification', notificaionSchema);

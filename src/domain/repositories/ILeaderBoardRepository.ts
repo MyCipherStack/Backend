@@ -1,7 +1,5 @@
-import { IsolvedProblem, leaderBoard } from "../entities/LeaderBoard.js";
-import { IBaseRepository } from "./IBaseRepository.js";
-
-
+import { IsolvedProblem, leaderBoard } from '../entities/LeaderBoard.js';
+import { IBaseRepository } from './IBaseRepository.js';
 
 export interface ILeaderBoardRepository extends IBaseRepository<leaderBoard> {
         findOne(filter: Partial<leaderBoard>): Promise<leaderBoard | null>
@@ -9,6 +7,5 @@ export interface ILeaderBoardRepository extends IBaseRepository<leaderBoard> {
         // findByChallengeId(challegeID:string):Promise<leaderBoard| null>
         findOneAndUpdate(filter: { userId: string, challengeId: string }, updateData: IsolvedProblem): Promise<leaderBoard | null>
         findAllwithChallengeDetails(userId:string):Promise<leaderBoard[] | null>
-
 
 }

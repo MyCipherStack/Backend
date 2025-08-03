@@ -1,7 +1,5 @@
-import { logger } from "@/infrastructure/logger/WinstonLogger/logger";
-import mongoose, { Document, SchemaTypes, Types } from "mongoose";
-
-
+import mongoose, { Document, SchemaTypes, Types } from 'mongoose';
+import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 
 export interface ISubscription extends Document {
 
@@ -15,7 +13,7 @@ export interface ISubscription extends Document {
 
     cycle: string
 
-    features: [{ text: String, enabled: Boolean }]
+    features: [{ text: string, enabled: boolean }]
 
     trial: number
 
@@ -30,59 +28,49 @@ export interface ISubscription extends Document {
     _id: string
 }
 
-
-
-
 const SubscriptionSchema = new mongoose.Schema<ISubscription>({
 
-    userId: { type: SchemaTypes.ObjectId, ref: "User", required: true },
+  userId: { type: SchemaTypes.ObjectId, ref: 'User', required: true },
 
-    transactionId: { type: SchemaTypes.ObjectId, ref: "transaction", required: true },
+  transactionId: { type: SchemaTypes.ObjectId, ref: 'transaction', required: true },
 
-    name: { type: String, required: true },
+  name: { type: String, required: true },
 
-    price: { type: Number, required: true },
+  price: { type: Number, required: true },
 
-    cycle: { type: String, default: "monthly" },
+  cycle: { type: String, default: 'monthly' },
 
-    features: { type: [{ text: String, enabled: Boolean }], default: [] },
+  features: { type: [{ text: String, enabled: Boolean }], default: [] },
 
-    trial: { type: Number, default: 7 },
+  trial: { type: Number, default: 7 },
 
-    planId: { type: String },
+  planId: { type: String },
 
-    endDate: { type: Date },
+  endDate: { type: Date },
 
-    status: { type: String, enum: ["active", "hidden", "deleted"] }
+  status: { type: String, enum: ['active', 'hidden', 'deleted'] },
 
+}, { timestamps: true });
 
+SubscriptionSchema.pre('validate', function (next) {
+  logger.info('validate', { cycle: this.cycle });
 
+  const today = new Date();
+  if (this.cycle === 'monthly') {
+    this.endDate = new Date(today);
+    this.endDate.setMonth(this.endDate.getMonth() + 1);
+  }
 
-}, { timestamps: true })
+  if (this.cycle === 'quarterly') {
+    this.endDate = new Date(today);
+    this.endDate.setMonth(this.endDate.getMonth() + 3);
+  }
+  if (this.cycle === 'yearly') {
+    this.endDate = new Date(today);
+    this.endDate.setFullYear(this.endDate.getFullYear() + 1);
+  }
 
+  next();
+});
 
-SubscriptionSchema.pre("validate", function (next) {
-
-    logger.info("validate",{cycle:this.cycle})
-
-    const today = new Date()
-    if (this.cycle === "monthly") {
-        this.endDate = new Date(today)
-        this.endDate.setMonth(this.endDate.getMonth() + 1)
-    }
-
-    if (this.cycle === "quarterly") {
-        this.endDate = new Date(today)
-        this.endDate.setMonth(this.endDate.getMonth() + 3)
-    }
-    if (this.cycle === "yearly") {
-        this.endDate = new Date(today)
-        this.endDate.setFullYear(this.endDate.getFullYear() + 1)
-    }
-
-
-    next()
-})
-
-
-export const subscriptionModel = mongoose.model<ISubscription>("subscription", SubscriptionSchema)
+export const subscriptionModel = mongoose.model<ISubscription>('subscription', SubscriptionSchema);
