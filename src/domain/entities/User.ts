@@ -13,7 +13,7 @@ export class User {
         public bio?:string,
         public github?:string,
         public linkedin?:string,
-        public created_at?:Date,
+        public createdAt?:Date,
         public status?:string,
         public role?:string,
         public streak?:{lastActiveDate:Date, currentStreak:number, higestStreak:number},
@@ -22,7 +22,7 @@ export class User {
         public _id?:Types.ObjectId,
         public googleId?:string,
         public password?:string,
-        public updated_at?:Date,
+        public updatedAt?:Date,
         public subscriptionId?:string,
         public createdContest?:{count:string, date:Date},
   ) {}

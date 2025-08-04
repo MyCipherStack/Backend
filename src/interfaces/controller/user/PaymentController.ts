@@ -8,8 +8,8 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class PaymentController {
   constructor(
-        private paymentUseCases: IPaymentUseCases,
-        private getPremiumPlanUseCase: IGetRepositoryDataUseCase<PremiumPlan>,
+    private paymentUseCases: IPaymentUseCases,
+    private getPremiumPlanUseCase: IGetRepositoryDataUseCase<PremiumPlan>,
   ) { }
 
   createPayment = async (req: Request, res: Response, next: NextFunction) => {
@@ -35,7 +35,7 @@ export class PaymentController {
     try {
       logger.info('verify payment');
       logger.info({ message: 'body', res: req.body.response });
-      const user = req.user as { id: string };
+      const user = req.user as { id: string, name: string };
 
       const data = await this.paymentUseCases.verifyPayment(req.body.response);
 
@@ -45,10 +45,11 @@ export class PaymentController {
 
         res.locals.planDetails = planDetails;
 
-        logger.info({ message: 'verifypayment contoller', data });
+        logger.info({ message: 'verifypayment controller', data });
+        logger.info({ message: 'verifypayment controller', userName:user.name});
 
         const updatedDatabase = await this.paymentUseCases.updateNewPayment({
-          userId: user.id, orderId: data.orderId, paymentId: data.paymentId, amount: data.amount, paymentMethord: 'Razorpay', status: 'success',
+          userId: user.id, orderId: data.orderId, paymentId: data.paymentId, amount: data.amount/100, paymentMethord: 'Razorpay', status: 'success', userName: user.name
         });
         // const orderDetails=await this.paymentUseCases.ge
 
@@ -57,6 +58,11 @@ export class PaymentController {
         next();
         // res.status(200).json({status:true,message:"payment is verifited success"})
       } else {
+        const updatedDatabase = await this.paymentUseCases.updateNewPayment({
+          userId: user.id, orderId: data.orderId, paymentId: data.paymentId, amount: data.amount, paymentMethord: 'Razorpay', status: 'failed', userName: user.name
+        });
+        logger.info('payment failed', { updatedDatabase });
+
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: true, message: 'payment failed' });
       }
     } catch (error) {

@@ -57,16 +57,16 @@ export class AuthController {
 
       res.cookie('accessToken', loginUserData.accessToken, {
         httpOnly: true,
-        secure: env.NODE_ENV === 'production',
-        sameSite: 'none',
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "strict",
         maxAge: 1000 * 60 * 15,
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
         path: '/',
       });
       res.cookie('refreshToken', loginUserData.refreshToken, {
         httpOnly: true,
-        secure: env.NODE_ENV === 'production',
-        sameSite: 'none',
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "strict",
         maxAge: 1000 * 60 * 60 * 24 * 7,
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
         path: '/',

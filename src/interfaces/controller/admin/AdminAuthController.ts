@@ -22,7 +22,7 @@ export class AdminAuthController {
       res.cookie('accessToken', adminData.accessToken, {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
-        sameSite: 'none',
+        sameSite: isProduction ? "none" : "strict",
         maxAge: 1000 * 60 * 15,
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
 
@@ -30,7 +30,7 @@ export class AdminAuthController {
       res.cookie('refreshToken', adminData.refreshToken, {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
-        sameSite: 'none',
+        sameSite: isProduction ? "none" : "strict",
         maxAge: 1000 * 60 * 60 * 24 * 7,
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
 
@@ -55,14 +55,14 @@ export class AdminAuthController {
 
       res.clearCookie('accessToken', {
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: isProduction ? "none" : "strict",
         secure: process.env.NODE_ENV === 'production',
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
 
       });
       res.clearCookie('refreshToken', {
         httpOnly: true,
-        sameSite: 'none',
+        sameSite: isProduction ? "none" : "strict",
         secure: process.env.NODE_ENV === 'production',
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
 

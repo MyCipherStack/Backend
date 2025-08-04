@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { generateWrapper } from './helper/generateWrapper';
+import { env } from '@/config/env';
 
-const JUDGE0_API_URL = 'http://localhost:2358/submissions';
+const JUDGE0_API_URL = env.JUDGE0_API_URL;
 // const JUDGE0_API_URL='http://localhost:2358/submissions?base64_encoded=false';
 
 export default class Juge0CodeExecute {

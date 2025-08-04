@@ -62,7 +62,7 @@ export class UserRepository extends BaseRepository<User, IUser> implements IUser
     const totalUsers = await UserModel.countDocuments(query);
     const totalPages = Math.ceil(totalUsers / filters.limit);
     const users = await UserModel.find(query).skip(skip).limit(filters.limit).lean();
-    const updatedUser = users.map((data) => new User(data.name, data.email, data.image, data.displayName, data.theme, data.bio, data.github, data.linkedin, data.created_at, data.status, data.role));
+    const updatedUser = users.map((data) => new User(data.name, data.email, data.image, data.displayName, data.theme, data.bio, data.github, data.linkedin, data.createdAt, data.status, data.role));
     return { users: updatedUser, totalUsers, totalPages };
   }
 
@@ -113,7 +113,7 @@ export class UserRepository extends BaseRepository<User, IUser> implements IUser
       data.bio,
       data.github,
       data.linkedin,
-      data.created_at,
+      data.createdAt,
       data.status,
       data.role,
       data.streak,
@@ -122,7 +122,7 @@ export class UserRepository extends BaseRepository<User, IUser> implements IUser
       data._id,
       data.googleId,
       data.password,
-      data.updated_at,
+      data.updatedAt,
       data.subscriptionId?.toString(),
       // data.createdContest
     );

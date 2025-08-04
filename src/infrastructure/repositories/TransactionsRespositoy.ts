@@ -81,6 +81,7 @@ export class TransactionRespotitory extends BaseRepository<Transaction, ITransac
       data.paymentId,
       data.orderId,
       data.status,
+      data.userName,
       data.id,
     );
   }

@@ -109,7 +109,7 @@ router.post('/login', adminAuthController.login);
 router.post('/logout', adminAuthController.logout);
 router.get('/users', auth.verify(), usersListController.getData);
 router.get('/transations', auth.verify(), transationController.allTransations);
-router.patch('/users/:email', auth.verify(), usersListController.updateUser);
+router.patch('/user', auth.verify(), usersListController.updateUser);
 router.post('/addProblem', auth.verify(), adminProblemController.addProblem);
 router.post('/editProblem', auth.verify(), adminProblemController.editProblem);
 router.post('/createPremiumPlan', auth.verify(), adminPremiumPlanController.createNewPlan);

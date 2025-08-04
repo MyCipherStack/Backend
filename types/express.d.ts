@@ -14,5 +14,5 @@ declare global {
         }
     }
 }
-
+ 
 export {}; // make the file a module

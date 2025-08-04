@@ -5,7 +5,7 @@ export interface IsolvedProblem{
 
 export class leaderBoard {
   constructor(
-        public challengeId:string,
+        public challengeId:unknown,
         public userId:User | string,
         public totalscore?:number,
         public rank?:number,

@@ -19,7 +19,9 @@ export const env = {
   GOOGLE_URL: process.env.GOOGLE_URL || 'http://localhost:3000',
   LOKI_TRANSPORT_HOST: process.env.LOKI_TRANSPORT_HOST || 'http://localhost:3100',
   FRONTEND_URL: process.env.FRONTEND_URL,
-  COOKIE_DOMAIN:process.env.COOKIE_DOMAIN
+  COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
+  JUDGE0_API_URL:process.env.JUDGE0_API_URL
+  
 
 
 };

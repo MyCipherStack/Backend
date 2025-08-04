@@ -2,6 +2,7 @@ import mongoose, { Document, SchemaTypes, Types } from 'mongoose';
 
 export interface ITransaction extends Document{
     userId:Types.ObjectId,
+    userName:string,
     amount:number,
     paymentMethord:string,
     paymentId:string,
@@ -13,6 +14,8 @@ export interface ITransaction extends Document{
 const paymentSchema = new mongoose.Schema<ITransaction>({
 
   userId: { type: SchemaTypes.ObjectId, ref: 'User', required: true },
+
+  userName: { type:String, required: true },
 
   amount: { type: Number, required: true },
 

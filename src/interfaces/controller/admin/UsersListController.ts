@@ -35,7 +35,7 @@ export class UsersListController {
 
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const userEmail = req.params.email;
+      // const userEmail = req.params.email;
 
       const updateData = new UpdateUserDTO(req.body);
       console.log('updateData', updateData);
@@ -44,10 +44,10 @@ export class UsersListController {
 
       // logger.info("update user ",{update:updateData})
 
-      const updatedUser = await this.updateUserUseCase.execute(userEmail, updateData);
+      const updatedUser = await this.updateUserUseCase.execute(updateData.email!, updateData);
 
       if (!updatedUser) {
-        return next(new AppError('User not found', 404));
+        return next(new AppError('User not found', HttpStatusCode.NOT_FOUND));
       }
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'User updated', user: updatedUser });

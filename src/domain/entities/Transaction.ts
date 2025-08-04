@@ -13,6 +13,10 @@ export class Transaction {
 
         public status:string,
 
+        public userName:string,
+
         public _id?:string,
-  ) {}
+
+
+      ) {}
 }

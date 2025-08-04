@@ -48,7 +48,7 @@ export class Authenticate<Entity> {
 
             res.clearCookie('accessToken', {
               httpOnly: true,
-              sameSite: 'none',
+              sameSite: isProduction ? "none" : "strict",
               secure: isProduction,
               domain: isProduction ? env.COOKIE_DOMAIN : undefined,
 
@@ -56,7 +56,7 @@ export class Authenticate<Entity> {
 
             res.clearCookie('refreshToken', {
               httpOnly: true,
-              sameSite: 'none',
+              sameSite: isProduction ? "none" : "strict",
               secure: isProduction,
               domain: isProduction ? env.COOKIE_DOMAIN : undefined,
             });
@@ -74,13 +74,13 @@ export class Authenticate<Entity> {
 
           res.clearCookie('accessToken', {
             httpOnly: true,
-            sameSite: 'none',
+            sameSite: isProduction ? "none" : "strict",
             secure: isProduction,
           });
 
           res.clearCookie('refreshToken', {
             httpOnly: true,
-            sameSite: 'none',
+            sameSite: isProduction ? "none" : "strict",
             secure: isProduction,
             domain: isProduction ? env.COOKIE_DOMAIN : undefined,
 
@@ -94,13 +94,13 @@ export class Authenticate<Entity> {
         const { exp, iat, ...payload } = userPayload;
         if (userPayload) {
           const createAccesstoken = this.jwtService.signAccessToken(payload);
-          
+
           const isProduction = env.NODE_ENV === "production"
 
           res.cookie('accessToken', createAccesstoken, {
             httpOnly: true,
-            secure: env.NODE_ENV === 'production',
-            sameSite: 'none',
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "strict",
             maxAge: 1000 * 60 * 15,
 
             domain: isProduction ? env.COOKIE_DOMAIN : undefined,

@@ -13,18 +13,16 @@ export class LoginUserUseCase implements ILoginUserUseCase {
   ) {}
 
   async execute(identifier:string, password:string) {
-    console.log('exicute in login');
 
     const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(identifier);
     let foundUser = null;
-    console.log(isEmail, 'isemail');
-
+ 
     if (isEmail) {
       foundUser = await this.userRepository.findByEmail(identifier);
     } else {
       foundUser = await this.userRepository.findByUserName(identifier);
     }
-    console.log(foundUser, 'founduser');
+
 
     if (!foundUser?.password) {
       throw new Error('User not found with this email or password');

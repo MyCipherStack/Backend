@@ -1,10 +1,10 @@
 export class UpdateUserDTO {
-  name?:string;
+  email?:string;
 
   status?:string;
 
-  constructor(data:{name:string, status:string}) {
-    this.name = data.name;
+  constructor(data:{email:string, status:string}) {
+    this.email = data.email;
     this.status = data.status;
   }
 }

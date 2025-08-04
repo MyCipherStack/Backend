@@ -12,8 +12,8 @@ export interface IUser extends Document {
     github:string
     linkedin:string
     googleId:string;
-    created_at:Date;
-    updated_at:Date;
+    createdAt:Date;
+    updatedAt:Date;
     refreshToken:string
     status:string
     role:string

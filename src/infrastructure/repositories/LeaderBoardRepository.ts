@@ -4,6 +4,7 @@ import { ILeaderBoardRepository } from '../../domain/repositories/ILeaderBoardRe
 import { ILeaderBoard, leaderBoardModel } from '../database/LeaderBoard';
 import { BaseRepository } from './BaseRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
+import { FilterDTO } from '@/application/dto/FilterDTO';
 
 export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBoard> implements ILeaderBoardRepository {
   // async create(data: leaderBoard): Promise<leaderBoard> {
@@ -32,10 +33,42 @@ export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBo
     return this.toEntity(leaderBoardData);
   }
 
-  async findAllwithChallengeDetails(userId: string): Promise<leaderBoard[] | null> {
-    const leaderBoardData = await leaderBoardModel.find({ userId }).populate('challengeId');
+  async findAllwithChallengeDetails(userId: string, filters: FilterDTO): Promise<{ leaderBoard:leaderBoard[], totalData:number, totalPages:number}| null> {
 
-    return leaderBoardData.map((doc) => this.toEntity(doc)).filter((doc) => doc != null);
+
+
+    const query: any = {};
+    if (filters.role) {
+      query.role = filters.role;
+    }
+    // if (filters.status) query.status = filters.status;
+    if (filters.search) {
+      query.$or = [
+        { name: { $regex: filters.search, $options: 'i' } },
+        { email: { $regex: filters.search, $options: 'i' } },
+      ];
+    }
+    const skip = (filters.page - 1) * filters.limit;
+    const totalData = await leaderBoardModel.countDocuments(query);
+    
+    logger.info("filterdata",{filters,totalData})
+    
+    const totalPages = Math.ceil(totalData / filters.limit);
+    
+    const users = await leaderBoardModel.find(query).skip(skip).limit(filters.limit).lean();
+
+
+
+    const leaderBoardData = await leaderBoardModel.find({ userId }).populate('challengeId').
+
+      skip(skip).limit(filters.limit).lean();
+
+
+    let leaderBoard=leaderBoardData.map((doc) => this.toEntity(doc)).filter((doc) => doc != null);
+
+    return { leaderBoard, totalData, totalPages };
+
+
   }
 
   // async findById(Id: string): Promise<Partial<leaderBoard> | null> {
@@ -48,7 +81,7 @@ export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBo
   protected toEntity(data: (ILeaderBoard & Document) | null): leaderBoard | null {
     if (!data) return null;
     return new leaderBoard(
-      data.challengeId?.toString(),
+      data.challengeId,
       data.userId?.toString(),
       data.totalScore,
       data.rank,

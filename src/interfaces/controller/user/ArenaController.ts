@@ -169,7 +169,10 @@ export class ArenaController {
     try {
       const id = req.user?.id;
 
-      const response = await this.challengeResultsUseCase.execute(id!);
+      const FilterData = new FilterDTO(req.query);
+
+      
+      const response = await this.challengeResultsUseCase.execute(id!,FilterData);
 
       logger.info('challengeResults', { response });
 

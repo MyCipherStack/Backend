@@ -5,7 +5,7 @@ import { PairProgramming } from '@/domain/entities/PairProgramming.js';
 import { leaderBoard } from '@/domain/entities/LeaderBoard.js';
 
 export interface ICreateChallengeUseCase {
-    execute(challengeData: IGroupChallenge, userId:string): Promise<string | null>
+    execute(challengeData: IGroupChallenge, userId: string): Promise<string | null>
 }
 
 export interface IJoinChallengeUseCase {
@@ -40,17 +40,17 @@ export interface IEvaluateWinnerUsecase {
 
 }
 export interface IChallengeResultsUseCase {
-    execute(userId: string): Promise<leaderBoard[] | null>
+    execute(userId: string, filterData: FilterDTO): Promise<{ leaderBoard: leaderBoard[], totalData: number, totalPages: number } | null>
 
 }
 export interface ILeaderBoardUseCase {
-    execute(challengeId: string): Promise< {
-    userName: string;
-    totalScore: number | undefined;
-    solvedCount: number;
-    isLive:boolean;
-    image:string;
-    rank: number;
-}[] | null>
+    execute(challengeId: string): Promise<{
+        userName: string;
+        totalScore: number | undefined;
+        solvedCount: number;
+        isLive: boolean;
+        image: string;
+        rank: number;
+    }[] | null>
 
 }
