@@ -8,7 +8,7 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 export class GoogleAuthController {
   constructor(
 
-        private googleUserUseCase: IGoogleUserUseCase,
+    private googleUserUseCase: IGoogleUserUseCase,
 
   ) { }
 
@@ -37,8 +37,12 @@ export class GoogleAuthController {
         path: '/',
       });
       res.redirect(`${env.GOOGLE_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}&id=${encodeURIComponent(createdUser.user._id?.toString()!)}`);
-    } catch (error: any) {
-      next(new AppError(error.messag, HttpStatusCode.BAD_REQUEST));
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
+      } else {
+        next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      }
     }
   };
 }

@@ -25,10 +25,10 @@ export class ChallengeRepository extends BaseRepository<GroupChallenge, IGroupCh
   }
 
   async paginatedData(filters: { page: number, limit: number, isBlocked?:string, search?: string, status?: string, type?: string}): Promise<{
-        datas: any[];
+        datas:(GroupChallenge| null )[]; 
         totalCount: number;
         totalPages: number;
-    }> {
+    } > {
     const query: any = {};
     if (filters.type) {
       query.type = filters.type;

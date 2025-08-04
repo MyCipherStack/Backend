@@ -24,7 +24,7 @@ export interface IActivePrivateChallengeUsecase {
 }
 
 export interface IActivePublicChallengeUsecase {
-    execute(data: FilterDTO): Promise<{ datas: GroupChallenge[], totalCount: number, totalPages: number } | null>
+    execute(data: FilterDTO): Promise<{ datas:(GroupChallenge | null)[], totalCount: number, totalPages: number } | null>
 
 }
 

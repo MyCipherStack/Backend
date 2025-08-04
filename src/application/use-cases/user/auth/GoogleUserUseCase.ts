@@ -53,7 +53,7 @@ export class GoogleUserUseCase implements IGoogleUserUseCase {
         password: user.password,
         image: user.image,
         googleId: user.email,
-      } as any);
+      });
 
       userData = createUser;
     } else {

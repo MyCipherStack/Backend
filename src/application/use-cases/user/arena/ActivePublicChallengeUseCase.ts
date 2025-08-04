@@ -8,7 +8,7 @@ export class ActivePublicChallengeUsecase implements IActivePublicChallengeUseca
         private challengeRepository: IChallengeRepository,
   ) { }
 
-  async execute(data: FilterDTO): Promise<{ datas: GroupChallenge[], totalCount: number, totalPages: number } | null> {
+  async execute(data: FilterDTO): Promise<{ datas:(GroupChallenge | null)[], totalCount: number, totalPages: number } | null> {
     //  data.type = "public"
 
     const response = await this.challengeRepository.paginatedData({ ...data, type: 'public' });

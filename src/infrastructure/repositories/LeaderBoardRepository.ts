@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
 import { IsolvedProblem, leaderBoard } from '../../domain/entities/LeaderBoard';
 import { ILeaderBoardRepository } from '../../domain/repositories/ILeaderBoardRepository';
 import { ILeaderBoard, leaderBoardModel } from '../database/LeaderBoard';
