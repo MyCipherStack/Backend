@@ -13,7 +13,7 @@ export default class Juge0CodeExecute {
     expectedOutput: string,
     memoryLimit: number = 128,
     timeLimit: number = 1000,
-    functionSignatureMeta: {name:string},
+    functionSignatureMeta: { name: string },
   ) {
     try {
       // console.log(expectedOutput,"Expeted output");
@@ -54,8 +54,10 @@ export default class Juge0CodeExecute {
           headers: {
             'Content-Type': 'application/json',
             // 'Authorization': `Bearer ${process.env.JUDGE0_API_KEY}`,
-            'X-Auth-Token': 'yourSecretTokenHere', // Authentication header
-            'X-Auth-User': 'yourSecretTokenHere', // Authorization header
+            // 'X-Auth-Token': 'yourSecretTokenHere', // Authentication header
+            // 'X-Auth-User': 'yourSecretTokenHere', // Authorization header
+            'x-rapidapi-key': 'ae37bc1520msh495cba99c0cfb34p152860jsn40bfd90755f4',
+            'x-rapidapi-host': 'judge0-ce.p.rapidapi.com'
           },
           timeout: 10000,
         },
@@ -74,8 +76,10 @@ export default class Juge0CodeExecute {
         const response = await axios.get(`${JUDGE0_API_URL}/${token}?base64_encoded=false`, {
           headers: {
             'Content-Type': 'application/json',
-            'X-Auth-Token': 'yourSecretTokenHere', // Authentication header
-            'X-Auth-User': 'yourSecretTokenHere', // Authorization header
+            // 'X-Auth-Token': 'yourSecretTokenHere', // Authentication header
+            // 'X-Auth-User': 'yourSecretTokenHere', // Authorization header
+            'x-rapidapi-key': 'ae37bc1520msh495cba99c0cfb34p152860jsn40bfd90755f4',
+            'x-rapidapi-host': 'judge0-ce.p.rapidapi.com'
           },
         });
         const { data } = response;

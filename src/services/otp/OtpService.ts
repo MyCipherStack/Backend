@@ -1,7 +1,9 @@
-import test from 'node:test';
+
 import nodemailer from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport/index.js';
 import { IOtpService } from '../../domain/services/IOtpService.js';
+
+
 
 export class OtpService implements IOtpService {
   constructor(
@@ -21,6 +23,10 @@ export class OtpService implements IOtpService {
     email: string,
     otp: string,
   ): Promise<SMTPTransport.SentMessageInfo> {
+
+
+
+    console.log("node paasss",{email:this.sender_email,pass:this.email_pass})
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {

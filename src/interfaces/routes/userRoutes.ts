@@ -121,7 +121,7 @@ const razorpay_key = env.RAZORPAY_KEY;
 const razorpay_secret = env.RAZORPAY_SECRET;
 
 const jwtService = new JwtService(accessToken, refreshToken);
-const otpService = new OtpService(env.EMAIL, env.NODEMAILER_PASS);
+const otpService = new OtpService(env.EMAIL!, env.NODEMAILER_PASS!);
 const juge0CodeExecuteService = new Juge0CodeExecute();
 const streakService = new StreakService(userRepository);
 const razorpayService = new RazorpayServices(razorpay_key, razorpay_secret);

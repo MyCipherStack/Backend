@@ -4,6 +4,7 @@ import { ITransaction, transactionModel } from '../database/TransactionsModel';
 import { BaseRepository } from './BaseRepository';
 import { ITransactionRepotitory } from '@/domain/repositories/ITransactionRepotitory';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
+import { FilterDTO } from '@/application/dto/FilterDTO';
 
 export class TransactionRespotitory extends BaseRepository<Transaction, ITransaction> implements ITransactionRepotitory {
   constructor() {
@@ -54,19 +55,25 @@ export class TransactionRespotitory extends BaseRepository<Transaction, ITransac
     return { transactionDetails: mapper(data), thisMonth: thisMonth[0].thisMonthRevenu };
   }
 
-  async getFiltersTrasations(filters: { page: number, limit: number, status?: string }): Promise<{
-        transaction: any[];
-        totalTransaction: number;
-        totalPages: number;
-    }> {
+  async getFiltersTrasations(filters:Partial<FilterDTO>): Promise<{
+    transaction: any[];
+    totalTransaction: number;
+    totalPages: number;
+  }> {
     const query: any = {};
 
     if (filters.status) query.status = filters.status;
 
-    const skip = (filters.page - 1) * filters.limit;
+    const skip = (filters.page! - 1) * filters.limit!;
     const totalTransaction = await transactionModel.countDocuments(query);
-    const totalPages = Math.ceil(totalTransaction / filters.limit);
-    const Transaction = await transactionModel.find(query).skip(skip).limit(filters.limit).lean()
+    const totalPages = Math.ceil(totalTransaction / filters.limit!);
+    if (filters.search) {
+      query.$or = [
+        { userName: { $regex: filters.search, $options: 'i' } },
+        { paymentId: { $regex: filters.search, $options: 'i' } },
+      ];
+    }
+    const Transaction = await transactionModel.find(query).skip(skip).limit(filters.limit!).lean()
       .sort({ createdAt: -1 });
     const updatedTransaction = Transaction.map((data) => this.toEntity(data));
     return { transaction: updatedTransaction, totalTransaction, totalPages };
