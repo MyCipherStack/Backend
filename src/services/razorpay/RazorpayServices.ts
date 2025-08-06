@@ -1,7 +1,7 @@
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import { IRazorpayServices } from '@/domain/services/IRazropayServices';
-import { logger } from '../../infrastructure/logger/WinstonLogger/logger';
+import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 
 export class RazorpayServices implements IRazorpayServices {
   constructor(

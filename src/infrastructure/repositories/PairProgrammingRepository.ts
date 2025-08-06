@@ -1,6 +1,6 @@
 import { Document, Types } from 'mongoose';
-import { PairProgramming } from '../../domain/entities/PairProgramming';
-import { IPairProgrammingRepository } from '../../domain/repositories/IPairProgrammingRepository';
+import { PairProgramming } from '@/domain/entities/PairProgramming'; 
+import { IPairProgrammingRepository } from '@/domain/repositories/IPairProgrammingRepository';
 import { IPairProgramming, PairProgrammingModel } from '../database/PairProgrammingModel';
 import { BaseRepository } from './BaseRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';

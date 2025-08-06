@@ -1,5 +1,6 @@
-import { Problem } from '../entities/Problem.js';
-import { IBaseRepository } from './IBaseRepository.js';
+import { Problem } from "../entities/Problem"
+import { IBaseRepository } from "./IBaseRepository"
+
 
 export interface IProblemRepository extends IBaseRepository<Problem> {
 

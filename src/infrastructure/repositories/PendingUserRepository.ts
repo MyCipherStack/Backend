@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
-import { PendingUser } from '../../domain/entities/PendingUser';
-import { IPendingUserRepository } from '../../domain/repositories/IPendingUserRepository';
+import { PendingUser } from '@/domain/entities/PendingUser'; 
+import { IPendingUserRepository } from '@/domain/repositories/IPendingUserRepository';
 import { IPendingUser, PendingUserModel } from '../database/PendingUser';
 import { BaseRepository } from './BaseRepository';
 

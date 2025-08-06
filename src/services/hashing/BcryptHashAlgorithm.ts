@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { IHashAlgorithm } from '../../domain/services/IHashAlgorithm';
+import { IHashAlgorithm } from '@/domain/services/IHashAlgorithm';
 
 export class BcryptHashAlgorithm implements IHashAlgorithm {
   async hash(password: string): Promise<string> {

@@ -1,6 +1,6 @@
 import { IChallengeRepository } from '@/domain/repositories/IChallengeRepository';
 
-import { IJoinChallengeUseCase } from '../../../interfaces/use-cases/IChallengeUseCases';
+import { IJoinChallengeUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases'; 
 import { ILeaderBoardRepository } from '@/domain/repositories/ILeaderBoardRepository';
 import { AppError } from '@/domain/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';

@@ -1,5 +1,4 @@
 import { ILeaderBoardUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases';
-import { leaderBoard } from '@/domain/entities/LeaderBoard';
 import { User } from '@/domain/entities/User';
 import { ILeaderBoardRepository } from '@/domain/repositories/ILeaderBoardRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';

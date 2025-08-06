@@ -1,7 +1,7 @@
 import { Document } from 'mongoose';
-import { PremiumPlan } from '../../domain/entities/PremiumPlan';
-import { IpremiumPlanRepository } from '../../domain/repositories/IPremiumPlanRepositroy';
-import { IPlanDocument, premiumPlanModel } from '../database/PremiumPlanModel';
+import { PremiumPlan } from '@/domain/entities/PremiumPlan';
+import { IpremiumPlanRepository } from '@/domain/repositories/IPremiumPlanRepositroy'; 
+import { IPlanDocument, premiumPlanModel } from '../database/PremiumPlanModel'; 
 import { BaseRepository } from './BaseRepository';
 
 export class PremiumPlanRepository extends BaseRepository<PremiumPlan, IPlanDocument> implements IpremiumPlanRepository {

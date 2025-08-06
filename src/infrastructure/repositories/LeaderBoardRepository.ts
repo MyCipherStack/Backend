@@ -1,10 +1,10 @@
 import { Document, ObjectId } from 'mongoose';
-import { IsolvedProblem, leaderBoard } from '../../domain/entities/LeaderBoard';
-import { ILeaderBoardRepository } from '../../domain/repositories/ILeaderBoardRepository';
+import { ILeaderBoardRepository } from '@/domain/repositories/ILeaderBoardRepository'; 
 import { ILeaderBoard, leaderBoardModel } from '../database/LeaderBoard';
 import { BaseRepository } from './BaseRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { FilterDTO } from '@/application/dto/FilterDTO';
+import { IsolvedProblem, leaderBoard } from '@/domain/entities/LeaderBoard';
 
 export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBoard> implements ILeaderBoardRepository {
   // async create(data: leaderBoard): Promise<leaderBoard> {

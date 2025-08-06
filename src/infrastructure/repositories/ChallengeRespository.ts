@@ -1,9 +1,9 @@
 import { Document, Types } from 'mongoose';
-import { GroupChallenge } from '../../domain/entities/GroupChallenge';
 import { IChallengeRepository } from '@/domain/repositories/IChallengeRepository';
 import { groupChallengeModel, IGroupChallenge } from '../database/GroupChallengeModel';
 import { BaseRepository } from './BaseRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
+import { GroupChallenge } from '@/domain/entities/GroupChallenge';
 
 export class ChallengeRepository extends BaseRepository<GroupChallenge, IGroupChallenge> implements IChallengeRepository {
   constructor() {

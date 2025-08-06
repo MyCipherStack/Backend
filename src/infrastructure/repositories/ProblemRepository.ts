@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
-import { Problem } from '../../domain/entities/Problem';
-import { IProblemRepository } from '../../domain/repositories/IProblemRepository';
+import { Problem } from '@/domain/entities/Problem';
+import { IProblemRepository } from '@/domain/repositories/IProblemRepository';
 import { IProblem, problemModel } from '../database/ProblemModel';
 import { BaseRepository } from './BaseRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';

@@ -24,7 +24,7 @@ export class CreateChallengeUseCase implements ICreateChallengeUseCase {
 
     this.challengeRepository.findAllByFields({ hostId: userId, createdAt: today });
 
-    const createdChallenge = await this.challengeRepository.create({ ...challengeData, joinCode: `cipher-${nanoid()}` });
+    const createdChallenge = await this.challengeRepository.create({ ...challengeData, joinCode: `cipher-${nanoid()}`,hostId:userId });
 
     if (!createdChallenge?.joinCode) return null;
 

@@ -1,6 +1,7 @@
-import { Problem } from '../../../domain/entities/Problem.js';
-import { Submission } from '../../../domain/entities/Submission.js';
-import { ITestCase } from '../ITestCase.js';
+
+import { Problem } from '@/domain/entities/Problem';
+import { ITestCase } from '../ITestCase';
+import { Submission } from '@/domain/entities/Submission';
 
 export interface IAddProblemUseCase {
     execute(problem: Problem): Promise<Problem | null>

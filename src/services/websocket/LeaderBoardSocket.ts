@@ -4,8 +4,6 @@ import { BaseSocket } from './BaseSocke';
 import { ISubmissionRepository } from '@/domain/repositories/ISubmissionRepository';
 import { ILeaderBoardRepository } from '@/domain/repositories/ILeaderBoardRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
-import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IGetRepositoryDataUseCase';
-import { GroupChallenge } from '@/domain/entities/GroupChallenge';
 import { User } from '@/domain/entities/User';
 
 export class LeaderBoardSocket extends BaseSocket {
@@ -113,7 +111,7 @@ export class LeaderBoardSocket extends BaseSocket {
           userName: user.name,
           totalScore: data.totalscore,
           solvedCount: data.solvedProblems?.length ?? 0,
-          isLive: this.activeUsersMap.get(challengeId)?.has(user._id!.toString()) || false,
+          isLive: this.activeUsersMap.get(challengeId)?.has(user._id!?.toString()) || false,
           image: user.image,
           rank: rank++,
         };

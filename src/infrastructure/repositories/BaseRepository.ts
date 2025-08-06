@@ -1,5 +1,5 @@
+import { IBaseRepository } from '@/domain/repositories/IBaseRepository';
 import { Document, FilterQuery, Model } from 'mongoose';
-import { IBaseRepository } from '../../domain/repositories/IBaseRepository';
 
 export abstract class BaseRepository<Entity, ModelSchema> implements IBaseRepository<Entity> {
   constructor(protected readonly model: Model<ModelSchema & Document>) { }

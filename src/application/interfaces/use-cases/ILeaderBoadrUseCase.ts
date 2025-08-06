@@ -1,4 +1,4 @@
-import { leaderBoard } from '../../../domain/entities/LeaderBoard.js';
+import { leaderBoard } from "@/domain/entities/LeaderBoard";
 
 export interface IUpdateLeaderBoardUsecase{
     // execute(userId:string,challengeId:string,updateData:object):Promise<leaderBoard| null>

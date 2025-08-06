@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { env } from '../../config/env';
+import { env } from '@/config/env'; 
 
 passport.use(new GoogleStrategy({
   clientID: env.GOOGLE_CLIENT_ID,

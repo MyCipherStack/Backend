@@ -1,4 +1,4 @@
-import { IBaseRepository } from '@/domain/repositories/IBaseRepository.js';
+import { IBaseRepository } from '@/domain/repositories/IBaseRepository';
 import { IUpdateRepositoryDataUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 
 export class UpdateRepositoryDataUseCase<Entity> implements IUpdateRepositoryDataUseCase<Entity> {

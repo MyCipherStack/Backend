@@ -1,5 +1,6 @@
-import { GroupChallenge } from '../entities/GroupChallenge.js';
-import { IBaseRepository } from './IBaseRepository.js';
+import { GroupChallenge } from "../entities/GroupChallenge";
+import { IBaseRepository } from "./IBaseRepository";
+
 
 export interface IChallengeRepository extends IBaseRepository<GroupChallenge> {
 

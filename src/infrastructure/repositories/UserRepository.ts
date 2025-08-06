@@ -1,6 +1,6 @@
 import { Document } from 'mongoose';
-import { User } from '../../domain/entities/User';
-import { IUserRepository } from '../../domain/repositories/IUserRepository';
+import { User } from '@/domain/entities/User'; 
+import { IUserRepository } from '@/domain/repositories/IUserRepository';
 import UserModel, { IUser } from '../database/UserModel';
 import { BaseRepository } from './BaseRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';

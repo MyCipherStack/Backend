@@ -1,6 +1,6 @@
-import { BaseRepository } from '../../infrastructure/repositories/BaseRepository.js';
-import { PremiumPlan } from '../entities/PremiumPlan.js';
-import { IBaseRepository } from './IBaseRepository.js';
+import { PremiumPlan } from "../entities/PremiumPlan";
+import { IBaseRepository } from "./IBaseRepository";
+
 
 export interface IpremiumPlanRepository extends IBaseRepository<PremiumPlan>{
 

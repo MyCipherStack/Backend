@@ -1,7 +1,8 @@
-import { ISubmissionDocument } from '../../infrastructure/database/SubmissionModel.js';
-import { BaseRepository } from '../../infrastructure/repositories/BaseRepository.js';
-import { Problem } from '../entities/Problem.js';
-import { Submission } from '../entities/Submission.js';
+import { BaseRepository } from "@/infrastructure/repositories/BaseRepository"
+import { Submission } from "../entities/Submission"
+import { ISubmissionDocument } from "@/infrastructure/database/SubmissionModel"
+import { Problem } from "../entities/Problem"
+
 
 export interface ISubmissionRepository extends BaseRepository<Submission, ISubmissionDocument> {
 

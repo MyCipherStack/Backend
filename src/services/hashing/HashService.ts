@@ -1,4 +1,4 @@
-import { IHashAlgorithm } from '../../domain/services/IHashAlgorithm';
+import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm"; 
 
 export class HashService implements IHashAlgorithm {
   constructor(

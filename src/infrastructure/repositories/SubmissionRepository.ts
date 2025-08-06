@@ -1,9 +1,10 @@
 import { Document } from 'mongoose';
-import { Submission } from '../../domain/entities/Submission';
-import { ISubmissionRepository } from '../../domain/repositories/ISubmissionRepository';
-import { ISubmissionDocument, submissionModel } from '../database/SubmissionModel';
+import { Submission } from '@/domain/entities/Submission';
+import { ISubmissionRepository } from '@/domain/repositories/ISubmissionRepository'; 
+
 import { BaseRepository } from './BaseRepository';
 import { Problem } from '@/domain/entities/Problem';
+import { ISubmissionDocument, submissionModel } from '../database/SubmissionModel';
 
 export class SubmissionRepository extends BaseRepository<Submission, ISubmissionDocument> implements ISubmissionRepository {
   constructor() {

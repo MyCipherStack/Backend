@@ -1,5 +1,5 @@
-import { promises } from 'dns';
-import SMTPTransport from 'nodemailer/lib/smtp-transport/index.js';
+import SMTPTransport from "nodemailer/lib/smtp-transport";
+
 
 export interface IOtpService{
     createOtp(length:number):string;

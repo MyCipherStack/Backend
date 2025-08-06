@@ -1,4 +1,4 @@
-import { IBaseRepository } from '@/domain/repositories/IBaseRepository.js';
+import { IBaseRepository } from '@/domain/repositories/IBaseRepository';
 import { IChangeRepoStatusUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 
 export class ChangeRepoStatusUseCase<Entity> implements IChangeRepoStatusUseCase<Entity> {

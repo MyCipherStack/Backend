@@ -1,6 +1,8 @@
-import { AppearanceSettings, PersonalInfo, UserPreferences } from '../interfaces/ProfileInterfaces.js';
+
 
 //  HERE IAM USING THAT POWER OF DTO
+
+import { AppearanceSettings, PersonalInfo, UserPreferences } from "../interfaces/ProfileInterfaces";
 
 export class ProfileDTO {
   name: string;

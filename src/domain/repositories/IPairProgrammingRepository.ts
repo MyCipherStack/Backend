@@ -1,6 +1,7 @@
-import { BaseRepository } from '../../infrastructure/repositories/BaseRepository.js';
-import { PairProgramming } from '../entities/PairProgramming.js';
-import { IBaseRepository } from './IBaseRepository.js';
+import { PairProgramming } from "../entities/PairProgramming";
+import { IBaseRepository } from "./IBaseRepository";
+
+
 
 export interface IPairProgrammingRepository extends IBaseRepository<PairProgramming> {
 

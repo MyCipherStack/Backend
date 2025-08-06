@@ -3,7 +3,6 @@ import { SubscriptionEntity } from '@/domain/entities/Subscription';
 import { BaseRepository } from './BaseRepository';
 
 import { ISubscription, subscriptionModel } from '../database/SubscriptionsModel';
-import { ISubmissionRepository } from '@/domain/repositories/ISubmissionRepository';
 import { ISubscriptionRepository } from '@/domain/repositories/ISubscriptionRepository';
 
 export class SubscriptionRepository extends BaseRepository<SubscriptionEntity, ISubscription> implements ISubscriptionRepository {

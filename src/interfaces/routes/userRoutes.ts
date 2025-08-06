@@ -1,6 +1,5 @@
 import express from 'express';
 import passport from 'passport';
-import { Queue } from 'bullmq';
 import { AuthController } from '../controller/user/AuthController';
 import { IUserRepository } from '../../domain/repositories/IUserRepository';
 import { UserRepository } from '../../infrastructure/repositories/UserRepository';
@@ -57,7 +56,7 @@ import { StreakService } from '../../services/streak/Streak';
 import { SubscriptionController } from '../controller/user/SubscriptionController';
 import { PremiumPlanRepository } from '../../infrastructure/repositories/premiumPlanRepository';
 import { PremiumPlan } from '@/domain/entities/PremiumPlan';
-import { PaymentUseCases } from '../../application/use-cases/user/PaymentUseCases';
+import { PaymentUseCases } from '@/application/use-cases/user/PaymentUseCases'; 
 import { RazorpayServices } from '../../services/razorpay/RazorpayServices';
 import { PaymentController } from '../controller/user/PaymentController';
 import { TransactionRespotitory } from '@/infrastructure/repositories/TransactionsRespositoy';

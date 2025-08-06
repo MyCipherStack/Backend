@@ -1,4 +1,4 @@
-import { ITransaction } from '@/infrastructure/database/TransactionsModel';
+
 import { Transaction } from '../../../domain/entities/Transaction';
 
 export interface IPaymentUseCases{

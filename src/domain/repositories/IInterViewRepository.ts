@@ -1,5 +1,6 @@
-import { Interview } from '../entities/Interview.js';
-import { IBaseRepository } from './IBaseRepository.js';
+import { Interview } from "../entities/Interview";
+import { IBaseRepository } from "./IBaseRepository";
+
 
 export interface IInterViewRepository extends IBaseRepository<Interview>{
 

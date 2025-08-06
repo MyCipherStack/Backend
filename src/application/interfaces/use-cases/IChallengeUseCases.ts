@@ -1,8 +1,8 @@
-import { FilterDTO } from '@/application/dto/FilterDTO.js';
-import { GroupChallenge } from '../../../domain/entities/GroupChallenge.js';
-import { IGroupChallenge, IPairProgramming } from '../IChallengeInterfaces.js';
-import { PairProgramming } from '@/domain/entities/PairProgramming.js';
-import { leaderBoard } from '@/domain/entities/LeaderBoard.js';
+import { FilterDTO } from '@/application/dto/FilterDTO';
+import { GroupChallenge } from '@/domain/entities/GroupChallenge'; 
+import { IGroupChallenge, IPairProgramming } from '../IChallengeInterfaces'; 
+import { PairProgramming } from '@/domain/entities/PairProgramming'; 
+import { leaderBoard } from '@/domain/entities/LeaderBoard'; 
 
 export interface ICreateChallengeUseCase {
     execute(challengeData: IGroupChallenge, userId: string): Promise<string | null>

@@ -1,5 +1,3 @@
-import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
-import { IGroupChallenge } from '../interfaces/IChallengeInterfaces';
 
 export class GroupChallengeDTO {
   challengeName: string;

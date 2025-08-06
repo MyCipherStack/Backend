@@ -1,6 +1,7 @@
-import { FilterDTO } from '@/application/dto/FilterDTO.js';
-import { IsolvedProblem, leaderBoard } from '../entities/LeaderBoard.js';
-import { IBaseRepository } from './IBaseRepository.js';
+import { FilterDTO } from "@/application/dto/FilterDTO"
+import { IsolvedProblem, leaderBoard } from "../entities/LeaderBoard"
+import { IBaseRepository } from "./IBaseRepository"
+
 
 export interface ILeaderBoardRepository extends IBaseRepository<leaderBoard> {
         findOne(filter: Partial<leaderBoard>): Promise<leaderBoard | null>

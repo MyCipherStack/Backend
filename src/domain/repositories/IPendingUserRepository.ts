@@ -1,5 +1,5 @@
-import { PendingUser } from '../entities/PendingUser.js';
-import { IBaseRepository } from './IBaseRepository.js';
+import { PendingUser } from "../entities/PendingUser";
+import { IBaseRepository } from "./IBaseRepository";
 
 export interface IPendingUserRepository extends IBaseRepository<PendingUser> {
     // save(name:string,email:string,password:string,otp?:string):Promise<string>;

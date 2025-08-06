@@ -1,6 +1,6 @@
 import { IRazorpayServices } from '@/domain/services/IRazropayServices';
-import { IPaymentUseCases } from '../../interfaces/use-cases/IPaymentUseCases';
-import { verifyPaymentDTO } from '../../dto/VerifyPaymentDTO';
+import { IPaymentUseCases } from '@/application/interfaces/use-cases/IPaymentUseCases';
+import { verifyPaymentDTO } from '@/application/dto/VerifyPaymentDTO';
 import { ITransactionRepotitory } from '@/domain/repositories/ITransactionRepotitory';
 import { Transaction } from '@/domain/entities/Transaction';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';

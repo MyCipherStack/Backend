@@ -1,5 +1,7 @@
-import { User } from '../../../domain/entities/User.js';
-import { FilterDTO } from '../../dto/FilterDTO.js';
+
+import { FilterDTO } from '@/application/dto/FilterDTO';
+import { User } from '@/domain/entities/User.js';
+
 
 export interface IGetFilteredUsersUseCase{
     execute(filters:FilterDTO):Promise<{ users:User[];

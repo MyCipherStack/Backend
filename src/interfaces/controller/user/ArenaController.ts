@@ -36,7 +36,7 @@ export class ArenaController {
     try {
       const challengeData = new GroupChallengeDTO(req.body);
       const userId = req.user as { id: string };
-      const joinCode = await this.createChallengeUseCase.execute({ ...challengeData }, userId.id);
+      const joinCode = await this.createChallengeUseCase.execute({ ...challengeData, }, userId.id);
 
       console.log(joinCode, 'joinCode');
       res.status(HttpStatusCode.OK).json({ status: true, message: 'challenge created', joinCode });
