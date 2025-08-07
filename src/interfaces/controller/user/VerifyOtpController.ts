@@ -28,7 +28,7 @@ export class VerifyOtpController {
     } catch (error: any) {
       next(new AppError(error.message, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
-      // return res.status(500).json({ status: false, message:error.message });
+   
     }
   };
 }

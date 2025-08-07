@@ -5,6 +5,7 @@ import { BaseRepository } from './BaseRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { FilterDTO } from '@/application/dto/FilterDTO';
 import { IsolvedProblem, leaderBoard } from '@/domain/entities/LeaderBoard';
+import { User } from '@/domain/entities/User';
 
 export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBoard> implements ILeaderBoardRepository {
   // async create(data: leaderBoard): Promise<leaderBoard> {
@@ -82,7 +83,7 @@ export class LeaderBoardRepository extends BaseRepository<leaderBoard, ILeaderBo
     if (!data) return null;
     return new leaderBoard(
       data.challengeId,
-      data.userId?.toString(),
+      data.userId  ,
       data.totalScore,
       data.rank,
       data.solvedProblems.map((problem) => ({ ...problem, problemId: problem.problemId.toString(), submissionId: problem.submissionId.toString() })),
