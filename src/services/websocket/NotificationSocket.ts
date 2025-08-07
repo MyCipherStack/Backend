@@ -26,7 +26,7 @@ export class NotificationSocket extends BaseSocket {
   emitNotification = async (userId: string, payload:Partial<NotificationEntity>): Promise<void> => {
     // console.log(this.socket.rooms, "romssss");
 
-    logger.info('rooms', { data: this.socket?.rooms }); // Set with all joined rooms
+    logger.info('rooms', { data: this.socket?.rooms }); // Set with all joined rooms     
     payload.isRead = false;
 
     this.io?.to(userId).emit('notification', payload);

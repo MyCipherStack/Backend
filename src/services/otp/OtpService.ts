@@ -1,6 +1,6 @@
 
 import nodemailer from 'nodemailer';
-import SMTPTransport from 'nodemailer/lib/smtp-transport/index.js';
+import SMTPTransport from 'nodemailer/lib/smtp-transport/index';
 import { IOtpService } from '@/domain/services/IOtpService'; 
 
 

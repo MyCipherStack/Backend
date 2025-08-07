@@ -12,11 +12,11 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class SubscriptionController {
   constructor(
-        private getPremiumPlanUseCase: IGetRepositoryDataUseCase<PremiumPlan>,
-        private createSubscriptionUseCase: ICreateRepoUseCase<SubscriptionEntity>,
-        private updateUseCase: IUpdateUserUseCase,
-        private getSubscriptionUseCase: IGetRepositoryDataUseCase<SubscriptionEntity>,
-        private getUserUseCase: IGetRepositoryDataUseCase<User>,
+    private getPremiumPlanUseCase: IGetRepositoryDataUseCase<PremiumPlan>,
+    private createSubscriptionUseCase: ICreateRepoUseCase<SubscriptionEntity>,
+    private updateUseCase: IUpdateUserUseCase,
+    private getSubscriptionUseCase: IGetRepositoryDataUseCase<SubscriptionEntity>,
+    private getUserUseCase: IGetRepositoryDataUseCase<User>,
 
   ) { }
 
@@ -35,9 +35,12 @@ export class SubscriptionController {
     }
   };
 
+
+
+
   createSubscription = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { orderId } = res.locals;
+
       const transactionId = res.locals.paymentId;
       const { planDetails } = res.locals;
       const user = req.user!;
@@ -56,6 +59,8 @@ export class SubscriptionController {
 
       await this.updateUseCase.execute(user.email, { subscriptionId, role: 'premium' });
 
+      
+
       res.status(HttpStatusCode.OK).json({ status: true, message: 'create subscription' });
     } catch (error) {
       next(new AppError('create subcription failed', 500));
@@ -71,7 +76,10 @@ export class SubscriptionController {
       const subscriptionId = userDetails?.subscriptionId;
       const data = await this.getSubscriptionUseCase.OneDocumentById(subscriptionId!);
       if (data?.endDate && userDetails?.email) {
+
+        //if subscripction ended  change that role and id
         if (data?.endDate! < new Date()) {
+
           await this.updateUseCase.execute(userDetails?.email, { subscriptionId: '', role: 'regular' });
         }
       }
@@ -82,4 +90,7 @@ export class SubscriptionController {
       next(new AppError('fetchig failed failed', HttpStatusCode.BAD_REQUEST));
     }
   };
+
+
+
 }

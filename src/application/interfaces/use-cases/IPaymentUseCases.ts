@@ -2,7 +2,7 @@
 import { Transaction } from '../../../domain/entities/Transaction';
 
 export interface IPaymentUseCases{
-    createPayment(amount:number, planId:string):Promise<{orderId:string}>
+    createOrder(amount:number, planId:string,userId:string):Promise<{orderId:string}>
 
     verifyPayment(response:any):Promise< {status:boolean, orderId:string, paymentId:string, amount:number, planId:string}>
 

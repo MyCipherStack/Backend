@@ -56,7 +56,7 @@ import { StreakService } from '../../services/streak/Streak';
 import { SubscriptionController } from '../controller/user/SubscriptionController';
 import { PremiumPlanRepository } from '../../infrastructure/repositories/premiumPlanRepository';
 import { PremiumPlan } from '@/domain/entities/PremiumPlan';
-import { PaymentUseCases } from '@/application/use-cases/user/PaymentUseCases'; 
+import { PaymentUseCases } from '@/application/use-cases/user/PaymentUseCases';
 import { RazorpayServices } from '../../services/razorpay/RazorpayServices';
 import { PaymentController } from '../controller/user/PaymentController';
 import { TransactionRespotitory } from '@/infrastructure/repositories/TransactionsRespositoy';
@@ -90,13 +90,13 @@ import { EvaluateWinnerWorker } from '@/infrastructure/queue/processors/evaluate
 import { GetRecentSubmissionUseCase } from '@/application/use-cases/user/problem-mangement/GetRecentSubmissionUseCase';
 import { GroupChallenge } from '@/domain/entities/GroupChallenge';
 import { ChallengeResultsUseCase } from '@/application/use-cases/user/arena/ChallengeResultsUseCase';
-import { redisConnection } from '@/infrastructure/database/connection/redisConnection';
 import { LeaderBoardUseCase } from '@/application/use-cases/user/arena/LeaderBoardUseCaset';
 import { AcceptedUserProblemsUseCase } from '@/application/use-cases/user/problem-mangement/AcceptedUserProblemsUseCase';
 import { SendToOllama } from '@/services/ollamaAi/SendToOllama';
 import { GeneratePrompt } from '@/services/ollamaAi/GeneratePrompt';
 import { SubscriptionRepository } from '@/infrastructure/repositories/SubscritpionRepository';
 import { ForgotPassVerifyOtpController } from '../controller/user/ForgotPassVerifyOtpController';
+import { RedisServices } from '@/services/redis/RedisServices';
 
 export const userRepository: IUserRepository = new UserRepository();
 const algorithm = new BcryptHashAlgorithm(); // dip for hashServices
@@ -124,6 +124,7 @@ const otpService = new OtpService(env.EMAIL!, env.NODEMAILER_PASS!);
 const juge0CodeExecuteService = new Juge0CodeExecute();
 const streakService = new StreakService(userRepository);
 const razorpayService = new RazorpayServices(razorpay_key, razorpay_secret);
+const redisServices=new RedisServices()
 
 const updateUserUseCase = new UpdateUserUseCase(userRepository);
 
@@ -137,7 +138,7 @@ const joinChallengeUseCase = new JoinChallengeUseCase(challengeRepository, leade
 const joinPairProgarmmingUseCase = new JoinPairProgrammigUseCase(pairProgrammingRepository);
 const scheduleInterviewUsecase = new ScheduleInterviewUseCase(userRepository);
 const joiinInterviewUsecase = new joinInterViewUseCase(interViewRespository);
-const paymentUseCases = new PaymentUseCases(razorpayService, transactionRepository);
+const paymentUseCases = new PaymentUseCases(razorpayService, transactionRepository,redisServices);
 const getUserDataBynameUseCase = new GetUserDataBynameUseCase(userRepository);
 const loginUserUseCase = new LoginUserUseCase(userRepository, hashService, jwtService);
 const createUserUseCase = new CreateUserUseCase(userRepository, hashService, pendingUserRepository);
@@ -302,9 +303,16 @@ router.get('/allPlans', subscriptionController.getPlans);
 router.get('/subscriptionData', auth.verify(), subscriptionController.getSubscriptionData);
 
 // PAYMENT
-router.post('/createPayment', paymentController.createPayment);
+// router.get("initiatePayment",paymentController.)
+router.post('/createPayment', paymentController.createPaymentOrder);
+
+
 // SUBSCRIBE PLAN IF VERIFEID PAYMENT
-router.post('/verifyPayment', auth.verify(), paymentController.verifyPayment, subscriptionController.createSubscription);
+router.post('/verifyPayment',
+  auth.verify(),
+  paymentController.verifyPayment,
+  subscriptionController.createSubscription);
+
 
 // REPORT
 router

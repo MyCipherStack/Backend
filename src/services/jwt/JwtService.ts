@@ -22,4 +22,5 @@ export class JwtService implements IJwtService {
   varifyAccessToken(token: string):any {
     return Jwt.verify(token, this.accessTokenSecrect);
   }
+  
 }

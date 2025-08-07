@@ -1,6 +1,6 @@
-import { IpremiumPlanRepository } from '@/domain/repositories/IPremiumPlanRepositroy.js';
-import { PremiumPlan } from '@/domain/entities/PremiumPlan.js';
-import { IEditPlanUseCase } from '@/application/interfaces/use-cases/IPlanUseCases.js';
+import { IpremiumPlanRepository } from '@/domain/repositories/IPremiumPlanRepositroy';
+import { PremiumPlan } from '@/domain/entities/PremiumPlan';
+import { IEditPlanUseCase } from '@/application/interfaces/use-cases/IPlanUseCases';
 
 export class EditPlanUseCase implements IEditPlanUseCase {
   constructor(

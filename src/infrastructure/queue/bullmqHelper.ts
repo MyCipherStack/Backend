@@ -1,5 +1,5 @@
 import { Queue } from 'bullmq';
-import { redisConnection } from '../database/connection/redisConnection';
+import { redisOptions } from '../database/connection/redisConnection';
 import { IBullmqQueueService } from '@/domain/services/IBullmqServices';
 
 export class BullmqQueueService implements IBullmqQueueService {
@@ -7,7 +7,7 @@ export class BullmqQueueService implements IBullmqQueueService {
 
   async addJob(queueName: string, data: any, options?: any): Promise<void> {
     if (!this.queues.has(queueName)) {
-      this.queues.set(queueName, new Queue(queueName, { connection: redisConnection }));
+      this.queues.set(queueName, new Queue(queueName, { connection: redisOptions }));
     }
 
     const queue = this.queues.get(queueName);

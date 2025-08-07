@@ -37,6 +37,7 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
 
     const createdJoinCode = `cipher-${nanoid()}`;
 
+    logger.info("invited user",{invited:data.invitedUsers})
     if (data.invitedUsers) {
       data.invitedUsers.map(async (userName) => {
         const data = await this.getUserDataBynameUseCase.exectue(userName);

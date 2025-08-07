@@ -1,9 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { nextTick } from 'process';
 import { FilterDTO } from '@/application/dto/FilterDTO';
 import { GroupChallengeDTO } from '@/application/dto/GroupChallengeDTO';
 import { PairProgramingDTO } from '@/application/dto/PairProgammingDTO';
-import { IGroupChallenge } from '@/application/interfaces/IChallengeInterfaces';
 import {
   IActivePrivateChallengeUsecase, IActivePublicChallengeUsecase, IChallengeResultsUseCase, ICreateChallengeUseCase, ICreatePairProgrammingUseCase, IEndChallengeUseCase, IEvaluateWinnerUsecase, IJoinChallengeUseCase, IJoinPairProgrammigUseCase, ILeaderBoardUseCase,
 } from '@/application/interfaces/use-cases/IChallengeUseCases';

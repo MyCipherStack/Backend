@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { IJwtService } from '../domain/services/IJwtService';
-import { env } from '@/config/env'; 
+import { env } from '@/config/env';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IGetRepositoryDataUseCase';
 import { AppError } from '@/domain/error/AppError';
@@ -76,6 +76,8 @@ export class Authenticate<Entity> {
             httpOnly: true,
             sameSite: isProduction ? "none" : "strict",
             secure: isProduction,
+            domain: isProduction ? env.COOKIE_DOMAIN : undefined,
+
           });
 
           res.clearCookie('refreshToken', {
@@ -102,7 +104,6 @@ export class Authenticate<Entity> {
             secure: isProduction,
             sameSite: isProduction ? "none" : "strict",
             maxAge: 1000 * 60 * 15,
-
             domain: isProduction ? env.COOKIE_DOMAIN : undefined,
           });
           const foundUser = await this.getRepositoryDataUseCase.OneDocumentById(userPayload.userId) as IRepoData;

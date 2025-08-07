@@ -5,6 +5,8 @@ import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { PremiumPlan } from '@/domain/entities/PremiumPlan';
 import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IGetRepositoryDataUseCase';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { IRedisServices } from '@/domain/services/IRedisServices';
+import { RedisKeys } from '@/shared/constants/RedisKeys';
 
 export class PaymentController {
   constructor(
@@ -12,28 +14,40 @@ export class PaymentController {
     private getPremiumPlanUseCase: IGetRepositoryDataUseCase<PremiumPlan>,
   ) { }
 
-  createPayment = async (req: Request, res: Response, next: NextFunction) => {
+
+
+
+
+
+
+  createPaymentOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.body;
       const planDetails = await this.getPremiumPlanUseCase.OneDocumentById(id);
       logger.info('subscrition eee', { asd: planDetails?._id });
 
+      const user = req.user
+
       if (planDetails) {
-        const orderDetails = await this.paymentUseCases.createPayment(planDetails?.price, planDetails._id!);
+        const orderDetails = await this.paymentUseCases.createOrder(planDetails?.price, planDetails._id!, user?.id!);
 
         return res.status(HttpStatusCode.CREATED).json({ status: true, orderId: orderDetails.orderId });
       }
       logger.error('err in subscribe controller');
-      throw new AppError('Error on fetching data from database', 400);
+      throw new AppError('Error on fetching data from database', HttpStatusCode.BAD_REQUEST);
     } catch (error) {
-      logger.error({ message: 'error', err: error });
-      return next(new AppError('Error on subscribe plan', 400));
+      if (error instanceof AppError) {
+        
+        return next(new AppError(error.message, error.statusCode));
+      }
+      return next(new AppError('Error on subscribe plan', HttpStatusCode.BAD_REQUEST));
     }
   };
 
   verifyPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      logger.info('verify payment');
+
+
       logger.info({ message: 'body', res: req.body.response });
       const user = req.user as { id: string, name: string };
 
@@ -45,18 +59,14 @@ export class PaymentController {
 
         res.locals.planDetails = planDetails;
 
-        logger.info({ message: 'verifypayment controller', data });
-        logger.info({ message: 'verifypayment controller', userName:user.name});
-
         const updatedDatabase = await this.paymentUseCases.updateNewPayment({
-          userId: user.id, orderId: data.orderId, paymentId: data.paymentId, amount: data.amount/100, paymentMethord: 'Razorpay', status: 'success', userName: user.name
+          userId: user.id, orderId: data.orderId, paymentId: data.paymentId, amount: data.amount / 100, paymentMethord: 'Razorpay', status: 'success', userName: user.name
         });
-        // const orderDetails=await this.paymentUseCases.ge
 
         res.locals.paymentId = updatedDatabase?._id;
         logger.info('payementid', { updatedDatabase });
         next();
-        // res.status(200).json({status:true,message:"payment is verifited success"})
+
       } else {
         const updatedDatabase = await this.paymentUseCases.updateNewPayment({
           userId: user.id, orderId: data.orderId, paymentId: data.paymentId, amount: data.amount, paymentMethord: 'Razorpay', status: 'failed', userName: user.name

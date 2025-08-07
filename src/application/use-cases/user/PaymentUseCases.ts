@@ -4,19 +4,44 @@ import { verifyPaymentDTO } from '@/application/dto/VerifyPaymentDTO';
 import { ITransactionRepotitory } from '@/domain/repositories/ITransactionRepotitory';
 import { Transaction } from '@/domain/entities/Transaction';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
+import { RedisKeys } from '@/shared/constants/RedisKeys';
+import { IRedisServices } from '@/domain/services/IRedisServices';
+import { AppError } from '@/domain/error/AppError';
 
 export class PaymentUseCases implements IPaymentUseCases {
   constructor(
-    private razorpayServices:IRazorpayServices,
-    private transactionRepo:ITransactionRepotitory,
-  ) {}
+    private razorpayServices: IRazorpayServices,
+    private transactionRepo: ITransactionRepotitory,
+    private redisServices: IRedisServices
 
-  async createPayment(amount: number, planId:string): Promise<{ orderId: string }> {
-    const data = await this.razorpayServices.createOrder(amount, planId);
-    return data;
+  ) { }
+
+
+
+  async createOrder(amount: number, planId: string, userId: string): Promise<{ orderId: string }> {
+
+
+
+    const value = await this.redisServices.get(RedisKeys.paymentLock(userId))
+    if (value) {
+      throw new AppError("payment already started")
+    } else {
+
+      const value = await this.redisServices.set(RedisKeys.paymentLock(userId), "locked", 120)
+
+
+      const data = await this.razorpayServices.createOrder(amount, planId);
+
+      return data;
+
+    }
+
+
+
   }
 
-  verifyPayment = async (response:any): Promise<{status:boolean, orderId:string, paymentId:string, amount:number, planId:string}> => {
+
+  verifyPayment = async (response: any): Promise<{ status: boolean, orderId: string, paymentId: string, amount: number, planId: string }> => {
     const data = new verifyPaymentDTO(response);
     const res = this.razorpayServices.verifySignature(data.orderId, data.paymentId, data.signature);
 
@@ -29,8 +54,13 @@ export class PaymentUseCases implements IPaymentUseCases {
     };
   };
 
-  updateNewPayment = async (data:Transaction): Promise<Transaction |null> => {
+
+
+  updateNewPayment = async (data: Transaction): Promise<Transaction | null> => {
     const res = this.transactionRepo.create(data);
+
+    this.redisServices.del(data.userId)
+
     return res;
   };
 }

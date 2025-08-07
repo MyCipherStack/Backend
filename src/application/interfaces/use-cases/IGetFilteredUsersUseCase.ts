@@ -1,6 +1,6 @@
 
 import { FilterDTO } from '@/application/dto/FilterDTO';
-import { User } from '@/domain/entities/User.js';
+import { User } from '@/domain/entities/User';
 
 
 export interface IGetFilteredUsersUseCase{

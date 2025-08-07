@@ -58,6 +58,7 @@ notificationSocket.register(io);
 
 connectDB();
 
+
 app.use('/api/user', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use(morgan('dev'));

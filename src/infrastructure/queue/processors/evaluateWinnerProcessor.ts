@@ -1,6 +1,6 @@
 import { Worker } from 'bullmq';
 import { IEvaluateWinnerUsecase } from '@/application/interfaces/use-cases/IChallengeUseCases';
-import { redisConnection } from '@/infrastructure/database/connection/redisConnection';
+import { redisOptions } from '@/infrastructure/database/connection/redisConnection';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 
 export class EvaluateWinnerWorker {
@@ -21,7 +21,7 @@ export class EvaluateWinnerWorker {
 
           await this.evaluateUseCase.execute(challengeId);
         },
-        { connection: redisConnection },
+        { connection: redisOptions },
       );
     } catch (error) {
       logger.error('errr in evaluvate woker ', error);
