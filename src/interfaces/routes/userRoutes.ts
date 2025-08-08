@@ -97,6 +97,10 @@ import { GeneratePrompt } from '@/services/ollamaAi/GeneratePrompt';
 import { SubscriptionRepository } from '@/infrastructure/repositories/SubscritpionRepository';
 import { ForgotPassVerifyOtpController } from '../controller/user/ForgotPassVerifyOtpController';
 import { RedisServices } from '@/services/redis/RedisServices';
+import { UploadImageUseCase } from '@/application/use-cases/user/UploadImageUseCase';
+import { UploadFileService } from '@/services/s3bucket/UploadService';
+import multer from 'multer';
+
 
 export const userRepository: IUserRepository = new UserRepository();
 const algorithm = new BcryptHashAlgorithm(); // dip for hashServices
@@ -124,7 +128,8 @@ const otpService = new OtpService(env.EMAIL!, env.NODEMAILER_PASS!);
 const juge0CodeExecuteService = new Juge0CodeExecute();
 const streakService = new StreakService(userRepository);
 const razorpayService = new RazorpayServices(razorpay_key, razorpay_secret);
-const redisServices=new RedisServices()
+const redisServices = new RedisServices()
+const uploadFileService = new UploadFileService()
 
 const updateUserUseCase = new UpdateUserUseCase(userRepository);
 
@@ -138,7 +143,7 @@ const joinChallengeUseCase = new JoinChallengeUseCase(challengeRepository, leade
 const joinPairProgarmmingUseCase = new JoinPairProgrammigUseCase(pairProgrammingRepository);
 const scheduleInterviewUsecase = new ScheduleInterviewUseCase(userRepository);
 const joiinInterviewUsecase = new joinInterViewUseCase(interViewRespository);
-const paymentUseCases = new PaymentUseCases(razorpayService, transactionRepository,redisServices);
+const paymentUseCases = new PaymentUseCases(razorpayService, transactionRepository, redisServices);
 const getUserDataBynameUseCase = new GetUserDataBynameUseCase(userRepository);
 const loginUserUseCase = new LoginUserUseCase(userRepository, hashService, jwtService);
 const createUserUseCase = new CreateUserUseCase(userRepository, hashService, pendingUserRepository);
@@ -159,6 +164,7 @@ const createPairProgrammingUseCase = new CreatePairProgrammingUseCase(
   notificationRepository,
 );
 
+const uploadImageUseCase = new UploadImageUseCase(uploadFileService)
 const getAllUsersSubmissionUseCase = new GetAllUsersSubmissionUseCase(submissionRespository);
 const challengeResultsUseCase = new ChallengeResultsUseCase(leaderBoardRespository);
 const getRecentSubmissionUseCase = new GetRecentSubmissionUseCase(submissionRespository);
@@ -205,7 +211,7 @@ const forgotPasswordVerify = new ForgotPassVerifyOtpController(resetPassverifyOt
 const resetPassword = new ResetPasswordController(resetPasswordUseCase);
 const forgotPasswordOtpController = new ForgotPasswordOtpController(resetPassswordOtpUseCase);
 const problemController = new ProblemController(problemRespository, runProblemUseCase, acceptedUserProblems, generatePrompt, ollamaAi);
-const profileController = new ProfileController(updateUserUseCase, getUserRepositoryDataUseCase, verifyUserPasswordUseCase, resetPasswordUseCase);
+const profileController = new ProfileController(updateUserUseCase, getUserRepositoryDataUseCase, verifyUserPasswordUseCase, resetPasswordUseCase, uploadImageUseCase);
 const arenaController = new ArenaController(
   createChallengeUseCase,
   joinChallengeUseCase,
@@ -245,6 +251,9 @@ const authorize = new RoleMiddleware();
 const auth = new AuthMiddlwareBundler(authenticate, authorize, 'user');
 
 const router = express.Router();
+
+
+
 
 router.post('/register', authController.register); // auth.verify
 router.post('/login', authController.login);
@@ -319,8 +328,17 @@ router
   .route('/report')
   .post(auth.verify(), reportController.createReport);
 
+
+
+//FileUPload
+const upload = multer()
+router.post("/uploadImage", upload.single("file"), profileController.profilePicUpload)
+
+
 // NOTIFICATION
 router.patch('/readNotification', auth.verify(), notificationController.readNotification);
 router.get('/notification', auth.verify(), notificationController.userAllNotification);
+
+
 
 export default router;

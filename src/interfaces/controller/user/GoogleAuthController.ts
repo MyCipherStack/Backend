@@ -36,7 +36,7 @@ export class GoogleAuthController {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         path: '/',
       });
-      res.redirect(`${env.GOOGLE_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}&id=${encodeURIComponent(createdUser.user._id?.toString()!)}`);
+      res.redirect(`${env.FRONTEND_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}&id=${encodeURIComponent(createdUser.user._id?.toString()!)}`);
     } catch (error: unknown) {
       if (error instanceof Error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });

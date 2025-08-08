@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { ProfileDTO } from '@/application/dto/ProfileDTO';
-import { IUpdateUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
+import { IUpdateUserUseCase, IUploadImageUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IGetRepositoryDataUseCase';
 import { IVerifyUserPasswordUseCase } from '@/application/interfaces/use-cases/IUserPasswordUseCases';
 import { ResetPasswordDTO } from '@/application/dto/ResetPasswordDTO';
@@ -9,13 +9,16 @@ import { User } from '@/domain/entities/User';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { AppError } from '@/domain/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { MulterDTO } from '@/application/dto/MulterDTO';
+import {Multer} from "multer"
 
 export class ProfileController {
   constructor(
-        private updateUseCase: IUpdateUserUseCase,
-        private getRepositoryDataUseCase: IGetRepositoryDataUseCase<User>,
-        private verifyUserPasswordUseCase: IVerifyUserPasswordUseCase,
-        private resetPasswordUseCase: IResetPasswordUseCase,
+    private updateUseCase: IUpdateUserUseCase,
+    private getRepositoryDataUseCase: IGetRepositoryDataUseCase<User>,
+    private verifyUserPasswordUseCase: IVerifyUserPasswordUseCase,
+    private resetPasswordUseCase: IResetPasswordUseCase,
+    private uploadImageUsecase: IUploadImageUseCase
   ) { }
 
   update = async (req: Request, res: Response) => {
@@ -23,7 +26,9 @@ export class ProfileController {
       const user = req.user as { email: string };
 
       const profileData = new ProfileDTO(req.body.personal, req.body.appearance, req.body.preferences);
-
+      
+      logger.info("update profile",{profileData:req.body.personal})
+      
       const data = await this.updateUseCase.execute(user.email, profileData);
       if (data) { res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', user: { name: data.name, email: data.email, image: data.image } }); }
     } catch (error: any) {
@@ -31,7 +36,7 @@ export class ProfileController {
     }
   };
 
-  getData = async (req: Request, res: Response, next:NextFunction) => {
+  getData = async (req: Request, res: Response, next: NextFunction) => {
     try {
       logger.info('get profile data');
       console.log('get profile data');
@@ -77,4 +82,29 @@ export class ProfileController {
       // res.status(400).json({ status: false, message: "Something went wrong while fetching data" })
     }
   };
+
+
+  profilePicUpload = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+
+      // console.log("file data",req.file);
+      
+      const file = req.file as Express.Multer.File
+      
+      const fileData = new MulterDTO(file)
+      // logger.info("profilePIcUpload",{fileData})
+
+
+      const url = await this.uploadImageUsecase.execute(fileData.buffer, fileData.originalName, fileData.mimetype)
+
+      res.status(HttpStatusCode.OK).json({ status: true, message: 'image uploaded ', data: url });
+
+    } catch (error) {
+
+      logger.error("error",error)
+      next(new AppError('Something went wrong', 500));
+
+    }
+  }
+
 }

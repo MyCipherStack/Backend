@@ -12,17 +12,20 @@ export class LogoutController {
     console.log('logout controller is working');
 
     const isProduction = env.NODE_ENV === "production"
-    
+
     res.clearCookie('accessToken', {
       httpOnly: true,
       sameSite: isProduction ? "none" : "strict",
       secure: isProduction,
+      domain: isProduction ? env.COOKIE_DOMAIN : undefined,
+
     });
 
     res.clearCookie('refreshToken', {
       httpOnly: true,
       sameSite: isProduction ? "none" : "strict",
       secure: isProduction,
+      domain: isProduction ? env.COOKIE_DOMAIN : undefined,
     });
     return res.status(HttpStatusCode.OK).json({ message: 'Logged out successfully' });
   };

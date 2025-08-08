@@ -33,7 +33,7 @@ export class ProfileDTO {
     this.bio = personal.bio,
     this.github = personal.github,
     this.linkedin = personal.linkedin,
-    this.image = personal.avatar,
+    this.image = personal.image,
     this.theme = appearance.theme,
 
     this.preferences = {

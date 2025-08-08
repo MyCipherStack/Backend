@@ -6,7 +6,7 @@ export interface PersonalInfo {
     bio: string;
     github: string;
     linkedin: string;
-    avatar: string;
+    image: string;
   }
 
 export interface AppearanceSettings {

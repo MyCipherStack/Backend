@@ -16,14 +16,21 @@ export const env = {
 
   RAZORPAY_SECRET: process.env.RAZORPAY_SECRET || 'this_is_my_secret',
   RAZORPAY_KEY: process.env.RAZORPAY_KEY || '',
-  GOOGLE_URL: process.env.GOOGLE_URL || 'http://localhost:3000',
+  GOOGLE_URL: process.env.GOOGLE_URL ,
   LOKI_TRANSPORT_HOST: process.env.LOKI_TRANSPORT_HOST || 'http://localhost:3100',
   FRONTEND_URL: process.env.FRONTEND_URL,
   COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
-  JUDGE0_API_URL:process.env.JUDGE0_API_URL,
+  JUDGE0_API_URL: process.env.JUDGE0_API_URL,
 
-  REDIS_URL:process.env.REDIS_URL
-  
+  REDIS_URL: process.env.REDIS_URL,
+  AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+
+  AWS_REGION: process.env.AWS_REGION,
+  AWS_BUCKET_NAME:process.env.AWS_BUCKET_NAME
+
+
+
 
 
 };

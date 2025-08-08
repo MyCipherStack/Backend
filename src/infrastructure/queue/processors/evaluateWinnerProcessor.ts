@@ -10,7 +10,7 @@ export class EvaluateWinnerWorker {
 
   execute = () => {
     try {
-      logger.info('worker stated');
+      logger.info('worker started.....');
 
       // new QueueScheduler("evaluate-winners", { connection: redisConnection });
 

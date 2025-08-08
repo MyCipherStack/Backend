@@ -31,3 +31,10 @@ export interface IRegisterUserFromPendingUseCase{
 export interface IUpdateUserUseCase{
    execute(email: string, updateData:Partial<User>):Promise<User |null>
 }
+export interface IUploadImageUseCase{
+     execute (fileBuffer: Buffer, originalName: string, mimeType: string): Promise<string>
+
+}
+
+
+
