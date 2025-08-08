@@ -39,8 +39,8 @@ app.use(express.json());
 app.use(passport.initialize());
 
 // this is not need remove after host
-app.use(session({ secret: env.SESSION_SECRET, resave: false, saveUninitialized: true }));
-app.use(passport.session());
+// app.use(session({ secret: env.SESSION_SECRET, resave: false, saveUninitialized: true }));
+// app.use(passport.session());
 
 const leaderBoardRepository = new LeaderBoardRepository();
 const submissionRepository = new SubmissionRepository();

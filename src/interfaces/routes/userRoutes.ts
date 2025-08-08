@@ -263,7 +263,7 @@ router.post('/resendOtp', resendOtpController.resend);
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/auth/google/callback', passport.authenticate('google', {
-  failureRedirect: '/Login', session: true,
+  failureRedirect: '/Login', session: false,
 }), (req, res, next) => googleAuthController.handleSuccess(req, res, next));
 
 router.post('/logout', logoutController.logout);
