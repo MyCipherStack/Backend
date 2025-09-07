@@ -1,4 +1,5 @@
 import { ILeaderBoardUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases';
+import { leaderBoardMapper } from '@/application/mapper/LeaderBoardMapper';
 import { User } from '@/domain/entities/User';
 import { ILeaderBoardRepository } from '@/domain/repositories/ILeaderBoardRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
@@ -14,22 +15,26 @@ export class LeaderBoardUseCase implements ILeaderBoardUseCase {
     const leaderBoard = await this.leaderBoardRepository.findAllWithUserDeatils({ challengeId });
 
     if (leaderBoard) {
-      let rank = 1;
+      // let rank = 1;
 
-      const response = leaderBoard
-        .map((data) => {
-          logger.info('leaderboard', { data });
-          return {
-            userName: (data.userId as User).name,
-            totalScore: data.totalscore,
-            solvedCount: data.solvedProblems?.length ?? 0,
-            isLive: false,
-            image: (data.userId as User).image || '',
-            rank: rank++,
-          };
-        });
 
-      return response;
+    return leaderBoardMapper.toResponseDTO(leaderBoard)  
+
+
+
+      // const response = leaderBoard
+      //   .map((data) => {
+      //     return {
+      //       userName: (data.userId as User).name,
+      //       totalScore: data.totalscore,
+      //       solvedCount: data.solvedProblems?.length ?? 0,
+      //       isLive: false,
+      //       image: (data.userId as User).image || '',
+      //       rank: rank++,
+      //     };
+      //   });
+
+      // return response;
     }
 
     return null;

@@ -4,9 +4,8 @@ import { IChangeRepoStatusUseCase } from '@/application/interfaces/use-cases/ISh
 export class ChangeRepoStatusUseCase<Entity> implements IChangeRepoStatusUseCase<Entity> {
 
   constructor(
-        private repository: IBaseRepository<Entity>,
-
-  ) {}
+    private repository: IBaseRepository<Entity>,
+  ) { }
 
   async execute(id: string, status: Partial<Entity>): Promise<Entity | null> {
     const data = await this.repository.updateOneById(id, status);

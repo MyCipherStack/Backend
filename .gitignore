@@ -3,3 +3,5 @@ node_modules
 .env
 workd
 pending
+.env.production
+.env.development

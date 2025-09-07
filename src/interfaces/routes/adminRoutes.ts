@@ -26,7 +26,7 @@ import { AuthMiddlwareBundler } from '@/middlewares/AuthMiddlwareBundler';
 import { Admin } from '@/domain/entities/Admin';
 import { GetRepositoryDataUseCase } from '@/application/use-cases/shared/GetRepositoryDataUseCase';
 import { ChallengeController } from '../controller/admin/ChallengeController';
-import { ChallengeRepository } from '@/infrastructure/repositories/ChallengeRespository';
+import { ChallengeRepository } from '@/infrastructure/repositories/ChallengeRepository';
 import { GroupChallenge } from '@/domain/entities/GroupChallenge';
 import { PairProgramming } from '@/domain/entities/PairProgramming';
 import { PairProgrammingRepository } from '@/infrastructure/repositories/PairProgrammingRepository';
@@ -38,8 +38,7 @@ import { AdminReportController } from '../controller/admin/AdminReportController
 import { IReportRepository } from '@/domain/repositories/IReportRepository';
 import { ReportRepository } from '@/infrastructure/repositories/ReportRepository';
 import { ChangeRepoStatusUseCase } from '@/application/use-cases/shared/ChangeRepoStatusUseCase';
-import { Report } from '@/domain/entities/Report';
-import { TransactionRespotitory } from '@/infrastructure/repositories/TransactionsRespositoy';
+import { TransactionRepository } from '@/infrastructure/repositories/TransactionsRepository';
 import { UpdateUserUseCase } from '@/application/use-cases/user/user-mangement/UpdateUserUseCase';
 import { LoginAdminUsecase } from '@/application/use-cases/admin/LoginAdminUsecase';
 import { CreateRepoUseCase } from '@/application/use-cases/shared/CreateRepoUseCase';
@@ -54,12 +53,12 @@ const router = express.Router();
 
 const adminRepository: IAdminRepository = new AdminRepository();
 const userRepository: IUserRepository = new UserRepository();
-const problemRespository: IProblemRepository = new ProblemRepository();
+const problemRepository: IProblemRepository = new ProblemRepository();
 const premiumPlanRepository: IpremiumPlanRepository = new PremiumPlanRepository();
 const challengeRepository: ChallengeRepository = new ChallengeRepository();
 const pairProgrammingRepository: IPairProgrammingRepository = new PairProgrammingRepository();
 const reportRepository: IReportRepository = new ReportRepository();
-const transactionRepository = new TransactionRespotitory();
+const transactionRepository = new TransactionRepository();
 
 const algorithm = new BcryptHashAlgorithm(); // dip for hashServices
 const hashService: IHashAlgorithm = new HashService(algorithm);
@@ -68,8 +67,8 @@ const accessToken = env.ACCESS_JWT_TOKEN;
 const refreshToken = env.REFRESH_JWT_TOKEN;
 const jwtService = new JwtService(accessToken, refreshToken);
 
-const addProblemUseCase: IAddProblemUseCase = new AddProblemUseCase(problemRespository);
-const editProblemUseCase = new EditProblemUseCase(problemRespository);
+const addProblemUseCase: IAddProblemUseCase = new AddProblemUseCase(problemRepository);
+const editProblemUseCase = new EditProblemUseCase(problemRepository);
 const getFilteredUsersUseCase = new GetFilteredUsersUseCase(userRepository);
 const adminDashBoardUseCase = new AdminDashBoardUseCase(userRepository, transactionRepository);
 const getAllReportsUsecase = new GetAllReportsUsecase(reportRepository);
@@ -89,7 +88,7 @@ const updatePairRepoDataUseCase = new UpdateRepositoryDataUseCase(pairProgrammin
 const changePairProgramStatusUSeCase = new ChangeRepoStatusUseCase(pairProgrammingRepository);
 const allTransationsDataUseCase = new GetRepositoryDataUseCase(transactionRepository);
 
-// const addProblemUseCase=new AddProblemUseCase(problemRespository)
+// const addProblemUseCase=new AddProblemUseCase(problemRepository)
 
 const adminAuthController = new AdminAuthController(loginAdminUsecase);
 const usersListController = new UsersListController(getFilteredUsersUseCase, updateUserUseCase);

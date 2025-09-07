@@ -24,7 +24,7 @@ export class UsersController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'user data fetched success', usersData: data });
     } catch (error) {
-      next(new AppError('create subcription failed', HttpStatusCode.BAD_REQUEST));
+      next(new AppError('create subscription failed', HttpStatusCode.BAD_REQUEST));
     }
   };
 }

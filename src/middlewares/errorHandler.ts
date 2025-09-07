@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
 import { logger } from '../infrastructure/logger/WinstonLogger/logger';
 import { AppError } from '../domain/error/AppError';
+import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export function ErrorHandler(err:Error, req:Request, res:Response, next:NextFunction) {
-  console.log(err);
 
   logger.info('err hanlder called', { err });
   if (err instanceof AppError) {
@@ -13,7 +13,7 @@ export function ErrorHandler(err:Error, req:Request, res:Response, next:NextFunc
     });
   }
 
-  return res.status(500).json({
+  return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
     success: false,
     message: err.message,
   });

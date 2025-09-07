@@ -21,7 +21,7 @@ export class ResetPasswordController {
       if (!cookie) {
         throw new Error('Session expired.Please request OTP again.');
       }
-      // const isValid=await this.jwtService.varifyAccessToken(cookie)
+      // const isValid=await this.jwtService.verifyAccessToken(cookie)
       // console.log(isValid,"toke report");
 
       await this.resetPasswordUseCase.execute(cookie.email, data.password);

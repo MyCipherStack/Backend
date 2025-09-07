@@ -5,9 +5,7 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class ResendOtpController {
   constructor(
-
         private sendOtpUseCase: ISendOtpUseCase,
-
   ) {
 
   }

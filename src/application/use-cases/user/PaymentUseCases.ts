@@ -1,7 +1,7 @@
 import { IRazorpayServices } from '@/domain/services/IRazropayServices';
 import { IPaymentUseCases } from '@/application/interfaces/use-cases/IPaymentUseCases';
 import { verifyPaymentDTO } from '@/application/dto/VerifyPaymentDTO';
-import { ITransactionRepotitory } from '@/domain/repositories/ITransactionRepotitory';
+import { ITransactionRepository } from '@/domain/repositories/ITransactionRepository';
 import { Transaction } from '@/domain/entities/Transaction';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { RedisKeys } from '@/shared/constants/RedisKeys';
@@ -11,7 +11,7 @@ import { AppError } from '@/domain/error/AppError';
 export class PaymentUseCases implements IPaymentUseCases {
   constructor(
     private razorpayServices: IRazorpayServices,
-    private transactionRepo: ITransactionRepotitory,
+    private transactionRepo: ITransactionRepository,
     private redisServices: IRedisServices
 
   ) { }

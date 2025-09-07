@@ -20,6 +20,7 @@ export class AdminProblemController {
       const problemData = await this.addProblemUseCase.execute(problem);
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'problem Created success', problem: problemData });
+      
     } catch (error) {
       if (error instanceof Error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });

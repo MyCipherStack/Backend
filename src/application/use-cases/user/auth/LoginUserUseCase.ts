@@ -3,19 +3,20 @@ import { IUserRepository } from '@/domain/repositories/IUserRepository';
 import { IHashAlgorithm } from '@/domain/services/IHashAlgorithm';
 import { IJwtService } from '@/domain/services/IJwtService';
 import { ILoginUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
+import { UserMapper } from '@/application/mapper/UserMapper';
 
 export class LoginUserUseCase implements ILoginUserUseCase {
   constructor(
-        private userRepository:IUserRepository,
-        private hashService:IHashAlgorithm,
-        private JwtService:IJwtService,
-  ) {}
+    private userRepository: IUserRepository,
+    private hashService: IHashAlgorithm,
+    private JwtService: IJwtService,
+  ) { }
 
-  async execute(identifier:string, password:string) {
+  async execute(identifier: string, password: string) {
 
     const isEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(identifier);
     let foundUser = null;
- 
+
     if (isEmail) {
       foundUser = await this.userRepository.findByEmail(identifier);
     } else {
@@ -36,15 +37,20 @@ export class LoginUserUseCase implements ILoginUserUseCase {
     }
 
     const accessToken = this.JwtService.signAccessToken({ userId: foundUser._id, name: foundUser.name, role: 'user' });
-    const refreshToken = this.JwtService.signRefereshToken({ userId: foundUser._id, name: foundUser.name, role: 'user' });
+    const refreshToken = this.JwtService.signRefreshToken({ userId: foundUser._id, name: foundUser.name, role: 'user' });
     logger.info(accessToken, refreshToken);
     //
-    return {
-      user: {
-        name: foundUser.name, email: foundUser.email, image: foundUser.image, id: foundUser._id,
-      },
-      refreshToken,
-      accessToken,
-    };
+
+    return {user: UserMapper.toResponseDTO(foundUser), refreshToken,accessToken,}
+
+    // return {
+
+
+    //   user: {
+    //     name: foundUser.name, email: foundUser.email, image: foundUser.image, id: foundUser._id,
+    //   },
+    //   refreshToken,
+    //   accessToken,
+    // };
   }
 }

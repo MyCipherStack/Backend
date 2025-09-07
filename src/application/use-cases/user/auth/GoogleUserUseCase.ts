@@ -3,6 +3,7 @@ import { IUserRepository } from '@/domain/repositories/IUserRepository';
 import { IHashAlgorithm } from '@/domain/services/IHashAlgorithm';
 import { IJwtService } from '@/domain/services/IJwtService';
 import { IGoogleUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
+import { UserMapper } from '@/application/mapper/UserMapper';
 
 interface AuthResult {
     user: { name: string, email: string };
@@ -63,11 +64,11 @@ export class GoogleUserUseCase implements IGoogleUserUseCase {
     const accessToken = this.jwtService.signAccessToken({
       emai: userData.email, name: userData.name, userId: userData._id, role: 'user',
     });
-    const refreshToken = this.jwtService.signRefereshToken({
+    const refreshToken = this.jwtService.signRefreshToken({
       emai: userData.email, name: userData.name, userId: userData._id, role: 'user',
     });
     console.log(accessToken, refreshToken);
 
-    return { user: userData, accessToken, refreshToken };
+    return { user:UserMapper.toResponseDTO(userData), accessToken, refreshToken };
   }
 }

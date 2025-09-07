@@ -30,7 +30,7 @@ export class LoginAdminUsecase implements ILoginAdminUsecase {
     }
 
     const accessToken = this.JwtService.signAccessToken({ name: foundAdmin.name, role: 'admin', id: foundAdmin.id });
-    const refreshToken = this.JwtService.signRefereshToken({ name: foundAdmin.name, role: 'admin', id: foundAdmin.id });
+    const refreshToken = this.JwtService.signRefreshToken({ name: foundAdmin.name, role: 'admin', id: foundAdmin.id });
     const storeToken = await this.adminRepository.updateOneById(foundAdmin.id, { refreshToken });
     console.log(accessToken, refreshToken);
 

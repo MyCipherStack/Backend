@@ -11,6 +11,7 @@ import { AppError } from '@/domain/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { MulterDTO } from '@/application/dto/MulterDTO';
 import {Multer} from "multer"
+import { UserMapper } from '@/application/mapper/UserMapper';
 
 export class ProfileController {
   constructor(
@@ -42,10 +43,14 @@ export class ProfileController {
       console.log('get profile data');
       const user = req.user as { email: string, id: string };
 
-      const profile = await this.getRepositoryDataUseCase.OneDocumentById(user.id.toString());
+      let profile = await this.getRepositoryDataUseCase.OneDocumentById(user.id.toString());
+
+      
       if (profile) {
-        console.log(profile, 'profiledata');
-        return res.status(HttpStatusCode.OK).json({ status: true, message: 'Problems fetched success', user: profile });
+
+        const profileDTO = UserMapper.toResponseDTO(profile)
+
+        return res.status(HttpStatusCode.OK).json({ status: true, message: 'Problems fetched success', user: profileDTO });
       }
       next(new AppError('Something went wrong', 500));
 

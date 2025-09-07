@@ -5,7 +5,7 @@ import { IPairProgrammingRepository } from '@/domain/repositories/IPairProgrammi
 import { IProblemRepository } from '@/domain/repositories/IProblemRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { INotificationSocket } from '@/domain/services/ISocketService';
-import { IGetUserDataBynameUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
+import { IGetUserDataByNameUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { INotificationRepository } from '@/domain/repositories/INotificationRepository';
 
 export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCase {
@@ -14,7 +14,7 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
         private pairProgrammingRepository: IPairProgrammingRepository,
         private problemRepository: IProblemRepository,
         private notificationService: INotificationSocket,
-        private getUserDataBynameUseCase: IGetUserDataBynameUseCase,
+        private getUserDataByNameUseCase: IGetUserDataByNameUseCase,
         private notificationRepository: INotificationRepository,
 
   ) { }
@@ -22,9 +22,9 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
   async execute(data: IPairProgramming): Promise<string | null> {
     const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6); // SET GROUP CHALLENGE
 
-    // console.log("notification",this.notificationService,this.getUserDataBynameUseCase)
+    // console.log("notification",this.notificationService,this.getUserDataByNameUseCase)
 
-    logger.info('pair programming type', { Problemtype: data.problemType });
+    logger.info('pair programming type', { problemType: data.problemType });
     if (data.problemType === 'random') {
       logger.info('random');
       const random = await this.problemRepository.getRadomDocument();
@@ -40,7 +40,7 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
     logger.info("invited user",{invited:data.invitedUsers})
     if (data.invitedUsers) {
       data.invitedUsers.map(async (userName) => {
-        const data = await this.getUserDataBynameUseCase.exectue(userName);
+        const data = await this.getUserDataByNameUseCase.execute(userName);
         if (data?._id) {
           const notificationData = {
             title: 'Arena update',

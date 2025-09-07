@@ -1,7 +1,7 @@
 import { User } from '@/domain/entities/User';
 
-export interface IGetUserDataBynameUseCase {
-    exectue(name: string): Promise<User | null>
+export interface IGetUserDataByNameUseCase {
+    execute(name: string): Promise<User | null>
 }
 
 export interface ICreateUserUseCase {
@@ -33,7 +33,6 @@ export interface IUpdateUserUseCase{
 }
 export interface IUploadImageUseCase{
      execute (fileBuffer: Buffer, originalName: string, mimeType: string): Promise<string>
-
 }
 
 

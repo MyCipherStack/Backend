@@ -3,7 +3,7 @@ import { FilterDTO } from '@/application/dto/FilterDTO';
 import { CreateReportDTO } from '@/application/dto/ReportDTO';
 import { ICreateRepoUseCase } from '@/application/interfaces/use-cases/ICreateRepoUseCase';
 import { IGetAllReportsUsecase } from '@/application/interfaces/use-cases/IReportUseCase';
-import { IGetUserDataBynameUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
+import { IGetUserDataByNameUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { Report } from '@/domain/entities/Report';
 import { AppError } from '@/domain/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
@@ -12,13 +12,13 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 export class ReportController {
   constructor(
     private createReportUseCase: ICreateRepoUseCase<Report>,
-    private getUserDataBynameUseCase: IGetUserDataBynameUseCase,
+    private getUserDataByNameUseCase: IGetUserDataByNameUseCase,
   ) { }
 
   createReport = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // gettin id from username to store reported ID
-      const reportedUserData = await this.getUserDataBynameUseCase.exectue(req.body.report.reportedUser);
+     
+      const reportedUserData = await this.getUserDataByNameUseCase.execute(req.body.report.reportedUser);
 
       // It's application orchestration. not business rules
 

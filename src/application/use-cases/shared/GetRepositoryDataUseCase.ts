@@ -3,16 +3,16 @@ import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IG
 
 export class GetRepositoryDataUseCase<T> implements IGetRepositoryDataUseCase<T> {
   constructor(
-        private respository:IBaseRepository<T>,
+        private repository:IBaseRepository<T>,
   ) {}
 
   async OneDocumentById(id: string): Promise<T| null> {
-    const data = await this.respository.findById(id);
+    const data = await this.repository.findById(id);
     return data ?? null;
   }
 
   async allDocuments():Promise<T[]|null> {
-    const data = await this.respository.findAll();
+    const data = await this.repository.findAll();
     return data ?? null;
   }
 }

@@ -8,7 +8,7 @@ import { IProblemRepository } from '@/domain/repositories/IProblemRepository';
 
 export class SubmitProblemUseCase implements IsubmitProblemUseCase {
   constructor(
-        private submissionRespository: ISubmissionRepository,
+        private submissionRepository: ISubmissionRepository,
         private streakService: IStreakService,
         private problemRepository: IProblemRepository,
 
@@ -57,7 +57,7 @@ export class SubmitProblemUseCase implements IsubmitProblemUseCase {
 
     this.streakService.updateUserStreak(userId);
 
-    const submission = await this.submissionRespository.create({
+    const submission = await this.submissionRepository.create({
       userId,
       problemId,
       code,

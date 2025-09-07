@@ -14,7 +14,7 @@ import { UpdateLeaderBoardUseCase } from './application/use-cases/user/arena/Upd
 import userRoutes from './interfaces/routes/userRoutes';
 import { connectDB } from './infrastructure/database/MongoConnection';
 import { SubmissionRepository } from './infrastructure/repositories/SubmissionRepository';
-import { ChallengeRepository } from './infrastructure/repositories/ChallengeRespository';
+import { ChallengeRepository } from './infrastructure/repositories/ChallengeRepository';
 import { logger } from './infrastructure/logger/WinstonLogger/logger';
 import { ErrorHandler } from './middlewares/errorHandler';
 import { LeaderBoardSocket } from './services/websocket/LeaderBoardSocket';
@@ -28,7 +28,7 @@ dotenv.config();
 
 const app = express();
 const httpServer = http.createServer(app);
-const io = new Server(httpServer, {
+const io = new Server(httpServer, { 
   cors: {
     origin: env.FRONTEND_URL, credentials: true,
   },

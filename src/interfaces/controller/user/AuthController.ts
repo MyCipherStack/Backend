@@ -7,6 +7,7 @@ import { AppError } from '@/domain/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { ISendOtpUseCase } from '@/application/interfaces/use-cases/IOtpUseCases';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { cookieData } from '@/shared/constants/cookieData';
 
 // CreateUserUseCase, something like RegisterUserUseCase may better express intent (since it includes OTP logic right after).
 
@@ -59,7 +60,7 @@ export class AuthController {
         httpOnly: true,
         secure: isProduction,
         sameSite: isProduction ? "none" : "strict",
-        maxAge: 1000 * 60 * 15,
+        maxAge: cookieData.MAX_AGE_ACCESS_TOKEN,
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
         path: '/',
       });
@@ -67,7 +68,7 @@ export class AuthController {
         httpOnly: true,
         secure: isProduction,
         sameSite: isProduction ? "none" : "strict",
-        maxAge: 1000 * 60 * 60 * 24 * 7,
+        maxAge: cookieData.MAX_AGE_REFRESH_TOKEN,
         domain: isProduction ? env.COOKIE_DOMAIN : undefined,
         path: '/',
       });

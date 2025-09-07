@@ -37,14 +37,13 @@ import { SubmissionRepository } from '../../infrastructure/repositories/Submissi
 import { SubmissionController } from '../controller/user/SubmissionController';
 import { GetAllSubmissionByProblemuseCase } from '@/application/use-cases/user/problem-mangement/GetAllSubmissionByProblemuseCase';
 import { CreateChallengeUseCase } from '@/application/use-cases/user/arena/CreateChallengeUseCase';
-import { ChallengeRepository } from '../../infrastructure/repositories/ChallengeRespository';
+import { ChallengeRepository } from '@/infrastructure/repositories/ChallengeRepository';
 import { IChallengeRepository } from '@/domain/repositories/IChallengeRepository';
 import { JoinChallengeUseCase } from '../../application/use-cases/user/arena/JoinChallengeUseCase';
 import { ILeaderBoardRepository } from '../../domain/repositories/ILeaderBoardRepository';
 import { LeaderBoardRepository } from '../../infrastructure/repositories/LeaderBoardRepository';
 import { PairProgrammingRepository } from '../../infrastructure/repositories/PairProgrammingRepository';
 import { CreatePairProgrammingUseCase } from '@/application/use-cases/user/arena/CreatePairProgrammingUseCase';
-import { IGroupChallenge } from '../../application/interfaces/IChallengeInterfaces';
 import { UsersController } from '../controller/user/UsersController';
 import { InterviewController } from '../controller/user/InterviewController';
 import { CreateRepoUseCase } from '@/application/use-cases/shared/CreateRepoUseCase';
@@ -59,12 +58,11 @@ import { PremiumPlan } from '@/domain/entities/PremiumPlan';
 import { PaymentUseCases } from '@/application/use-cases/user/PaymentUseCases';
 import { RazorpayServices } from '../../services/razorpay/RazorpayServices';
 import { PaymentController } from '../controller/user/PaymentController';
-import { TransactionRespotitory } from '@/infrastructure/repositories/TransactionsRespositoy';
+import { TransactionRepository } from '@/infrastructure/repositories/TransactionsRepository';
 import { RoleMiddleware } from '@/middlewares/RoleMiddleware';
 import { AuthMiddlwareBundler } from '@/middlewares/AuthMiddlwareBundler';
 import { ReportController } from '../controller/user/ReportController';
 import { ReportRepository } from '@/infrastructure/repositories/ReportRepository';
-import { GetUserDataBynameUseCase } from '@/application/use-cases/user/user-mangement/GetUserDataBynameUseCase';
 import { LoginUserUseCase } from '@/application/use-cases/user/auth/LoginUserUseCase';
 import { CreateUserUseCase } from '@/application/use-cases/user/user-mangement/CreateUserUseCase';
 import { SendOtpUseCase } from '@/application/use-cases/user/auth/SendOtpUseCase';
@@ -100,20 +98,21 @@ import { RedisServices } from '@/services/redis/RedisServices';
 import { UploadImageUseCase } from '@/application/use-cases/user/UploadImageUseCase';
 import { UploadFileService } from '@/services/s3bucket/UploadService';
 import multer from 'multer';
+import { GetUserDataByNameUseCase } from '@/application/use-cases/user/user-mangement/GetUserDataBynameUseCase';
 
 
 export const userRepository: IUserRepository = new UserRepository();
 const algorithm = new BcryptHashAlgorithm(); // dip for hashServices
 const hashService: IHashAlgorithm = new HashService(algorithm);
 const pendingUserRepository: IPendingUserRepository = new PendingUserRepository();
-const problemRespository: IProblemRepository = new ProblemRepository();
-const submissionRespository: ISubmissionRepository = new SubmissionRepository();
+const problemRepository: IProblemRepository = new ProblemRepository();
+const submissionRepository: ISubmissionRepository = new SubmissionRepository();
 const challengeRepository: IChallengeRepository = new ChallengeRepository();
-const leaderBoardRespository: ILeaderBoardRepository = new LeaderBoardRepository();
+const leaderBoardRepository: ILeaderBoardRepository = new LeaderBoardRepository();
 const pairProgrammingRepository = new PairProgrammingRepository();
-const interViewRespository = new InterViewRepository();
+const interViewRepository = new InterViewRepository();
 const premiumPlanRepository = new PremiumPlanRepository();
-const transactionRepository = new TransactionRespotitory();
+const transactionRepository = new TransactionRepository();
 const subscriptionRepository = new SubscriptionRepository();
 const reportRepository = new ReportRepository();
 const notificationRepository = new NotificationRepository();
@@ -136,15 +135,15 @@ const updateUserUseCase = new UpdateUserUseCase(userRepository);
 const verifyUserPasswordUseCase = new VerifyUserPasswordUseCase(userRepository, hashService);
 const resetPasswordUseCase = new ResetPasswordUseCase(userRepository, hashService);
 const runProblemUseCase = new RunProblemUseCase(juge0CodeExecuteService);
-const submitProblemUseCase = new SubmitProblemUseCase(submissionRespository, streakService, problemRespository);
-const getAllSubmissionByProblemuseCase = new GetAllSubmissionByProblemuseCase(submissionRespository);
+const submitProblemUseCase = new SubmitProblemUseCase(submissionRepository, streakService, problemRepository);
+const getAllSubmissionByProblemuseCase = new GetAllSubmissionByProblemuseCase(submissionRepository);
 const createChallengeUseCase = new CreateChallengeUseCase(challengeRepository);
-const joinChallengeUseCase = new JoinChallengeUseCase(challengeRepository, leaderBoardRespository);
+const joinChallengeUseCase = new JoinChallengeUseCase(challengeRepository, leaderBoardRepository);
 const joinPairProgarmmingUseCase = new JoinPairProgrammigUseCase(pairProgrammingRepository);
 const scheduleInterviewUsecase = new ScheduleInterviewUseCase(userRepository);
-const joiinInterviewUsecase = new joinInterViewUseCase(interViewRespository);
+const joiinInterviewUsecase = new joinInterViewUseCase(interViewRepository);
 const paymentUseCases = new PaymentUseCases(razorpayService, transactionRepository, redisServices);
-const getUserDataBynameUseCase = new GetUserDataBynameUseCase(userRepository);
+const getUserDataByNameUseCase = new GetUserDataByNameUseCase(userRepository);
 const loginUserUseCase = new LoginUserUseCase(userRepository, hashService, jwtService);
 const createUserUseCase = new CreateUserUseCase(userRepository, hashService, pendingUserRepository);
 const sendOtpUseCase = new SendOtpUseCase(otpService, pendingUserRepository);
@@ -158,29 +157,29 @@ const activePublicChallengeUsecase = new ActivePublicChallengeUsecase(challengeR
 
 const createPairProgrammingUseCase = new CreatePairProgrammingUseCase(
   pairProgrammingRepository,
-  problemRespository,
+  problemRepository,
   notificationSocket,
-  getUserDataBynameUseCase,
+  getUserDataByNameUseCase,
   notificationRepository,
 );
 
 const uploadImageUseCase = new UploadImageUseCase(uploadFileService)
-const getAllUsersSubmissionUseCase = new GetAllUsersSubmissionUseCase(submissionRespository);
-const challengeResultsUseCase = new ChallengeResultsUseCase(leaderBoardRespository);
-const getRecentSubmissionUseCase = new GetRecentSubmissionUseCase(submissionRespository);
-const leaderBoardUseCase = new LeaderBoardUseCase(leaderBoardRespository);
-const acceptedUserProblems = new AcceptedUserProblemsUseCase(submissionRespository, problemRespository);
+const getAllUsersSubmissionUseCase = new GetAllUsersSubmissionUseCase(submissionRepository);
+const challengeResultsUseCase = new ChallengeResultsUseCase(leaderBoardRepository);
+const getRecentSubmissionUseCase = new GetRecentSubmissionUseCase(submissionRepository);
+const leaderBoardUseCase = new LeaderBoardUseCase(leaderBoardRepository);
+const acceptedUserProblems = new AcceptedUserProblemsUseCase(submissionRepository, problemRepository);
 
 // REUSABLE USECASES - GetRepositoryDataUseCase
 const getUserRepositoryDataUseCase = new GetRepositoryDataUseCase<User>(userRepository);
-const getProblemDataUseCase = new GetRepositoryDataUseCase<Problem>(problemRespository);
+const getProblemDataUseCase = new GetRepositoryDataUseCase<Problem>(problemRepository);
 const getPremiumPlanUseCase = new GetRepositoryDataUseCase<PremiumPlan>(premiumPlanRepository);
 const getSubcriptionUseCase = new GetRepositoryDataUseCase<SubscriptionEntity>(subscriptionRepository);
 const getChallengeDataUseCase = new GetRepositoryDataUseCase<GroupChallenge>(challengeRepository);
 
 // COMMON USECASES
 const getFilteredUsersUseCase = new GetFilteredUsersUseCase(userRepository);
-const createRepoUseCase = new CreateRepoUseCase(interViewRespository);
+const createRepoUseCase = new CreateRepoUseCase(interViewRepository);
 const createSubscritionUseCase = new CreateRepoUseCase(subscriptionRepository);
 const createResportUseCase = new CreateRepoUseCase(reportRepository);
 
@@ -189,7 +188,7 @@ const getAllNotificaionDataUsingFieldUseCase = new GetAllRepoDataUsingFieldUseCa
 const updateChallengeRepositoryDataUseCase = new UpdateRepositoryDataUseCase(challengeRepository);
 
 // Bullmq-Queuing that leaderboard update after challenge time updated
-const evaluateWinnerUsecase = new EvaluateWinnerUsecase(leaderBoardRespository, challengeRepository);
+const evaluateWinnerUsecase = new EvaluateWinnerUsecase(leaderBoardRepository, challengeRepository);
 const evaluateWinnerWorker = new EvaluateWinnerWorker(evaluateWinnerUsecase);
 
 evaluateWinnerWorker.execute();
@@ -210,7 +209,7 @@ const googleAuthController = new GoogleAuthController(googleUserUseCase);
 const forgotPasswordVerify = new ForgotPassVerifyOtpController(resetPassverifyOtpUseCase);
 const resetPassword = new ResetPasswordController(resetPasswordUseCase);
 const forgotPasswordOtpController = new ForgotPasswordOtpController(resetPassswordOtpUseCase);
-const problemController = new ProblemController(problemRespository, runProblemUseCase, acceptedUserProblems, generatePrompt, ollamaAi);
+const problemController = new ProblemController(problemRepository, runProblemUseCase, acceptedUserProblems, generatePrompt, ollamaAi);
 const profileController = new ProfileController(updateUserUseCase, getUserRepositoryDataUseCase, verifyUserPasswordUseCase, resetPasswordUseCase, uploadImageUseCase);
 const arenaController = new ArenaController(
   createChallengeUseCase,
@@ -235,10 +234,10 @@ const submissionController = new SubmissionController(
   runProblemUseCase,
 );
 const usersController = new UsersController(getFilteredUsersUseCase);
-const interviewController = new InterviewController(createRepoUseCase, scheduleInterviewUsecase, interViewRespository, joiinInterviewUsecase);
+const interviewController = new InterviewController(createRepoUseCase, scheduleInterviewUsecase, interViewRepository, joiinInterviewUsecase);
 const subscriptionController = new SubscriptionController(getPremiumPlanUseCase, createSubscritionUseCase, updateUserUseCase, getSubcriptionUseCase, getUserRepositoryDataUseCase);
 const paymentController = new PaymentController(paymentUseCases, getPremiumPlanUseCase);
-const reportController = new ReportController(createResportUseCase, getUserDataBynameUseCase);
+const reportController = new ReportController(createResportUseCase, getUserDataByNameUseCase);
 const notificationController = new NotificationController(updateNotificationDataUseCase, getAllNotificaionDataUsingFieldUseCase);
 
 // Notification

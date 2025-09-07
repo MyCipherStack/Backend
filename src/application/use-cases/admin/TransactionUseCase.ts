@@ -1,17 +1,17 @@
 import { FilterDTO } from '@/application/dto/FilterDTO';
 import { ITransactionUseCase } from '@/application/interfaces/use-cases/IAdminUseCase';
 import { Transaction } from '@/domain/entities/Transaction';
-import { ITransactionRepotitory } from '@/domain/repositories/ITransactionRepotitory';
+import { ITransactionRepository } from '@/domain/repositories/ITransactionRepository';
 
 export class TransactionUseCase implements ITransactionUseCase {
   constructor(
-        private transactionRepotitory:ITransactionRepotitory,
+        private transactionRepository:ITransactionRepository,
   ) {
 
   }
 
   async execute(filters:FilterDTO): Promise<{ transaction: Transaction[]; totalTransaction: number; totalPages: number; }> {
-    const response = await this.transactionRepotitory.getFiltersTrasations(filters);
+    const response = await this.transactionRepository.getFiltersTrasations(filters);
 
     return response;
   }

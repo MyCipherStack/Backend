@@ -16,15 +16,18 @@ export class ForgotPassVerifyOtpController {
     try {
       const data = new OtpDTO(req.body);
       const success = await this.resetPassverifyOtpUseCase.execute(data);
+      const isProduction = env.NODE_ENV === "production"
+
       if (!success) {
         throw new Error('Session expired.Please request OTP again');
       }
       if (typeof success === 'object') {
         res.cookie('otpAccess', { email: success.email, verifyed: success.verified }, {
           httpOnly: true,
-          secure: env.NODE_ENV === 'production',
-          sameSite: 'strict',
+          secure:isProduction,
+          sameSite: isProduction ? "none" : "strict",
           maxAge: 1000 * 60 * 5,
+          domain: isProduction ? env.COOKIE_DOMAIN : undefined,
           path: '/',
         });
       }

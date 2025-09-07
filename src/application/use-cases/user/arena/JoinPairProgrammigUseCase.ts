@@ -3,38 +3,42 @@ import { IPairProgrammingRepository } from '@/domain/repositories/IPairProgrammi
 import { PairProgramming } from '@/domain/entities/PairProgramming';
 import { IJoinPairProgrammigUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases';
 import { AppError } from '@/domain/error/AppError';
+import { ChallengeMapper } from '@/application/mapper/ChallengeMapper';
+import { PairProgramMapper } from '@/application/mapper/PairprogramMapper';
 
 export class JoinPairProgrammigUseCase implements IJoinPairProgrammigUseCase {
   constructor(
 
-        private pairProgrammingRepository: IPairProgrammingRepository,
+    private pairProgrammingRepository: IPairProgrammingRepository,
 
   ) { }
 
   async execute(joinCode: string, userId: string, userName: string): Promise<PairProgramming | null> {
-    const respositoryData = await this.pairProgrammingRepository.findOneChallenge({ joinCode });
+    const RepositoryData = await this.pairProgrammingRepository.findOneChallenge({ joinCode });
 
-    if (respositoryData?.isBlocked) {
+    if (RepositoryData?.isBlocked) {
       throw new AppError('pairProgram is blocked by admin');
     }
 
-    if (respositoryData) {
-      if (respositoryData.hostId == userId) {
-        return respositoryData;
+    if (RepositoryData) {
+      if (RepositoryData.hostId == userId) {
+        return RepositoryData;
       }
 
-      const navigatorId = respositoryData.navigator?.id;
+      const navigatorId = RepositoryData.navigator?.id;
 
-      if (respositoryData.navigator?.id && navigatorId?.toString() == userId.toString()) {
-        logger.info('if', { navigator: respositoryData.navigator, userId });
+      if (RepositoryData.navigator?.id && navigatorId?.toString() == userId.toString()) {
+        logger.info('if', { navigator: RepositoryData.navigator, userId });
 
-        return respositoryData;
+        return RepositoryData;
       }
       // if no current navigator so join that
-      if (!respositoryData.navigator?.id && respositoryData._id) {
+      if (!RepositoryData.navigator?.id && RepositoryData._id) {
         const navigator = { name: userName, id: userId };
 
-        const updatedData = await this.pairProgrammingRepository.updateOneById(respositoryData._id, { navigator });
+        const updatedData = await this.pairProgrammingRepository.updateOneById(RepositoryData._id, { navigator });
+
+        return PairProgramMapper.toResponseDTO(updatedData!)
 
         return updatedData;
       }

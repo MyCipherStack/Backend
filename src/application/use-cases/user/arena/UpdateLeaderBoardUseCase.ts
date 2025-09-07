@@ -5,6 +5,8 @@ import { IUpdateLeaderBoardUsecase } from '@/application/interfaces/use-cases/IL
 import { IUserRepository } from '@/domain/repositories/IUserRepository';
 
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
+import { UserMapper } from '@/application/mapper/UserMapper';
+import { leaderBoardMapper } from '@/application/mapper/LeaderBoardMapper';
 
 export class UpdateLeaderBoardUseCase implements IUpdateLeaderBoardUsecase {
   constructor(

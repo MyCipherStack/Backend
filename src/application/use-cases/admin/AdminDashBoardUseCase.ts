@@ -1,12 +1,12 @@
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IAdminDashBoardUseCase } from '@/application/interfaces/use-cases/IAdminUseCase';
 import { IUserRepository } from '@/domain/repositories/IUserRepository';
-import { ITransactionRepotitory } from '@/domain/repositories/ITransactionRepotitory';
+import { ITransactionRepository } from '@/domain/repositories/ITransactionRepository';
 
 export class AdminDashBoardUseCase implements IAdminDashBoardUseCase {
   constructor(
         private userRepository: IUserRepository,
-        private transactionRepotitory: ITransactionRepotitory,
+        private transactionRepotitory: ITransactionRepository,
   ) { }
 
   async execute(range: string): Promise<{ userData: { range: string; usersCount: number; }[]; totalUsers: number; premiumUsers: number; transactions: { range: string; revenue: string; }[]; thisMonthRevenu: number; } | null> {
@@ -43,6 +43,6 @@ export class AdminDashBoardUseCase implements IAdminDashBoardUseCase {
       userData: data?.userDetails!, totalUsers, premiumUsers, transactions: transations?.transactionDetails!, thisMonthRevenu,
     };
 
-    new Error('data base is empty');
+
   }
 }

@@ -2,11 +2,11 @@ import { Document } from 'mongoose';
 import { Transaction } from '@/domain/entities/Transaction';
 import { ITransaction, transactionModel } from '../database/TransactionsModel';
 import { BaseRepository } from './BaseRepository';
-import { ITransactionRepotitory } from '@/domain/repositories/ITransactionRepotitory';
+import { ITransactionRepository } from '@/domain/repositories/ITransactionRepository';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { FilterDTO } from '@/application/dto/FilterDTO';
 
-export class TransactionRespotitory extends BaseRepository<Transaction, ITransaction> implements ITransactionRepotitory {
+export class TransactionRepository extends BaseRepository<Transaction, ITransaction> implements ITransactionRepository {
   constructor() {
     super(transactionModel);
   }

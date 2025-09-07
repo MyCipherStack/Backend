@@ -1,7 +1,7 @@
 import { Transaction } from '../entities/Transaction';
 import { IBaseRepository } from './IBaseRepository';
 
-export interface ITransactionRepotitory extends IBaseRepository<Transaction> {
+export interface ITransactionRepository extends IBaseRepository<Transaction> {
 
     transatonsGrowthByRange(format: string, startDate: Date): Promise<{
         transactionDetails: {

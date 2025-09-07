@@ -1,15 +1,17 @@
 import { IUserRepository } from '@/domain/repositories/IUserRepository';
-import { IGetUserDataBynameUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
+import { IGetUserDataByNameUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { User } from '@/domain/entities/User';
+import { UserMapper } from '@/application/mapper/UserMapper';
 
-export class GetUserDataBynameUseCase implements IGetUserDataBynameUseCase {
+export class GetUserDataByNameUseCase implements IGetUserDataByNameUseCase {
   constructor(
         private userRepository: IUserRepository,
   ) { }
 
-  async exectue(name: string): Promise<User | null> {
+  async execute(name: string): Promise<User | null> {
     const data = await this.userRepository.findByUserName(name);
 
-    return data ?? null;
+    return data ? UserMapper.toResponseDTO(data) : null;
+
   }
 }

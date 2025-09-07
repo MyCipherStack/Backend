@@ -34,7 +34,7 @@ export class ReportRepository extends BaseRepository<Report, IReports> implement
       id: data._id,
       reportType: data.reportType,
       description: data.description,
-      submittedUser: data.submittedBy,
+      submittedBy: data.submittedBy,
       submittedId: data.submittedBy?._id,
       pageInfo: data.pageInfo,
       status: data.status,
