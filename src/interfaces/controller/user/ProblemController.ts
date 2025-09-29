@@ -31,14 +31,12 @@ export class ProblemController {
       const data = await this.problemRepository.getFilterProblem({
         page, limit, difficulty, status, search, category,
       });
-      //  console.log(data,"datasss");
       const problems = data.problems.map((problem) => ({
         ...problem,
         testCases: problem.testCases.filter((tc) => tc.isSample),
       }));
       const sampleTestCasesOnlyData = { ...data, problems };
 
-      // logger.info("problem",{sampleTestCasesOnlyData})
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', problemData: sampleTestCasesOnlyData });
     } catch (error) {

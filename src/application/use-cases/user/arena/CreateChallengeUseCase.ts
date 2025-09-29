@@ -12,7 +12,7 @@ export class CreateChallengeUseCase implements ICreateChallengeUseCase {
   async execute(challengeData: IGroupChallenge, userId:string): Promise<string | null> {
     const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6); // SET GROUP
 
-    //    const userData = this.userRepository.findById(userId)
+ 
 
     const today = new Date().toDateString();
 

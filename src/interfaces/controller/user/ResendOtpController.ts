@@ -14,7 +14,6 @@ export class ResendOtpController {
     try {
       console.log('resend in backend');
 
-      // const data= new OtpDTO(req.body);
       const data = req.body;
 
       await this.sendOtpUseCase.execute(data.email);

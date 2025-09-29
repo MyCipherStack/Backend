@@ -22,7 +22,7 @@ export class CreatePairProgrammingUseCase implements ICreatePairProgrammingUseCa
   async execute(data: IPairProgramming): Promise<string | null> {
     const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz1234567890', 6); // SET GROUP CHALLENGE
 
-    // console.log("notification",this.notificationService,this.getUserDataByNameUseCase)
+ 
 
     logger.info('pair programming type', { problemType: data.problemType });
     if (data.problemType === 'random') {

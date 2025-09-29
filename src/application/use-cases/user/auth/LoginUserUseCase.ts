@@ -43,14 +43,6 @@ export class LoginUserUseCase implements ILoginUserUseCase {
 
     return {user: UserMapper.toResponseDTO(foundUser), refreshToken,accessToken,}
 
-    // return {
 
-
-    //   user: {
-    //     name: foundUser.name, email: foundUser.email, image: foundUser.image, id: foundUser._id,
-    //   },
-    //   refreshToken,
-    //   accessToken,
-    // };
   }
 }

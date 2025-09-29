@@ -13,7 +13,7 @@ export class RunProblemUseCase implements IRunProblemUseCase {
     for (const test of testCases) {
       const updatedTestCases = { ...test };
 
-      // logger.info("testcaseForRun",{updatedTestCases})
+      
 
       const token = await this.juge0CodeExecute.codeSubmitToJudge0(language, code, test.input, test.output, memoryLimit, timeLimit, functionSignatureMeta);
       if (!token) {

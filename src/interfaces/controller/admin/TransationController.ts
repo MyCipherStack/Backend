@@ -14,9 +14,7 @@ export class TransationController {
 
   allTransations = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const page = parseInt(req.query.page as string) || 1;
-      // const limit = parseInt(req.query.limit as string) || 10;
-      // const status = req.query.status as string;
+     
       const filter = new FilterDTO(req.query);
       const data = await this.TransactionUseCase.execute(filter);
 

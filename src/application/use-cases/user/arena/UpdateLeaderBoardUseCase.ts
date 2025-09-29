@@ -39,10 +39,7 @@ export class UpdateLeaderBoardUseCase implements IUpdateLeaderBoardUsecase {
     const score = Math.floor(1000 / minutes);
 
     const leaderBoardData = await this.leaderBoardRepository.findOne({ userId, challengeId });
-    // const alreadySolved = await this.leaderBoardRepository.findOne({ userId, challengeId, 'solvedProblems.problemId': updateData.problemId })
-
-    // console.log(leaderBoardData?.solvedProblems?.some({problemId}),"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-
+    
     const isAlreadySolved = leaderBoardData?.solvedProblems?.some((problem) => problem.problemId == updateData.problemId);
 
     console.log(isAlreadySolved, 'isalreadysolved');

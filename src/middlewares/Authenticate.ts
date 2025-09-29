@@ -37,7 +37,7 @@ export class Authenticate<Entity> {
 
         const tokenData = await this.jwtService.verifyAccessToken(accessToken);
         logger.info('TokenDAsat', tokenData);
-        // const userPayload=this.jwtService.verifyAccessToken(accessToken)
+    
         if (tokenData) {
           const foundUser = await this.getRepositoryDataUseCase.OneDocumentById(tokenData.userId) as IRepoData;
 

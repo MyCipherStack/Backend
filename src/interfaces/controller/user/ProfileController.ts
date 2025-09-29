@@ -92,12 +92,10 @@ export class ProfileController {
   profilePicUpload = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-      // console.log("file data",req.file);
       
       const file = req.file as Express.Multer.File
       
       const fileData = new MulterDTO(file)
-      // logger.info("profilePIcUpload",{fileData})
 
 
       const url = await this.uploadImageUsecase.execute(fileData.buffer, fileData.originalName, fileData.mimetype)

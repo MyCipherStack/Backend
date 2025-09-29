@@ -21,20 +21,6 @@ export class LeaderBoardUseCase implements ILeaderBoardUseCase {
     return leaderBoardMapper.toResponseDTO(leaderBoard)  
 
 
-
-      // const response = leaderBoard
-      //   .map((data) => {
-      //     return {
-      //       userName: (data.userId as User).name,
-      //       totalScore: data.totalscore,
-      //       solvedCount: data.solvedProblems?.length ?? 0,
-      //       isLive: false,
-      //       image: (data.userId as User).image || '',
-      //       rank: rank++,
-      //     };
-      //   });
-
-      // return response;
     }
 
     return null;

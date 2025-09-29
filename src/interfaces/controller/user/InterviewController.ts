@@ -29,7 +29,6 @@ export class InterviewController {
     } catch (error) {
       next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
 
-      //   return res.status(400).json({ status: false, message:error.message});
     }
   };
 

@@ -32,7 +32,6 @@ export class SubmissionController {
     } catch (error) {
       next(new AppError('Something went wrong', 500));
 
-      // res.status(400).json({status:false,message:"Something went wrong"})
     }
   };
 

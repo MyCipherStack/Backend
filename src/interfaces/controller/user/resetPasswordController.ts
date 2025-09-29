@@ -11,18 +11,14 @@ export class ResetPasswordController {
 
   reset = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('reset');
+
       const cookie = req.cookies.otpAccess;
       const data = req.body;
-      console.log(cookie, 'SADf');
-      console.log(data, 'data');
-      console.log(data.password, 'password');
 
       if (!cookie) {
         throw new Error('Session expired.Please request OTP again.');
       }
-      // const isValid=await this.jwtService.verifyAccessToken(cookie)
-      // console.log(isValid,"toke report");
+ 
 
       await this.resetPasswordUseCase.execute(cookie.email, data.password);
 

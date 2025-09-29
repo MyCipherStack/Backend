@@ -25,7 +25,7 @@ export class UsersListController {
         page, limit, role, status, search,
       });
 
-      // const data1=await this.userRepository.getFiltersUsers({page,limit,role,status,search})
+   
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'user data fetched success', usersData: data });
     } catch (error) {
@@ -35,14 +35,11 @@ export class UsersListController {
 
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // const userEmail = req.params.email;
+
 
       const updateData = new UpdateUserDTO(req.body);
-      console.log('updateData', updateData);
+    
 
-      console.log(req.params, 'params');
-
-      // logger.info("update user ",{update:updateData})
 
       const updatedUser = await this.updateUserUseCase.execute(updateData.email!, updateData);
 

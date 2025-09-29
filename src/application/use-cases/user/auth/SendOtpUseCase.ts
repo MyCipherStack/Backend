@@ -19,7 +19,7 @@ export class SendOtpUseCase implements ISendOtpUseCase {
       otp = foundUser?.otp ?? '';
     } else {
       otp = this.otpService.createOtp(6);
-      // const User=await this.pendingUserRepository.save("",email,"",otp)
+      
       this.pendingUserRepository.updateOtp(email, otp);
     }
     console.log('my otp is', otp);

@@ -20,7 +20,7 @@ export class ResetPassverifyOtpUseCase implements IResetPassverifyOtpUseCase {
       }
       console.log(data.otp, pendingUser.otp);
 
-      // const isValid=await this.hashService.compare(data.otp,pendingUser.otp)
+     
       const isValid = data.otp === pendingUser.otp;
       console.log(isValid);
 

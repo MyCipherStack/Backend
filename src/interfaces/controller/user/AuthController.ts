@@ -23,12 +23,9 @@ export class AuthController {
     try {
       const userData = new CreateUserDTO(req.body);
 
-      // const createUser = new CreateUserUseCase(this.userRepository, this.hashService,this.PendingUserRepository);
 
       const createdUserEmail = await this.createUserUseCase.execute(userData.name, userData.email, userData.password);
-      //  createUser.execute(userData.name, userData.email, userData.password)
 
-      // const setOtpUsecase = new SendOtpUseCase(this.otpService, this.PendingUserRepository)
       if (createdUserEmail) {
         await this.sentOtpUsecase.execute(createdUserEmail);
 

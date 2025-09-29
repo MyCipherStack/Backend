@@ -24,7 +24,7 @@ export class ResetPasswordOtpUseCase implements IResetPasswordOtpUseCase {
 
       await this.otpService.sendOtp(email, otp);
 
-      //  let hashedOtp = await this.hashService.hash(otp)
+    
       const pendingUser = await this.pendingUserRepository.create({
         name: user.name, email: user.email, password: user.password, otp,
       });

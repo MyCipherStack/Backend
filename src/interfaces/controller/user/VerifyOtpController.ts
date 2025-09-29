@@ -13,7 +13,7 @@ export class VerifyOtpController {
 
   verify = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('verigy otp');
+     
       const data = new OtpDTO(req.body);
 
       const isValid = await this.verifyOtpUseCase.execute(data.email, data.otp);

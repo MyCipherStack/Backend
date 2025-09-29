@@ -123,7 +123,7 @@ export class ArenaController {
 
       const publicChallenges = await this.activePublicChallengeUsecase.execute(FilterData);
 
-      // const pairProgramming = await
+ 
 
       res.status(HttpStatusCode.OK).json({
         status: true, message: 'users challenges ', privateChallenges, publicChallenges,

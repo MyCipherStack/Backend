@@ -24,7 +24,6 @@ export class GoogleUserUseCase implements IGoogleUserUseCase {
         user:User,
         accessToken: string, refreshToken: string
     }> {
-    // const foundUser=await this.userRepository.findByEmail(email)
 
     const existingUser = await this.userRepository.findByEmail(email);
 
