@@ -18,5 +18,6 @@ export class Problem {
     public hint?:string,
     public starterCode?: Record<string, string>,
     public _id?: string,
+    public status?:boolean,
   ) {}
 }

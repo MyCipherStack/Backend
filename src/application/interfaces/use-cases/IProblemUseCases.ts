@@ -2,6 +2,8 @@
 import { Problem } from '@/domain/entities/Problem';
 import { ITestCase } from '../ITestCase';
 import { Submission } from '@/domain/entities/Submission';
+import { ProblemDTO } from '@/application/dto/ProblemDTO';
+import { FilterDTO } from '@/application/dto/FilterDTO';
 
 export interface IAddProblemUseCase {
     execute(problem: Problem): Promise<Problem | null>
@@ -28,7 +30,17 @@ export interface IAcceptedUserProblemsUseCase {
             hard: number;
         },
         totalSubmissions: number,
-        totalProblemsCount:Record<string, number>,
+        totalProblemsCount: Record<string, number>,
 
+    }>
+}
+
+
+
+export interface IGetAllProblemUseCase {
+    execute(problemDto: FilterDTO, difficulty: string, category: string): Promise<{
+        problems: Problem[];
+        totalProblems: number;
+        totalPages: number;
     }>
 }
