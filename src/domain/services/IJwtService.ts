@@ -1,6 +1,15 @@
+import { JwtPayload } from "jsonwebtoken";
+
+interface tokenPayload extends JwtPayload {
+  name: string;
+  role: string;
+  id: string;
+}
+
+
 export interface IJwtService{
-    signAccessToken(payload:object):string;
-    signRefreshToken(payload:object):string;
-    verifyAccessToken(token:string):any
-    verifyRefreshToken(token:string):any
+    signAccessToken(payload:{ name: string, role: string, userId: string }):string;
+    signRefreshToken(payload:{ name: string, role: string, userId: string }):string;
+    verifyAccessToken(token:string):tokenPayload;
+    verifyRefreshToken(token:string):tokenPayload;
 }

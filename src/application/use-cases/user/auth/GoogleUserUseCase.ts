@@ -6,24 +6,24 @@ import { IGoogleUserUseCase } from '@/application/interfaces/use-cases/IUserUseC
 import { UserMapper } from '@/application/mapper/UserMapper';
 
 interface AuthResult {
-    user: { name: string, email: string };
-    accessToken: string;
-    refreshToken: string;
+  user: { name: string, email: string };
+  accessToken: string;
+  refreshToken: string;
 }
 export class GoogleUserUseCase implements IGoogleUserUseCase {
   constructor(
-        private userRepository: IUserRepository,
-        private hashService: IHashAlgorithm,
-        private jwtService: IJwtService,
+    private userRepository: IUserRepository,
+    private hashService: IHashAlgorithm,
+    private jwtService: IJwtService,
 
   ) {
 
   }
 
   async execute(name: string, email: string, image: string, googleId: string): Promise<{
-        user:User,
-        accessToken: string, refreshToken: string
-    }> {
+    user: User,
+    accessToken: string, refreshToken: string
+  }> {
 
     const existingUser = await this.userRepository.findByEmail(email);
 
@@ -61,13 +61,13 @@ export class GoogleUserUseCase implements IGoogleUserUseCase {
     }
 
     const accessToken = this.jwtService.signAccessToken({
-      emai: userData.email, name: userData.name, userId: userData._id, role: 'user',
+      name: userData.name, userId: userData._id!.toString(), role: 'user',
     });
     const refreshToken = this.jwtService.signRefreshToken({
-      emai: userData.email, name: userData.name, userId: userData._id, role: 'user',
+      name: userData.name, userId: userData._id!.toString(), role: 'user',
     });
     console.log(accessToken, refreshToken);
 
-    return { user:UserMapper.toResponseDTO(userData), accessToken, refreshToken };
+    return { user: UserMapper.toResponseDTO(userData), accessToken, refreshToken };
   }
 }
