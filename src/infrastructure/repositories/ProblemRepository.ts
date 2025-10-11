@@ -1,4 +1,4 @@
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 import { Problem } from '@/domain/entities/Problem';
 import { IProblemRepository } from '@/domain/repositories/IProblemRepository';
 import { IProblem, problemModel } from '../database/ProblemModel';
@@ -10,7 +10,7 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
     super(problemModel);
   }
 
-  async getFilterProblem(filters: { page: number; limit: number, difficulty?: string; status?: string; search?: string; category?: string; }): Promise<{ problems: Problem[]; totalProblems: number; totalPages: number; }> {
+  async getFilterProblem(filters: { page: number; limit: number, difficulty?: string; status?: string; search?: string; category?: string; userId: string | null }): Promise<{ problems: Problem[]; totalProblems: number; totalPages: number; }> {
     const query: any = {};
     if (filters.difficulty) {
       query.difficulty = filters.difficulty;
@@ -27,8 +27,83 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
     const skip = (filters.page - 1) * filters.limit;
     const totalProblems = await problemModel.countDocuments(query);
     const totalPages = Math.ceil(totalProblems / filters.limit);
-    const problems = await problemModel.find(query).skip(skip).limit(filters.limit).lean();
-    return { problems, totalProblems, totalPages };
+
+    if (!filters.userId) {
+
+      const problems = await problemModel.find(query).skip(skip).limit(filters.limit).lean();
+      return { problems, totalProblems, totalPages };
+
+
+    } else {
+
+
+      logger.info('userId', { userId: filters.userId });
+
+      // submission lookup---continue
+
+      const problems = await problemModel.aggregate([{
+
+
+        $lookup: {
+          from: "submissions",
+          let: { problemIdStr: "$_id", userId: new mongoose.Types.ObjectId(filters.userId) },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$problemId", "$$problemIdStr"] },
+                    { $eq: ["$userId", "$$userId"] }
+                  ]
+                }
+              }
+            }
+          ],
+
+          as: "userSubmissions"
+        }
+      },
+
+      {
+        $addFields: {
+          userStatus: {
+
+            $switch: {
+              branches: [{
+                case: {
+                  $gt: [{
+                    $size: {
+                      $filter: {
+                        input: "$userSubmissions", as: "submission", cond: { $eq: ["$$submission.status", "Accepted"] }
+                      }
+                    }
+                  }, 0]
+                },
+                then: "Accepted"
+              }, {
+                case: { $gt: [{ $size: "$userSubmissions" }, 0] },
+                then: "Attempted"
+              }
+              ], default: "unsolved"
+            }
+          }
+        }
+
+      }
+
+
+
+
+
+      ])
+
+
+
+
+      logger.info('userProblem', { problems });
+
+      return { problems, totalProblems, totalPages };
+    }
   }
 
   async editProblem(id: string, problem: Problem): Promise<Problem | null> {
@@ -62,9 +137,9 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
     } return null;
   }
 
-  async totalProblemsDifficulty(): Promise<{difficulty: string; count: number }[]> {
+  async totalProblemsDifficulty(): Promise<{ difficulty: string; count: number }[]> {
     const problems = await problemModel.aggregate([{ $match: { status: true } }, { $group: { _id: '$difficulty', count: { $sum: 1 } } },
-      { $project: { _id: 0, difficulty: '$_id', count: 1 } }]);
+    { $project: { _id: 0, difficulty: '$_id', count: 1 } }]);
 
     return problems;
   }

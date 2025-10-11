@@ -16,14 +16,14 @@ export class GetAllProblemUseCase implements IGetAllProblemUseCase {
 
     ) { }
 
-    async execute(problemDto: FilterDTO, difficulty: string, category: string): Promise<{
+    async execute(problemDto: FilterDTO, difficulty: string, category: string, userId: string | null): Promise<{
         problems: Problem[];
         totalProblems: number;
         totalPages: number;
     }> {
 
         const data = await this.problemRepository.getFilterProblem({
-            ...problemDto, difficulty, category,
+            ...problemDto, difficulty, category, userId
         });
         const problems = data.problems.map((problem) => ({
             ...problem,

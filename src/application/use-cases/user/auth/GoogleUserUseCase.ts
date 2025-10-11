@@ -45,14 +45,14 @@ export class GoogleUserUseCase implements IGoogleUserUseCase {
         generateName();
       };
       const dummyPassword = Date.now().toString() + Math.random();
-      const hashedPassword = await this.hashService.hash(dummyPassword);
-      const user = new User(name, email, hashedPassword, image, googleId);
+      const password = await this.hashService.hash(dummyPassword);
+      const user = new User(name, email, image);
       const createUser = await this.userRepository.create({
         name: user.name,
         email: user.email,
-        password: user.password,
+        password:password,
         image: user.image,
-        googleId: user.email,
+        googleId:googleId,
       });
 
       userData = createUser;

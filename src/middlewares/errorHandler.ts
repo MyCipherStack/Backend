@@ -5,11 +5,11 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export function ErrorHandler(err:Error, req:Request, res:Response, next:NextFunction) {
 
-  logger.info('err hanlder called', { err });
+  logger.info('err hanlder middleware called', { err });
   if (err instanceof AppError) {
     return res.status(err.statusCode).json({
       success: false,
-      message: err.message,
+      message: err.message, 
     });
   }
 

@@ -4,6 +4,7 @@ import { IGoogleUserUseCase } from '@/application/interfaces/use-cases/IUserUseC
 import { AppError } from '@/domain/error/AppError';
 import { env } from '@/config/env';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 
 export class GoogleAuthController {
   constructor(
@@ -38,6 +39,9 @@ export class GoogleAuthController {
       });
       res.redirect(`${env.FRONTEND_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}&id=${encodeURIComponent(createdUser.user._id?.toString()!)}`);
     } catch (error: unknown) {
+
+      logger.error('Error in GoogleAuthController.handleSuccess:', { error });
+    
       if (error instanceof Error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
       } else {

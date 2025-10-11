@@ -100,6 +100,8 @@ import { UploadFileService } from '@/services/s3bucket/UploadService';
 import multer from 'multer';
 import { GetUserDataByNameUseCase } from '@/application/use-cases/user/user-mangement/GetUserDataBynameUseCase';
 import { GetAllProblemUseCase } from '@/application/use-cases/user/problem-mangement/GetAllProblemUseCase';
+import { verify } from 'crypto';
+import { VerifyAccessTokenUseCase } from '@/application/use-cases/user/auth/VerifyTokenUseCase';
 
 
 export const userRepository: IUserRepository = new UserRepository();
@@ -178,6 +180,7 @@ const getProblemDataUseCase = new GetRepositoryDataUseCase<Problem>(problemRepos
 const getPremiumPlanUseCase = new GetRepositoryDataUseCase<PremiumPlan>(premiumPlanRepository);
 const getSubcriptionUseCase = new GetRepositoryDataUseCase<SubscriptionEntity>(subscriptionRepository);
 const getChallengeDataUseCase = new GetRepositoryDataUseCase<GroupChallenge>(challengeRepository);
+const verifyAccessTokenUseCase= new VerifyAccessTokenUseCase(jwtService,getUserRepositoryDataUseCase)
 
 // COMMON USECASES
 const getFilteredUsersUseCase = new GetFilteredUsersUseCase(userRepository);
@@ -211,7 +214,7 @@ const googleAuthController = new GoogleAuthController(googleUserUseCase);
 const forgotPasswordVerify = new ForgotPassVerifyOtpController(resetPassverifyOtpUseCase);
 const resetPassword = new ResetPasswordController(resetPasswordUseCase);
 const forgotPasswordOtpController = new ForgotPasswordOtpController(resetPassswordOtpUseCase);
-const problemController = new ProblemController(getAllProblemUseCase, problemRepository, runProblemUseCase, acceptedUserProblems, generatePrompt, ollamaAi);
+const problemController = new ProblemController(getAllProblemUseCase, problemRepository, runProblemUseCase, acceptedUserProblems,verifyAccessTokenUseCase, generatePrompt, ollamaAi);
 const profileController = new ProfileController(updateUserUseCase, getUserRepositoryDataUseCase, verifyUserPasswordUseCase, resetPasswordUseCase, uploadImageUseCase);
 const arenaController = new ArenaController(
   createChallengeUseCase,

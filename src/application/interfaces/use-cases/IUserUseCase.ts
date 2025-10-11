@@ -37,3 +37,8 @@ export interface IUploadImageUseCase{
 
 
 
+
+
+export interface IVerifyAccessTokenUseCase {
+    execute(token: string): Promise< User | null>
+}

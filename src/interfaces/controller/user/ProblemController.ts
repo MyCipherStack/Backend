@@ -7,6 +7,7 @@ import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IGeneratePrompt, ISendToOllama } from '@/domain/services/IOllama';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { FilterDTO } from '@/application/dto/FilterDTO';
+import { IVerifyAccessTokenUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 
 export class ProblemController {
   constructor(
@@ -14,6 +15,7 @@ export class ProblemController {
     private problemRepository: IProblemRepository,
     private runProblemUseCase: IRunProblemUseCase,
     private acceptedUserProblemsUseCase: IAcceptedUserProblemsUseCase,
+    private verifyAccessTokenUseCase: IVerifyAccessTokenUseCase,
     private generatePrompt: IGeneratePrompt,
     private ollamaAi: ISendToOllama,
 
@@ -37,8 +39,23 @@ export class ProblemController {
       //   testCases: problem.testCases.filter((tc) => tc.isSample),
       // }));
       // const sampleTestCasesOnlyData = { ...data, problems };
-      
-      const sampleTestCasesOnlyData = await this.getAllProblemUseCase.execute(problemDto, difficulty, category);
+
+      //   const userId=req.user?._id!;
+
+      //  logger.info('userId', { userId }); 
+
+
+      const user = await this.verifyAccessTokenUseCase.execute(req.cookies.accessToken)
+
+      let sampleTestCasesOnlyData;
+      if (!user) {
+        sampleTestCasesOnlyData = await this.getAllProblemUseCase.execute(problemDto, difficulty, category, null);
+
+      } else {
+        sampleTestCasesOnlyData = await this.getAllProblemUseCase.execute(problemDto, difficulty, category, user._id!.toString());
+
+      }
+
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', problemData: sampleTestCasesOnlyData });
     } catch (error) {

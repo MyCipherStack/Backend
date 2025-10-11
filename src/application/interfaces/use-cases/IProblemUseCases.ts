@@ -38,7 +38,7 @@ export interface IAcceptedUserProblemsUseCase {
 
 
 export interface IGetAllProblemUseCase {
-    execute(problemDto: FilterDTO, difficulty: string, category: string): Promise<{
+    execute(problemDto: FilterDTO, difficulty: string, category: string, userId: string | null): Promise<{
         problems: Problem[];
         totalProblems: number;
         totalPages: number;
