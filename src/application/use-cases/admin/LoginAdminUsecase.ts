@@ -29,8 +29,8 @@ export class LoginAdminUsecase implements ILoginAdminUsecase {
       throw new Error('Incorrect password. Please try again.');
     }
 
-    const accessToken = this.JwtService.signAccessToken({ name: foundAdmin.name, role: 'admin', id: foundAdmin.id });
-    const refreshToken = this.JwtService.signRefreshToken({ name: foundAdmin.name, role: 'admin', id: foundAdmin.id });
+    const accessToken = this.JwtService.signAccessToken({ name: foundAdmin.name, role: 'admin', userId: foundAdmin.id });
+    const refreshToken = this.JwtService.signRefreshToken({ name: foundAdmin.name, role: 'admin',userId: foundAdmin.id });
     const storeToken = await this.adminRepository.updateOneById(foundAdmin.id, { refreshToken });
     console.log(accessToken, refreshToken);
 

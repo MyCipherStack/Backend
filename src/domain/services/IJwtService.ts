@@ -3,8 +3,8 @@ import { JwtPayload } from "jsonwebtoken";
 interface tokenPayload extends JwtPayload {
   name: string;
   role: string;
-  id: string;
-}
+  userId: string;
+} 
 
 
 export interface IJwtService{

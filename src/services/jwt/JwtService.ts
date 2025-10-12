@@ -5,7 +5,7 @@ import { RoleMiddleware } from '@/middlewares/RoleMiddleware';
 export interface tokenPayload extends JwtPayload {
   name: string;
   role: string;
-  id: string;
+  userId: string;
 }
 
   export class JwtService implements IJwtService {
