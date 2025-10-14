@@ -1,6 +1,6 @@
 import { IHashAlgorithm } from "@/domain/services/IHashAlgorithm"; 
 
-export class HashService implements IHashAlgorithm {
+export class HashService {
   constructor(
         private readonly algorithm:IHashAlgorithm,
   ) {}

@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { IHashAlgorithm } from '@/domain/services/IHashAlgorithm';
 
-export class BcryptHashAlgorithm implements IHashAlgorithm {
+export class BcryptHashAlgorithm  {
   async hash(password: string): Promise<string> {
     return await bcrypt.hash(password, 10);
   }

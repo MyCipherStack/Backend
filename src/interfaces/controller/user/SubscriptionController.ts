@@ -63,7 +63,7 @@ export class SubscriptionController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'create subscription' });
     } catch (error) {
-      next(new AppError('create subcription failed', 500));
+      next(new AppError('create subcription failed',HttpStatusCode.BAD_REQUEST));
     }
   };
 
