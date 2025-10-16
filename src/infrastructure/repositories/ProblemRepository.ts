@@ -15,7 +15,10 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
     if (filters.difficulty) {
       query.difficulty = filters.difficulty;
     }
-    if (filters.status) query.status = filters.status;
+    if (filters.status) query.userStatus = filters.status;
+
+    console.log(query,"query");
+    
 
     if (filters.category) query.tags = { $regex: new RegExp(`\\b${filters.category}\\b`, 'i') };
     if (filters.search) {
@@ -79,10 +82,10 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
                     }
                   }, 0]
                 },
-                then: "Accepted"
+                then: "solved"
               }, {
                 case: { $gt: [{ $size: "$userSubmissions" }, 0] },
-                then: "Attempted"
+                then: "attempted"
               }
               ], default: "unsolved"
             }
@@ -90,7 +93,7 @@ export class ProblemRepository extends BaseRepository<Problem, IProblem> impleme
         }
 
       }
-
+,{$match:query}, {$skip:skip}, {$limit:filters.limit}   
 
 
 

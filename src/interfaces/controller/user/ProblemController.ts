@@ -30,7 +30,13 @@ export class ProblemController {
       const difficulty = req.query.difficulty as string;
       const category = req.query.category as string;
 
-      const problemDto = new FilterDTO(req.body)
+    
+       
+
+      const problemDto = new FilterDTO(req.query)
+
+      console.log(problemDto,req.body);
+      
 
       // const data = await this.problemRepository.getFilterProblem({ ...problemDto,difficulty, category,
       // });
