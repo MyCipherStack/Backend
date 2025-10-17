@@ -16,7 +16,7 @@ export class ForgotPasswordOtpController {
 
       const otpToken = await this.resetPassswordOtpUseCase.execute(data.email);
 
-      console.log(otpToken, 'setting toke otp');
+      console.log(otpToken, 'setting token otp');
 
       res.cookie('otpAccess', otpToken, {
         httpOnly: true,

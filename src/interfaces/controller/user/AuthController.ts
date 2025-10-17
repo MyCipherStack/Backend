@@ -35,7 +35,7 @@ export class AuthController {
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        logger.error(error.message, 'backe end err in auth controller');
+        logger.error(error.message, 'backend error in auth controller');
 
         next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
       } else {

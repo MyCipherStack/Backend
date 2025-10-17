@@ -15,20 +15,21 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class ArenaController {
   constructor(
-        private createChallengeUseCase: ICreateChallengeUseCase,
-        private joinChallengeUseCase: IJoinChallengeUseCase,
-        private createPairProgrammingUseCase: ICreatePairProgrammingUseCase,
-        private joinPairProgarmmingUseCase: IJoinPairProgrammigUseCase,
-        private activePrivateChallengeUsecase: IActivePrivateChallengeUsecase,
-        private activePublicChallengeUsecase: IActivePublicChallengeUsecase,
-        private getUserDataUseCase: IGetRepositoryDataUseCase<User>,
-        private updateChallengeUseCase: IUpdateRepositoryDataUseCase<GroupChallenge>,
-        private getChallengeDataUseCase: IGetRepositoryDataUseCase<GroupChallenge>,
-        private endChallengeQueueUseCase: IEndChallengeUseCase,
-        private challengeResultsUseCase: IChallengeResultsUseCase,
-        private leaderBoardUseCase: ILeaderBoardUseCase,
+    private createChallengeUseCase: ICreateChallengeUseCase,
+    private joinChallengeUseCase: IJoinChallengeUseCase,
+    private createPairProgrammingUseCase: ICreatePairProgrammingUseCase,
+    private joinPairProgarmmingUseCase: IJoinPairProgrammigUseCase,
+    private activePrivateChallengeUsecase: IActivePrivateChallengeUsecase,
+    private activePublicChallengeUsecase: IActivePublicChallengeUsecase,
+    private getUserDataUseCase: IGetRepositoryDataUseCase<User>,
+    private updateChallengeUseCase: IUpdateRepositoryDataUseCase<GroupChallenge>,
+    private getChallengeDataUseCase: IGetRepositoryDataUseCase<GroupChallenge>,
+    private endChallengeQueueUseCase: IEndChallengeUseCase,
+    private challengeResultsUseCase: IChallengeResultsUseCase,
+    private leaderBoardUseCase: ILeaderBoardUseCase,
     // private AllPariprogrammingDataUseCase: IGetAllRepoDataUsingFieldUseCase<PairProgramming>
   ) { }
+
 
   createGroupChallenge = async (req: Request, res: Response) => {
     try {
@@ -36,20 +37,19 @@ export class ArenaController {
       const userId = req.user as { id: string };
       const joinCode = await this.createChallengeUseCase.execute({ ...challengeData, }, userId.id);
 
-      console.log(joinCode, 'joinCode');
+
       res.status(HttpStatusCode.OK).json({ status: true, message: 'challenge created', joinCode });
     } catch (error) {
-      console.log(error);
 
+      logger.error('creating group challenge error', { error });
       res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error });
     }
   };
 
+
   joinGroupChallenge = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      console.log('joinchallengecontroller');
 
-      console.log(req.query);
       const { joinCode } = req.query;
       const user = req.user as { id: string };
 
@@ -63,7 +63,9 @@ export class ArenaController {
         res.status(HttpStatusCode.OK).json({ status: true, message: 'joined groupChallenge ', challengeData: { ...response, isHost } });
       }
     } catch (error) {
+
       if (error instanceof AppError) {
+
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
       } else {
         next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
@@ -71,26 +73,27 @@ export class ArenaController {
     }
   };
 
+
   createPairProgramming = async (req: Request, res: Response) => {
     try {
       const data = new PairProgramingDTO(req.body);
       const userId = req.user as { id: string };
-      console.log('create challenge contoller', data);
 
       const joinCode = await this.createPairProgrammingUseCase.execute({ ...data, hostId: userId.id });
 
-      console.log(joinCode, 'joinCode');
+
       res.status(HttpStatusCode.OK).json({ status: true, message: 'Challenge created', joinCode });
     } catch (error) {
       res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error });
     }
   };
 
+
   joinPairProgramming = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { joinCode } = req.query;
       const { user } = req;
-      console.log(joinCode, 'code');
+
       if (joinCode && user) {
         const response = await this.joinPairProgarmmingUseCase.execute(joinCode.toString(), user.id, user.name);
 
@@ -111,6 +114,7 @@ export class ArenaController {
     }
   };
 
+
   activeChallenges = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = req.user?.id;
@@ -123,8 +127,6 @@ export class ArenaController {
 
       const publicChallenges = await this.activePublicChallengeUsecase.execute(FilterData);
 
- 
-
       res.status(HttpStatusCode.OK).json({
         status: true, message: 'users challenges ', privateChallenges, publicChallenges,
       });
@@ -134,12 +136,15 @@ export class ArenaController {
     }
   };
 
+
   startChallenge = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      logger.info('starting challenge...........');
+
       const challengeId = req.body.id;
 
       const id = req.user?.id;
+
+      logger.info('starting challenge...........', { challengeId, id });
 
       const challengeData = await this.getChallengeDataUseCase.OneDocumentById(challengeId);
 
@@ -154,7 +159,7 @@ export class ArenaController {
         this.endChallengeQueueUseCase.execute(challengeId, challengeData.duration * 60 * 1000);
       }
 
-      logger.info('startd Challed data', { response });
+
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'Challenge Started ', challengeData: { ...response, isHost: true } });
     } catch (error) {
@@ -163,14 +168,14 @@ export class ArenaController {
     }
   };
 
+
   challengeResults = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const id = req.user?.id;
 
       const FilterData = new FilterDTO(req.query);
 
-      
-      const response = await this.challengeResultsUseCase.execute(id!,FilterData);
+      const response = await this.challengeResultsUseCase.execute(id!, FilterData);
 
       logger.info('challengeResults', { response });
 
@@ -179,6 +184,7 @@ export class ArenaController {
       return next(new AppError('Intenal error ', HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
+
 
   challengeLeaderBoard = async (req: Request, res: Response, next: NextFunction) => {
     try {
