@@ -196,7 +196,7 @@ const updateChallengeRepositoryDataUseCase = new UpdateRepositoryDataUseCase(cha
 const evaluateWinnerUsecase = new EvaluateWinnerUsecase(leaderBoardRepository, challengeRepository);
 const evaluateWinnerWorker = new EvaluateWinnerWorker(evaluateWinnerUsecase);
 
-evaluateWinnerWorker.execute();
+// evaluateWinnerWorker.execute();
 
 const bullmqQueueService = new BullmqQueueService();
 

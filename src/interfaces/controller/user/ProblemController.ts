@@ -28,10 +28,18 @@ export class ProblemController {
       const category = req.query.category as string;
       const problemDto = new FilterDTO(req.query)
 
-
-      const user = await this.verifyAccessTokenUseCase.execute(req.cookies.accessToken)
-
+      const token = req.cookies.accessToken;
+      const refreshToken = req.cookies.refreshToken;
       let sampleTestCasesOnlyData;
+
+      if (!token && !refreshToken) {
+        sampleTestCasesOnlyData = await this.getAllProblemUseCase.execute(problemDto, difficulty, category, null);
+        return res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', problemData: sampleTestCasesOnlyData });
+
+      }
+
+      const user = await this.verifyAccessTokenUseCase.execute(token ? token : refreshToken ? refreshToken : "");
+
       if (!user) {
         sampleTestCasesOnlyData = await this.getAllProblemUseCase.execute(problemDto, difficulty, category, null);
       } else {
@@ -131,7 +139,7 @@ export class ProblemController {
       logger.error('gettiing solution errr', error);
 
       next(new AppError('Something went wrong', 500));
-      
+
     }
   };
 }
