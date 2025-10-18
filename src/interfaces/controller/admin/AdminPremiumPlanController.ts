@@ -27,9 +27,9 @@ export class AdminPremiumPlanController {
     } catch (error: unknown) {
       const err = error as { code: number };
       if (err.code == 11000) { // review this code later
-        return next(new AppError('plan name alreay exits', 409));
+        return next(new AppError('plan name alreay exits',HttpStatusCode.CONFLICT));
       }
-      next(new AppError('erro in creating new plan', 409));
+      next(new AppError('erro in creating new plan', HttpStatusCode.BAD_REQUEST));
     }
   };
 
@@ -43,7 +43,7 @@ export class AdminPremiumPlanController {
     } catch (error: unknown) {
       const err = error as { code: number };
       if (err.code == 11000) {
-        return next(new AppError('plan name alreay exits', 409));
+        return next(new AppError('plan name alreay exits',HttpStatusCode.CONFLICT));
       }
       res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error });
     }

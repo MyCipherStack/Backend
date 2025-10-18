@@ -89,7 +89,7 @@ export class Authenticate<Entity> {
             domain: isProduction ? env.COOKIE_DOMAIN : undefined,
 
           });
-          return next(new AppError('user not found: Unauthorized ', 401));
+          return next(new AppError('user not found: Unauthorized ', HttpStatusCode.UNAUTHORIZED));
         }
       }
       if (refreshToken) {
@@ -118,7 +118,7 @@ export class Authenticate<Entity> {
             return next();
           }
 
-          return next(new AppError('user not found', 404));
+          return next(new AppError('user not found',HttpStatusCode.NOT_FOUND));
         }
       }
     } catch (error) {
