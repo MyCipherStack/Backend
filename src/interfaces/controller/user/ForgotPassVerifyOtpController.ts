@@ -5,6 +5,7 @@ import { IResetPassverifyOtpUseCase } from '@/application/interfaces/use-cases/I
 import { env } from '@/config/env';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { AppError } from '@/domain/error/AppError';
+import { cookieData } from '@/shared/constants/cookieData';
 
 export class ForgotPassVerifyOtpController {
   constructor(
@@ -26,7 +27,7 @@ export class ForgotPassVerifyOtpController {
           httpOnly: true,
           secure:isProduction,
           sameSite: isProduction ? "none" : "strict",
-          maxAge: 1000 * 60 * 5,
+          maxAge: cookieData.MAX_AGE_OTP,
           domain: isProduction ? env.COOKIE_DOMAIN : undefined,
           path: '/',
         });

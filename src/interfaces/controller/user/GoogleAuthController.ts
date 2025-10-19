@@ -5,6 +5,7 @@ import { AppError } from '@/domain/error/AppError';
 import { env } from '@/config/env';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
+import { cookieData } from '@/shared/constants/cookieData';
 
 export class GoogleAuthController {
   constructor(
@@ -27,14 +28,14 @@ export class GoogleAuthController {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 1000 * 60 * 15,
+        maxAge:cookieData.MAX_AGE_ACCESS_TOKEN,
         path: '/',
       });
       res.cookie('refreshToken', createdUser.refreshToken, {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 1000 * 60 * 60 * 24 * 7,
+        maxAge: cookieData.MAX_AGE_REFRESH_TOKEN,
         path: '/',
       });
       res.redirect(`${env.FRONTEND_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}&id=${encodeURIComponent(createdUser.user._id?.toString()!)}`);
