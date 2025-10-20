@@ -35,7 +35,7 @@ export class AdminReportController {
       logger.info('updated reports data', { data: req.body.update });
       const response = await this.changeRespoStatusUseCase.execute(req.body.update.id, { status: req.body.update.status });
 
-      res.status(200).json({ status: true, message: 'user data fetched success', reportData: response });
+      res.status(HttpStatusCode.OK).json({ status: true, message: 'user data fetched success', reportData: response });
     } catch (error) {
       return next(new AppError('err in update report status', HttpStatusCode.BAD_REQUEST));
     }

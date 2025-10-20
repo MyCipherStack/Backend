@@ -16,7 +16,7 @@ export class DashboardBoardController {
 
       logger.info('range', { data });
       if (data) {
-        res.json({
+        res.status(HttpStatusCode.OK).json({
           status: true,
           userData: data.userData,
           totalUsers: data.totalUsers,

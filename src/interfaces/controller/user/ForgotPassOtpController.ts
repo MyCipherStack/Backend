@@ -3,6 +3,7 @@ import { env } from '@/config/env';
 import { IResetPasswordOtpUseCase } from '@/application/interfaces/use-cases/IUserPasswordUseCases';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { AppError } from '@/domain/error/AppError';
+import { cookieData } from '@/shared/constants/cookieData';
 
 export class ForgotPasswordOtpController {
   constructor(
@@ -22,7 +23,7 @@ export class ForgotPasswordOtpController {
         httpOnly: true,
         secure: env.NODE_ENV === 'production',
         sameSite: 'strict',
-        maxAge: 1000 * 60 * 5,
+        maxAge: cookieData.MAX_AGE_OTP,
         path: '/',
       });
 
