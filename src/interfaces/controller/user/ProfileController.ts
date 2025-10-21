@@ -10,7 +10,6 @@ import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { AppError } from '@/domain/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { MulterDTO } from '@/application/dto/MulterDTO';
-import {Multer} from "multer"
 import { UserMapper } from '@/application/mapper/UserMapper';
 
 export class ProfileController {
@@ -27,38 +26,35 @@ export class ProfileController {
       const user = req.user as { email: string };
 
       const profileData = new ProfileDTO(req.body.personal, req.body.appearance, req.body.preferences);
-      
-      logger.info("update profile",{profileData:req.body.personal})
-      
+
+      logger.info("update profile", { profileData: req.body.personal })
+
       const data = await this.updateUseCase.execute(user.email, profileData);
       if (data) { res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', user: { name: data.name, email: data.email, image: data.image } }); }
     } catch (error: any) {
-      res.status(400).json({ status: false, message: error.message });
+      res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
     }
   };
 
   getData = async (req: Request, res: Response, next: NextFunction) => {
     try {
       logger.info('get profile data');
-      console.log('get profile data');
+
       const user = req.user as { email: string, id: string };
 
       let profile = await this.getRepositoryDataUseCase.OneDocumentById(user.id.toString());
 
-      
       if (profile) {
 
         const profileDTO = UserMapper.toResponseDTO(profile)
 
         return res.status(HttpStatusCode.OK).json({ status: true, message: 'Problems fetched success', user: profileDTO });
       }
-      next(new AppError('Something went wrong', 500));
+      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
 
-      // res.status(400).json({ status: false, message: "Something went wrong" })
     } catch (error) {
-      next(new AppError('Something went wrong', 500));
+      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
 
-      // return res.status(400).json({ status: false, message: "Something went wrong while fetching data" })
     }
   };
 
@@ -67,7 +63,7 @@ export class ProfileController {
       const data = new ResetPasswordDTO(req.body.formData, req.body.email);
 
       if (data.currentPassword === data.password) {
-        next(new AppError('New password must be  different from old', 400));
+        next(new AppError('New password must be  different from old', HttpStatusCode.BAD_REQUEST));
       }
       const isValid = await this.verifyUserPasswordUseCase.execute(data.email, data.currentPassword);
       if (isValid) {
@@ -75,16 +71,14 @@ export class ProfileController {
 
         res.status(HttpStatusCode.OK).json({ status: true, message: 'password updated' });
       } else {
-        next(new AppError('Incorrect current password', 409));
+        next(new AppError('Incorrect current password', HttpStatusCode.CONFLICT));
 
-        // res.status(400).json({ status: false, message: "Incorrect current password" })
       }
     } catch (error) {
       console.log(error);
 
-      next(new AppError('Something went wrong', 500));
+      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
 
-      // res.status(400).json({ status: false, message: "Something went wrong while fetching data" })
     }
   };
 
@@ -92,9 +86,9 @@ export class ProfileController {
   profilePicUpload = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-      
+
       const file = req.file as Express.Multer.File
-      
+
       const fileData = new MulterDTO(file)
 
 
@@ -104,8 +98,8 @@ export class ProfileController {
 
     } catch (error) {
 
-      logger.error("error",error)
-      next(new AppError('Something went wrong', 500));
+      logger.error("error", error)
+      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     }
   }

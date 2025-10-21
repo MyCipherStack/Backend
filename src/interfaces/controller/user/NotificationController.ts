@@ -18,13 +18,13 @@ export class NotificationController {
 
       const allNotification = await this.getAllNotificaionDataUsingFieldUseCase.execute({ userId: user.id });
 
-      logger.info('all notification', { allNotification });
-
       res.status(HttpStatusCode.OK).json({ status: true, message: 'problem submitted', allNotification });
     } catch (error) {
+
       return next(new AppError('server error', 500));
     }
   };
+
 
   readNotification = async (req: Request, res: Response, next: NextFunction) => {
     try {
