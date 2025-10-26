@@ -12,8 +12,8 @@ export class AdminAuthController {
 
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = new LoginDTO(req.body);
-      const adminData = await this.loginAdminUsecase.execute(data.identifier, data.password);
+      const loginData = new LoginDTO(req.body);
+      const adminData = await this.loginAdminUsecase.execute(loginData.identifier, loginData.password);
 
       const isProduction = env.NODE_ENV === "production"
 
@@ -48,6 +48,8 @@ export class AdminAuthController {
     }
   };
 
+
+  
   logout = (req: Request, res: Response, next: NextFunction) => {
     try {
 

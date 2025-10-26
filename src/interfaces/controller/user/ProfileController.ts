@@ -21,6 +21,7 @@ export class ProfileController {
     private uploadImageUsecase: IUploadImageUseCase
   ) { }
 
+
   update = async (req: Request, res: Response) => {
     try {
       const user = req.user as { email: string };
@@ -36,16 +37,15 @@ export class ProfileController {
     }
   };
 
+
   getData = async (req: Request, res: Response, next: NextFunction) => {
     try {
       logger.info('get profile data');
-
       const user = req.user as { email: string, id: string };
 
       let profile = await this.getRepositoryDataUseCase.OneDocumentById(user.id.toString());
 
       if (profile) {
-
         const profileDTO = UserMapper.toResponseDTO(profile)
 
         return res.status(HttpStatusCode.OK).json({ status: true, message: 'Problems fetched success', user: profileDTO });
@@ -58,16 +58,17 @@ export class ProfileController {
     }
   };
 
+
   resetPassword = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = new ResetPasswordDTO(req.body.formData, req.body.email);
+      const resetData = new ResetPasswordDTO(req.body.formData, req.body.email);
 
-      if (data.currentPassword === data.password) {
+      if (resetData.currentPassword === resetData.password) {
         next(new AppError('New password must be  different from old', HttpStatusCode.BAD_REQUEST));
       }
-      const isValid = await this.verifyUserPasswordUseCase.execute(data.email, data.currentPassword);
+      const isValid = await this.verifyUserPasswordUseCase.execute(resetData.email, resetData.currentPassword);
       if (isValid) {
-        this.resetPasswordUseCase.execute(data.email, data.password);
+        this.resetPasswordUseCase.execute(resetData.email, resetData.password);
 
         res.status(HttpStatusCode.OK).json({ status: true, message: 'password updated' });
       } else {
@@ -85,10 +86,7 @@ export class ProfileController {
 
   profilePicUpload = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
-
       const file = req.file as Express.Multer.File
-
       const fileData = new MulterDTO(file)
 
 

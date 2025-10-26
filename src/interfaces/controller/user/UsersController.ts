@@ -20,8 +20,6 @@ export class UsersController {
       const data = await this.getFilteredUsersUseCase.execute({page, limit, role, status, search,});
 
       
-
-
       res.status(HttpStatusCode.OK).json({ status: true, message: 'user data fetched success', usersData: data });
     } catch (error) {
       next(new AppError('create subscription failed', HttpStatusCode.BAD_REQUEST));

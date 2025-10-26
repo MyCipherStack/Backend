@@ -8,9 +8,9 @@ import { env } from '@/config/env';
 
 
 export class LogoutController {
+  
   logout = (req: Request, res: Response): Response => {
-    console.log('logout controller is working');
-
+  
     const isProduction = env.NODE_ENV === "production"
 
     res.clearCookie('accessToken', {

@@ -22,22 +22,18 @@ export class ReportController {
 
       // It's application orchestration. not business rules
 
-      const forDto = req.body.report;
-
+      const report = req.body.report;
       const user = req.user as { id: string };
-
-      forDto.reportedUser = reportedUserData?._id;
-      forDto.submittedBy = user.id;
-
-      const data = new CreateReportDTO(forDto);
+      report.reportedUser = reportedUserData?._id;
+      report.submittedBy = user.id;
+      const data = new CreateReportDTO(report);
 
       logger.info('create report', { data });
       const reportData = await this.createReportUseCase.execute(data);
 
       res.status(HttpStatusCode.CREATED).json({ status: true, createdData: reportData });
     } catch (error) {
-      console.log(error);
-
+     
       logger.error(error);
       return next(new AppError('error in create report', 400));
     }

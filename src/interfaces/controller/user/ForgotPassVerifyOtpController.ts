@@ -15,8 +15,8 @@ export class ForgotPassVerifyOtpController {
 
   verify = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = new OtpDTO(req.body);
-      const success = await this.resetPassverifyOtpUseCase.execute(data);
+      const otpData = new OtpDTO(req.body);
+      const success = await this.resetPassverifyOtpUseCase.execute(otpData);
       const isProduction = env.NODE_ENV === "production"
 
       if (!success) {

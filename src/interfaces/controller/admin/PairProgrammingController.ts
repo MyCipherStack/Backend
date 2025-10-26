@@ -15,7 +15,6 @@ export class PairProgrammingController {
 
   getAllPairProgramming = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const parseBoolean = (str: string) => str === 'true';
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const status = req.query.status as string;
@@ -28,6 +27,8 @@ export class PairProgrammingController {
 
       res.status(HttpStatusCode.OK).json({ message: 'all pairPrograrmming data fetched', pairProgram: data });
     } catch (error) {
+  
+    
       next(new AppError('err in getting data', HttpStatusCode.BAD_REQUEST));
     }
   };

@@ -14,15 +14,15 @@ export class VerifyOtpController {
   verify = async (req: Request, res: Response, next: NextFunction) => {
     try {
      
-      const data = new OtpDTO(req.body);
+      const otpData = new OtpDTO(req.body);
 
-      const isValid = await this.verifyOtpUseCase.execute(data.email, data.otp);
+      const isValid = await this.verifyOtpUseCase.execute(otpData.email, otpData.otp);
 
       if (!isValid) {
         return res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: 'Invalid or expired OTP' });
       }
 
-      const userData = await this.registerUserFromPendingUseCase.execute(data.email);
+      const userData = await this.registerUserFromPendingUseCase.execute(otpData.email);
 
       res.json({ status: true, message: 'user created Successfully', user: { name: userData?.name, email: userData?.email } });
     } catch (error: any) {

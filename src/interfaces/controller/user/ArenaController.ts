@@ -37,7 +37,6 @@ export class ArenaController {
       const userId = req.user as { id: string };
       const joinCode = await this.createChallengeUseCase.execute({ ...challengeData, }, userId.id);
 
-
       res.status(HttpStatusCode.OK).json({ status: true, message: 'challenge created', joinCode });
     } catch (error) {
 
@@ -81,7 +80,6 @@ export class ArenaController {
 
       const joinCode = await this.createPairProgrammingUseCase.execute({ ...data, hostId: userId.id });
 
-
       res.status(HttpStatusCode.OK).json({ status: true, message: 'Challenge created', joinCode });
     } catch (error) {
       res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error });
@@ -92,7 +90,7 @@ export class ArenaController {
   joinPairProgramming = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { joinCode } = req.query;
-      const { user } = req;
+      const user = req.user;
 
       if (joinCode && user) {
         const response = await this.joinPairProgarmmingUseCase.execute(joinCode.toString(), user.id, user.name);
@@ -141,21 +139,20 @@ export class ArenaController {
     try {
 
       const challengeId = req.body.id;
+      const userId = req.user?.id;
 
-      const id = req.user?.id;
-
-      logger.info('starting challenge...........', { challengeId, id });
+      logger.info('starting challenge...........', { challengeId, userId });
 
       const challengeData = await this.getChallengeDataUseCase.OneDocumentById(challengeId);
 
-      if (challengeData?.hostId?.toString() !== id?.toString()) {
+      if (challengeData?.hostId?.toString() !== userId?.toString()) {
         return res.status(HttpStatusCode.FORBIDDEN).json({ status: false, message: 'you are not a host' });
       }
 
       const response = await this.updateChallengeUseCase.execute(challengeId, { status: 'started' });
 
       if (challengeData?.duration) {
-        logger.info('end Challenge queue stared', { host: challengeData?.hostId, id });
+        logger.info('end Challenge queue stared', { host: challengeData?.hostId, userId });
         this.endChallengeQueueUseCase.execute(challengeId, challengeData.duration * 60 * 1000);
       }
 

@@ -16,9 +16,9 @@ export class TransationController {
     try {
      
       const filter = new FilterDTO(req.query);
-      const data = await this.TransactionUseCase.execute(filter);
+      const transactions = await this.TransactionUseCase.execute(filter);
 
-      res.status(HttpStatusCode.OK).json({ status: true, message: 'all transations', transactions: data });
+      res.status(HttpStatusCode.OK).json({ status: true, message: 'all transations', transactions });
     } catch (error) {
       return next(new AppError('Error in getting all transations', HttpStatusCode.BAD_REQUEST));
     }

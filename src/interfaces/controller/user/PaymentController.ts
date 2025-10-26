@@ -24,7 +24,7 @@ export class PaymentController {
     try {
       const { id } = req.body;
       const planDetails = await this.getPremiumPlanUseCase.OneDocumentById(id);
-      logger.info('subscrition eee', { asd: planDetails?._id });
+      logger.info('subscrition ', { asd: planDetails?._id });
 
       const user = req.user
 
@@ -46,7 +46,6 @@ export class PaymentController {
 
   verifyPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {
-
 
       logger.info({ message: 'body', res: req.body.response });
       const user = req.user as { id: string, name: string };

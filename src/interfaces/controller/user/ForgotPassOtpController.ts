@@ -12,10 +12,10 @@ export class ForgotPasswordOtpController {
 
   sendOtp = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = req.body;
-      console.log(data.email, 'fogotpassword email');
+      const otpData = req.body;
+      console.log(otpData.email, 'fogotpassword email');
 
-      const otpToken = await this.resetPassswordOtpUseCase.execute(data.email);
+      const otpToken = await this.resetPassswordOtpUseCase.execute(otpData.email);
 
       console.log(otpToken, 'setting token otp');
 

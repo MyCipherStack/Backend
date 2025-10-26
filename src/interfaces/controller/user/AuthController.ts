@@ -9,7 +9,7 @@ import { ISendOtpUseCase } from '@/application/interfaces/use-cases/IOtpUseCases
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { cookieData } from '@/shared/constants/cookieData';
 
-// CreateUserUseCase, something like RegisterUserUseCase may better express intent (since it includes OTP logic right after).
+
 
 export class AuthController {
   constructor(
@@ -18,6 +18,8 @@ export class AuthController {
     private loginUserUseCase: ILoginUserUseCase,
 
   ) { }
+
+
 
   register = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -43,6 +45,8 @@ export class AuthController {
       }
     }
   };
+
+
 
   login = async (req: Request, res: Response, next: NextFunction) => {
     try {

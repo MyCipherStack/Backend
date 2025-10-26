@@ -17,11 +17,9 @@ export class GoogleAuthController {
   handleSuccess = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const googleUser = new GoogleDto(req.user as any);
-      const { name } = googleUser;
-      const { email } = googleUser;
-      const { googleId } = googleUser;
-      const { image } = googleUser;
-
+      
+      const { name,email,googleId,image } = googleUser;
+   
       const createdUser = await this.googleUserUseCase.execute(name, email, image, googleId);
 
       res.cookie('accessToken', createdUser.accessToken, {

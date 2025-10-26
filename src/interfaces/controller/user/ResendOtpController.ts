@@ -14,9 +14,9 @@ export class ResendOtpController {
     try {
       console.log('resend in backend');
 
-      const data = req.body;
+      const resetData = req.body;
 
-      await this.sendOtpUseCase.execute(data.email);
+      await this.sendOtpUseCase.execute(resetData.email);
       res.status(HttpStatusCode.OK).json({ status: true, message: 'OTP sented' });
     } catch (error: any) {
       next(new AppError(error.message, 500));

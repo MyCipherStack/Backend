@@ -87,16 +87,12 @@ export class ProblemController {
   runProblem = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const problem = new ProblemDTO(req.body.problemDetails);
-      const { code } = req.body;
-      const { language } = req.body;
-      const { testCases } = req.body;
+      const { code,language,testCases } = req.body;
 
       const updatedTestCases = await this.runProblemUseCase.execute(testCases, code, language, problem.memoryLimit, problem.timeLimit, problem.functionSignatureMeta, false);
 
-
       res.status(HttpStatusCode.OK).json({ status: true, message: 'test cases runned successfuly', testResult: updatedTestCases });
     } catch (error) {
-
       logger.error('running problem error', { error });
 
       next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
@@ -106,10 +102,9 @@ export class ProblemController {
 
   acceptedUserProblems = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const id = req.user?.id;
+      const user = req.user;
 
-
-      const acceptedData = await this.acceptedUserProblemsUseCase.execute(id!);
+      const acceptedData = await this.acceptedUserProblemsUseCase.execute(user?.id!);
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'accepted user problem', acceptedData });
     } catch (error) {
@@ -121,6 +116,8 @@ export class ProblemController {
     }
   };
 
+
+  // AI POWERD SOLUTION
 
   solution = async (req: Request, res: Response, next: NextFunction) => {
     try {

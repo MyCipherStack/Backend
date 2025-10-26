@@ -13,7 +13,7 @@ export class UsersListController {
 
   ) { }
 
-  getData = async (req: Request, res: Response, next:NextFunction) => {
+  getData = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
@@ -25,7 +25,7 @@ export class UsersListController {
         page, limit, role, status, search,
       });
 
-   
+
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'user data fetched success', usersData: data });
     } catch (error) {
@@ -33,14 +33,11 @@ export class UsersListController {
     }
   };
 
+  
   updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
-
       const updateData = new UpdateUserDTO(req.body);
-    
-
-
       const updatedUser = await this.updateUserUseCase.execute(updateData.email!, updateData);
 
       if (!updatedUser) {

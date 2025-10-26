@@ -13,7 +13,6 @@ export class AdminProblemController {
 
   addProblem = async (req: Request, res: Response) => {
     try {
-      console.log('add problem controller');
 
       const problem = new ProblemDTO(req.body);
 

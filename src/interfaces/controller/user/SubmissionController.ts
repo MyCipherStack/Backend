@@ -50,6 +50,7 @@ export class SubmissionController {
     }
   };
 
+  
   recentSubmissions = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user as { id: 'string' };
@@ -64,13 +65,13 @@ export class SubmissionController {
     }
   };
 
+
   submitProblem = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const problem = new ProblemDTO(req.body.problemDetails);
-      const { code } = req.body;
-      const { language } = req.body;
-      const { testCases } = req.body; // this have only sampleTestCase
+      const { code,language } = req.body;
       const user = req.user as { id: string };
+
       const ProblemWithAlltestCases = await this.getProblemDataUseCase.OneDocumentById(problem._id);
       const AllTestCases = ProblemWithAlltestCases?.testCases ?? [];
       const updatedTestCases = await this.runProblemUseCase.execute(AllTestCases, code, language, problem.memoryLimit, problem.timeLimit, problem.functionSignatureMeta, true);
@@ -78,7 +79,7 @@ export class SubmissionController {
       const totalTestCases = ProblemWithAlltestCases?.testCases.length ?? 0;
 
       const submitData = await this.submitProblemUseCase.execute(updatedTestCases, user.id, problem._id, code, language, totalTestCases);
-      console.log(submitData);
+
       res.status(HttpStatusCode.OK).json({ status: true, message: 'problem submitted', submissions: submitData });
     } catch (error) {
       logger.error('err', error);

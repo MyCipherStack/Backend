@@ -13,14 +13,14 @@ export class ResetPasswordController {
     try {
 
       const cookie = req.cookies.otpAccess;
-      const data = req.body;
+      const resetData = req.body;
 
       if (!cookie) {
         throw new Error('Session expired.Please request OTP again.');
       }
  
 
-      await this.resetPasswordUseCase.execute(cookie.email, data.password);
+      await this.resetPasswordUseCase.execute(cookie.email, resetData.password);
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'password changed' });
     } catch (error: unknown) {

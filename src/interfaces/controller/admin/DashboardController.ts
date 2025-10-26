@@ -12,17 +12,17 @@ export class DashboardBoardController {
   getAllDashBoardData = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const range = req.query.range as string;
-      const data = await this.adminDashBoardUseCase.execute(range);
+      const dashboardData = await this.adminDashBoardUseCase.execute(range);
 
-      logger.info('range', { data });
-      if (data) {
+      logger.info('range', { dashboardData });
+      if (dashboardData) {
         res.status(HttpStatusCode.OK).json({
           status: true,
-          userData: data.userData,
-          totalUsers: data.totalUsers,
-          premiumUsers: data.premiumUsers,
-          transactions: data.transactions,
-          thisMonthRevenu: data.thisMonthRevenu,
+          userData: dashboardData.userData,
+          totalUsers: dashboardData.totalUsers,
+          premiumUsers: dashboardData.premiumUsers,
+          transactions: dashboardData.transactions,
+          thisMonthRevenu: dashboardData.thisMonthRevenu,
 
         });
       } else {

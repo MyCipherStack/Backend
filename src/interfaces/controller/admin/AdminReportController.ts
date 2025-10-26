@@ -24,11 +24,13 @@ export class AdminReportController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'user data fetched success', reportsData: allData });
     } catch (error) {
-      logger.error('err in reports', { err: error });
+      logger.error('error in reports', { err: error });
 
-      return next(new AppError('err in get all reports', HttpStatusCode.BAD_REQUEST));
+      return next(new AppError('error in get all reports', HttpStatusCode.BAD_REQUEST));
     }
   };
+
+
 
   updateReportStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -37,7 +39,10 @@ export class AdminReportController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'user data fetched success', reportData: response });
     } catch (error) {
-      return next(new AppError('err in update report status', HttpStatusCode.BAD_REQUEST));
+
+      logger.error('error in update report status', { err: error });
+
+      return next(new AppError('error in update report status', HttpStatusCode.BAD_REQUEST));
     }
   };
 }

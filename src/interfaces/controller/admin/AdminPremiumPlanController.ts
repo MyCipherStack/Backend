@@ -17,11 +17,12 @@ export class AdminPremiumPlanController {
 
   ) { }
 
+
   createNewPlan = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = new PremiumPlanDTO(req.body);
+      const premiumData = new PremiumPlanDTO(req.body);
 
-      const response = await this.createPremiumRepoUseCase.execute(data);
+      const response = await this.createPremiumRepoUseCase.execute(premiumData);
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'new premium plan created', response });
     } catch (error: unknown) {
@@ -33,13 +34,14 @@ export class AdminPremiumPlanController {
     }
   };
 
+
   editPlan = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = new PremiumPlanDTO(req.body);
+      const premiumData = new PremiumPlanDTO(req.body);
 
-      const response = await this.EditPlanUseCase.execute(data._id, data);
+      const response = await this.EditPlanUseCase.execute(premiumData._id, premiumData);
 
-      res.status(HttpStatusCode.OK).json({ status: true, message: 'new premium plan created', response });
+      res.status(HttpStatusCode.OK).json({ status: true, message: 'premium plan updated successfully', response });
     } catch (error: unknown) {
       const err = error as { code: number };
       if (err.code == 11000) {
@@ -48,6 +50,7 @@ export class AdminPremiumPlanController {
       res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error });
     }
   };
+
 
   getPlans = async (req: Request, res: Response) => {
     try {
