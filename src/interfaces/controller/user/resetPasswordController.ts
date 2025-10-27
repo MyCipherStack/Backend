@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { IResetPasswordUseCase } from '@/application/interfaces/use-cases/IResetPasswordUseCase';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class ResetPasswordController {

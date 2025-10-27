@@ -3,7 +3,7 @@ import { CreateUserDTO } from '@/application/dto/CreateUserDTO';
 import { LoginDTO } from '@/application/dto/LoginDTO';
 import { env } from '@/config/env';
 import { ICreateUserUseCase, ILoginUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { ISendOtpUseCase } from '@/application/interfaces/use-cases/IOtpUseCases';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { IGetAllRepoDataUsingFieldUseCase, IUpdateRepositoryDataUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 import { NotificationEntity } from '@/domain/entities/Notification';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 

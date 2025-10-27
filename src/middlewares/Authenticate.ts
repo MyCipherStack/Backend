@@ -3,7 +3,7 @@ import { IJwtService } from '../domain/services/IJwtService';
 import { env } from '@/config/env';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IGetRepositoryDataUseCase';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { cookieData } from '@/shared/constants/cookieData';
 

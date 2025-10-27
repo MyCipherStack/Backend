@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { IGetAllSubmissionByProblemuseCase, IGetAllUsersSubmissionUseCase } from '../../../application/interfaces/use-cases/IGetAllSubmissionByProblemuseCase';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IGetRecentSubmissionUseCase } from '@/application/interfaces/use-cases/ISubmissoinUseCase';
 import { ProblemDTO } from '@/application/dto/ProblemDTO';

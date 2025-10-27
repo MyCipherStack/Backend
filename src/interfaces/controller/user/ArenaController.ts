@@ -9,7 +9,7 @@ import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IG
 import { IUpdateRepositoryDataUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 import { GroupChallenge } from '@/domain/entities/GroupChallenge';
 import { User } from '@/domain/entities/User';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
@@ -26,8 +26,7 @@ export class ArenaController {
     private getChallengeDataUseCase: IGetRepositoryDataUseCase<GroupChallenge>,
     private endChallengeQueueUseCase: IEndChallengeUseCase,
     private challengeResultsUseCase: IChallengeResultsUseCase,
-    private leaderBoardUseCase: ILeaderBoardUseCase,
-    // private AllPariprogrammingDataUseCase: IGetAllRepoDataUsingFieldUseCase<PairProgramming>
+    private leaderBoardUseCase: ILeaderBoardUseCase
   ) { }
 
 

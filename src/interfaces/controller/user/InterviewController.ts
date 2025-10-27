@@ -6,7 +6,7 @@ import { IScheduleInterviewUseCase } from '@/application/interfaces/use-cases/IS
 import { IInterViewRepository } from '@/domain/repositories/IInterViewRepository';
 import { IjoinInterViewUseCase } from '@/domain/repositories/IjoinInterViewUseCase';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class InterviewController {

@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { IUpdateRepositoryDataUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IChallengeRepository } from '@/domain/repositories/IChallengeRepository';
 import { GroupChallenge } from '@/domain/entities/GroupChallenge';

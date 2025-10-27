@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { FilterDTO } from '@/application/dto/FilterDTO';
 import { ITransactionUseCase } from '@/application/interfaces/use-cases/IAdminUseCase';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 

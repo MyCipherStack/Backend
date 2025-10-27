@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { IUpdateRepositoryDataUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 import { PairProgramming } from '@/domain/entities/PairProgramming';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IPairProgrammingRepository } from '@/domain/repositories/IPairProgrammingRepository';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';

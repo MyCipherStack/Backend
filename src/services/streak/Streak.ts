@@ -1,4 +1,4 @@
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { IUserRepository } from '@/domain/repositories/IUserRepository';
 import { IStreakService } from '@/domain/services/IStreakService';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';

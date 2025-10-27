@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { OtpDTO } from '../../../application/dto/OtpDTO';
 import { IVerifyOtpUseCase } from '@/application/interfaces/use-cases/IOtpUseCases';
 import { IRegisterUserFromPendingUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class VerifyOtpController {

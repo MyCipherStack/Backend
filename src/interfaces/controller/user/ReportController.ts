@@ -5,7 +5,7 @@ import { ICreateRepoUseCase } from '@/application/interfaces/use-cases/ICreateRe
 import { IGetAllReportsUsecase } from '@/application/interfaces/use-cases/IReportUseCase';
 import { IGetUserDataByNameUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { Report } from '@/domain/entities/Report';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 

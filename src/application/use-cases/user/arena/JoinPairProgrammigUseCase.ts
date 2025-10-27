@@ -2,7 +2,7 @@ import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IPairProgrammingRepository } from '@/domain/repositories/IPairProgrammingRepository';
 import { PairProgramming } from '@/domain/entities/PairProgramming';
 import { IJoinPairProgrammigUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { ChallengeMapper } from '@/application/mapper/ChallengeMapper';
 import { PairProgramMapper } from '@/application/mapper/PairprogramMapper';
 

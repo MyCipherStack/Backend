@@ -4,7 +4,7 @@ import { OtpDTO } from '@/application/dto/OtpDTO';
 import { IResetPassverifyOtpUseCase } from '@/application/interfaces/use-cases/IUserPasswordUseCases';
 import { env } from '@/config/env';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { cookieData } from '@/shared/constants/cookieData';
 
 export class ForgotPassVerifyOtpController {

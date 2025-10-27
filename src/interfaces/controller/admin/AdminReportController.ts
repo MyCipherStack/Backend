@@ -3,7 +3,7 @@ import { FilterDTO } from '@/application/dto/FilterDTO';
 import { IChangeRepoStatusUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 import { IGetAllReportsUsecase } from '@/application/interfaces/use-cases/IReportUseCase';
 
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { Report } from '@/domain/entities/Report';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';

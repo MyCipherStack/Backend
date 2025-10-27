@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { IProblemRepository } from '@/domain/repositories/IProblemRepository';
 import { ProblemDTO } from '@/application/dto/ProblemDTO';
 import { IAcceptedUserProblemsUseCase, IGetAllProblemUseCase, IRunProblemUseCase } from '@/application/interfaces/use-cases/IProblemUseCases';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IGeneratePrompt, ISendToOllama } from '@/domain/services/IOllama';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';

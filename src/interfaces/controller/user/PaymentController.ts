@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { IPaymentUseCases } from '@/application/interfaces/use-cases/IPaymentUseCases';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { PremiumPlan } from '@/domain/entities/PremiumPlan';

@@ -4,7 +4,7 @@ import { ICreateRepoUseCase } from '@/application/interfaces/use-cases/ICreateRe
 import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IGetRepositoryDataUseCase';
 import { IEditPlanUseCase } from '@/application/interfaces/use-cases/IPlanUseCases';
 import { PremiumPlan } from '@/domain/entities/PremiumPlan';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 /// CREATE COMMON USE CASE FOR THIS TYPE OF CREATIG NEW MODEL

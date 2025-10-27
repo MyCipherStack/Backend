@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { LoginDTO } from '../../../application/dto/LoginDTO';
 import { env } from '../../../config/env';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { ILoginAdminUsecase } from '@/application/interfaces/use-cases/IAdminUseCase';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 

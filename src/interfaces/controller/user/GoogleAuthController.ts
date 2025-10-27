@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { GoogleDto } from '@/application/dto/GoogleUseDto';
 import { IGoogleUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { env } from '@/config/env';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';

@@ -5,7 +5,7 @@ import { ICreateRepoUseCase } from '@/application/interfaces/use-cases/ICreateRe
 import { SubscriptionEntity } from '@/domain/entities/Subscription';
 import { CreateSubscripctionDTO } from '@/application/dto/CreateSubscripctionDTO';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { IUpdateUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { User } from '@/domain/entities/User';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';

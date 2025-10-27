@@ -7,7 +7,7 @@ import { ResetPasswordDTO } from '@/application/dto/ResetPasswordDTO';
 import { IResetPasswordUseCase } from '@/application/interfaces/use-cases/IResetPasswordUseCase';
 import { User } from '@/domain/entities/User';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { MulterDTO } from '@/application/dto/MulterDTO';
 import { UserMapper } from '@/application/mapper/UserMapper';

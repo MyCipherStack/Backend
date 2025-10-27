@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { logger } from '../infrastructure/logger/WinstonLogger/logger';
-import { AppError } from '../domain/error/AppError';
+import { AppError } from '../shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export function ErrorHandler(err:Error, req:Request, res:Response, next:NextFunction) {

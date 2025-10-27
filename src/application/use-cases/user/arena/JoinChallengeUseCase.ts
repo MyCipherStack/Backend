@@ -2,7 +2,7 @@ import { IChallengeRepository } from '@/domain/repositories/IChallengeRepository
 
 import { IJoinChallengeUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases'; 
 import { ILeaderBoardRepository } from '@/domain/repositories/ILeaderBoardRepository';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { GroupChallenge } from '@/domain/entities/GroupChallenge';
 

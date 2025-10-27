@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { env } from '@/config/env';
 import { IResetPasswordOtpUseCase } from '@/application/interfaces/use-cases/IUserPasswordUseCases';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
-import { AppError } from '@/domain/error/AppError';
+import { AppError } from '@/shared/error/AppError';
 import { cookieData } from '@/shared/constants/cookieData';
 
 export class ForgotPasswordOtpController {
