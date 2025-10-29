@@ -217,7 +217,7 @@ const googleAuthController = new GoogleAuthController(googleUserUseCase);
 const forgotPasswordVerify = new ForgotPassVerifyOtpController(resetPassverifyOtpUseCase);
 const resetPassword = new ResetPasswordController(resetPasswordUseCase);
 const forgotPasswordOtpController = new ForgotPasswordOtpController(resetPassswordOtpUseCase);
-const problemController = new ProblemController(getAllProblemUseCase, problemRepository, runProblemUseCase, acceptedUserProblems,verifyAccessTokenUseCase,getAllproblemUsingFieldUseCase generatePrompt, ollamaAi);
+const problemController = new ProblemController(getAllProblemUseCase, problemRepository, runProblemUseCase, acceptedUserProblems,verifyAccessTokenUseCase,getAllproblemUsingFieldUseCase, generatePrompt, ollamaAi);
 const profileController = new ProfileController(updateUserUseCase, getUserRepositoryDataUseCase, verifyUserPasswordUseCase, resetPasswordUseCase, uploadImageUseCase);
 const arenaController = new ArenaController(
   createChallengeUseCase,

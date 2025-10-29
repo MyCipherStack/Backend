@@ -48,6 +48,7 @@ import { TransationController } from '../controller/admin/TransationController';
 import { LeaderBoardRepository } from '@/infrastructure/repositories/LeaderBoardRepository';
 import { TransactionUseCase } from '@/application/use-cases/admin/TransactionUseCase';
 import { UpdateRepositoryDataUseCase } from '@/application/use-cases/shared/UpdateRepositoryDataUseCase';
+import { PaginatedChallengeDataUseCase } from '@/application/use-cases/user/arena/PaginatedChallengeDataUseCase';
 
 const router = express.Router();
 
@@ -87,6 +88,7 @@ const updateChallengeRepoDataUseCase = new UpdateRepositoryDataUseCase(challenge
 const updatePairRepoDataUseCase = new UpdateRepositoryDataUseCase(pairProgrammingRepository);
 const changePairProgramStatusUSeCase = new ChangeRepoStatusUseCase(pairProgrammingRepository);
 const allTransationsDataUseCase = new GetRepositoryDataUseCase(transactionRepository);
+const paginatedChallengeDataUseCase = new PaginatedChallengeDataUseCase(challengeRepository);
 
 // const addProblemUseCase=new AddProblemUseCase(problemRepository)
 
@@ -94,7 +96,7 @@ const adminAuthController = new AdminAuthController(loginAdminUsecase);
 const usersListController = new UsersListController(getFilteredUsersUseCase, updateUserUseCase);
 const adminProblemController = new AdminProblemController(addProblemUseCase, editProblemUseCase);
 const adminPremiumPlanController = new AdminPremiumPlanController(createPremiumRepoUseCase, getPremiumDataUseCase, editPlanUseCase);
-const challengeController = new ChallengeController(challengeRepository, updateChallengeRepoDataUseCase);
+const challengeController = new ChallengeController(updateChallengeRepoDataUseCase, paginatedChallengeDataUseCase);
 const dashboardController = new DashboardBoardController(adminDashBoardUseCase);
 const adminReportController = new AdminReportController(getAllReportsUsecase, changeRespoStatusUseCase);
 const pairProgrammingController = new PairProgrammingController(pairProgrammingRepository, updatePairRepoDataUseCase);

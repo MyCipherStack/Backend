@@ -5,11 +5,12 @@ import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IPairProgrammingRepository } from '@/domain/repositories/IPairProgrammingRepository';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { IPaginatedPairProgrammingDataUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases';
 
 export class PairProgrammingController {
   constructor(
-        private pairProgrammingRepo: IPairProgrammingRepository,
         private updateRepositoryDataUseCase: IUpdateRepositoryDataUseCase<PairProgramming>,
+        private paginatedPairProgrammingDataUseCase: IPaginatedPairProgrammingDataUseCase,
 
   ) { }
 
@@ -21,9 +22,13 @@ export class PairProgrammingController {
       const isBlocked = req.query.isBlocked as string;
       const search = req.query.search as string;
 
-      const data = await this.pairProgrammingRepo.paginatedData({
-        page, limit, status, search, isBlocked,
-      });
+      // const data = await this.pairProgrammingRepo.paginatedData({
+      //   page, limit, status, search, isBlocked,
+      // });
+
+      const data = await this.paginatedPairProgrammingDataUseCase.execute( page, limit, status, search, isBlocked );
+
+
 
       res.status(HttpStatusCode.OK).json({ message: 'all pairPrograrmming data fetched', pairProgram: data });
     } catch (error) {

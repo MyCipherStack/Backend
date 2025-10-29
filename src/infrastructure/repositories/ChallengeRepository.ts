@@ -24,7 +24,7 @@ export class ChallengeRepository extends BaseRepository<GroupChallenge, IGroupCh
     return challengeData.map((data) => this.toEntity(data)).filter((data) => data != null);
   }
 
-  async paginatedData(filters: { page: number, limit: number, isBlocked?:string, search?: string, status?: string, type?: string}): Promise<{
+  async paginatedData(filters: { page: number, limit: number, isBlocked?:boolean, search?: string, status?: string, type?: string}): Promise<{
         datas:(GroupChallenge| null )[]; 
         totalCount: number;
         totalPages: number;

@@ -5,11 +5,12 @@ import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { IChallengeRepository } from '@/domain/repositories/IChallengeRepository';
 import { GroupChallenge } from '@/domain/entities/GroupChallenge';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { IPaginatedChallengeDataUseCase } from '@/application/interfaces/use-cases/IChallengeUseCases';
 
 export class ChallengeController {
   constructor(
-        private challengeRepository: IChallengeRepository,
-        private updateRepositoryDataUseCase: IUpdateRepositoryDataUseCase<GroupChallenge>,
+    private updateRepositoryDataUseCase: IUpdateRepositoryDataUseCase<GroupChallenge>,
+    private paginatedChallengeDataUseCase:IPaginatedChallengeDataUseCase
 
   ) { }
 
@@ -19,12 +20,12 @@ export class ChallengeController {
       const search = req.query.search as string;
       const limit = parseInt(req.query.limit as string) || 10;
       const status = req.query.status as string;
-      const isBlocked = req.query.isBlocked as string;
+      const isBlocked = req.query.isBlocked === 'true';
+
 
       logger.info('page', { isBlocked, search });
-      const data = await this.challengeRepository.paginatedData({
-        page, limit, isBlocked, search, status,
-      });
+      
+      const data = await this.paginatedChallengeDataUseCase.execute(page, limit, status, search, isBlocked);
 
       res.status(HttpStatusCode.OK).json({ message: 'all group challenge data fetched', challenges: data });
     } catch (error) {

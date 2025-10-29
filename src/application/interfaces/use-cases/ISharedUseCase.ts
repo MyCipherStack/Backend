@@ -15,3 +15,5 @@ export interface IGetAllRepoDataUsingFieldUseCase<Entity>{
     execute(field:Partial<Entity>):Promise<Entity [] |null>
 
 }
+
+

@@ -19,6 +19,8 @@ export interface ICreatePairProgrammingUseCase {
     execute(data: IPairProgramming): Promise<string | null>
 }
 
+
+
 export interface IActivePrivateChallengeUsecase {
     execute(id: string): Promise<GroupChallenge[] | null>
 }
@@ -53,4 +55,20 @@ export interface ILeaderBoardUseCase {
         rank: number;
     }[] | null>
 
+}
+
+
+export interface IPaginatedPairProgrammingDataUseCase{
+
+    execute(page:number, limit:number, status:string, search:string, isBlocked:string):Promise<{  data: (PairProgramming | null)[];
+    totalCount: number;
+    totalPages: number;} |null> 
+}
+
+
+export interface IPaginatedChallengeDataUseCase{
+
+    execute(page:number, limit:number, status:string, search:string, isBlocked:boolean):Promise<{  datas: (GroupChallenge | null)[];
+    totalCount: number;
+    totalPages: number;} |null> 
 }
