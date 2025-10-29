@@ -12,6 +12,7 @@ import { User } from '@/domain/entities/User';
 import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class ArenaController {
   constructor(
@@ -66,7 +67,7 @@ export class ArenaController {
 
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
       } else {
-        next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     }
   };
@@ -105,7 +106,7 @@ export class ArenaController {
         return next(error);
       }
 
-      next(new AppError('Internal server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
       console.log(error);
     }
@@ -129,7 +130,7 @@ export class ArenaController {
       });
     } catch (error) {
       logger.error('err', error);
-      return next(new AppError('Intenal error ', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 
@@ -160,7 +161,7 @@ export class ArenaController {
       res.status(HttpStatusCode.OK).json({ status: true, message: 'Challenge Started ', challengeData: { ...response, isHost: true } });
     } catch (error) {
       logger.error('start challenge err', { error });
-      return next(new AppError('Intenal error ', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 
@@ -177,7 +178,7 @@ export class ArenaController {
 
       res.status(200).json({ status: true, message: 'all results Started ', allChallenge: response });
     } catch (error) {
-      return next(new AppError('Intenal error ', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 
@@ -193,7 +194,7 @@ export class ArenaController {
       res.status(HttpStatusCode.OK).json({ status: true, message: 'leaderBoard deatils', response });
     } catch (error) {
       logger.info('err', error);
-      return next(new AppError('Intenal error ', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 }

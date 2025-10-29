@@ -3,19 +3,21 @@ import { InterviewDTO } from '@/application/dto/InterviewDTO';
 import { ICreateRepoUseCase } from '@/application/interfaces/use-cases/ICreateRepoUseCase';
 import { Interview } from '@/domain/entities/Interview';
 import { IScheduleInterviewUseCase } from '@/application/interfaces/use-cases/IScheduleInterviewUseCase';
-import { IInterViewRepository } from '@/domain/repositories/IInterViewRepository';
 import { IjoinInterViewUseCase } from '@/domain/repositories/IjoinInterViewUseCase';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
+import { IGetAllRepoDataUsingFieldUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 
 export class InterviewController {
   constructor(
         private createRepoUseCase: ICreateRepoUseCase<Interview>,
         private scheduleInterviewUsecase: IScheduleInterviewUseCase,
-        private interViewRepository: IInterViewRepository,
         private joinInterViewUseCase: IjoinInterViewUseCase,
+        private getAllInterviewDataUsingFieldUseCase: IGetAllRepoDataUsingFieldUseCase<Interview>,
   ) { }
+
 
   schedule = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -27,24 +29,26 @@ export class InterviewController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'schedule interview', Interview: response });
     } catch (error) {
-      next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     }
   };
+
 
   getUserInterviews = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.user as { id: string };
-      const userCreatedInterview = await this.interViewRepository.findByField({ hostId: id });
+      const userCreatedInterview = await this.getAllInterviewDataUsingFieldUseCase.execute({ hostId: id });
 
-      const userInterviews = await this.interViewRepository.findByField({ participantId: id });
+      const userInterviews = await this.getAllInterviewDataUsingFieldUseCase.execute({ participantId: id });
       console.log(userCreatedInterview, userInterviews);
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'get all interview', interviews: { userInterviews, userCreatedInterview } });
     } catch (error: unknown) {
-      next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR , HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
+
 
   joinInterview = async (req: Request, res: Response, next:NextFunction) => {
     try {
@@ -54,14 +58,12 @@ export class InterviewController {
       logger.info('interviewID', { InterviewId });
       const response = await this.joinInterViewUseCase.execute(user?.id.toString()!, InterviewId);
 
-      logger.info('interviewID', { response });
-
       res.status(200).json({ status: true, message: 'joined interview', interview: response });
     } catch (error: unknown) {
       if (error instanceof Error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
       } else {
-        next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     }
   };

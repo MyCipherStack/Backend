@@ -11,6 +11,7 @@ import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { MulterDTO } from '@/application/dto/MulterDTO';
 import { UserMapper } from '@/application/mapper/UserMapper';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class ProfileController {
   constructor(
@@ -53,7 +54,7 @@ export class ProfileController {
       next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     } catch (error) {
-      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     }
   };
@@ -78,7 +79,7 @@ export class ProfileController {
     } catch (error) {
       console.log(error);
 
-      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     }
   };
@@ -97,7 +98,7 @@ export class ProfileController {
     } catch (error) {
 
       logger.error("error", error)
-      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     }
   }

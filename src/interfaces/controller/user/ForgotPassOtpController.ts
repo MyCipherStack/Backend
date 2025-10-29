@@ -4,6 +4,7 @@ import { IResetPasswordOtpUseCase } from '@/application/interfaces/use-cases/IUs
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { AppError } from '@/shared/error/AppError';
 import { cookieData } from '@/shared/constants/cookieData';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class ForgotPasswordOtpController {
   constructor(
@@ -32,7 +33,7 @@ export class ForgotPasswordOtpController {
       if (error instanceof Error) {
         next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
       } else {
-        next(new AppError('Internal server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     }
   };

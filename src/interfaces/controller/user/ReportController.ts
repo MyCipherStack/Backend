@@ -8,6 +8,7 @@ import { Report } from '@/domain/entities/Report';
 import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class ReportController {
   constructor(
@@ -35,7 +36,7 @@ export class ReportController {
     } catch (error) {
      
       logger.error(error);
-      return next(new AppError('error in create report', 400));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 }

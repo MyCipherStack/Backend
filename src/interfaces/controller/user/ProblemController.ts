@@ -8,6 +8,7 @@ import { IGeneratePrompt, ISendToOllama } from '@/domain/services/IOllama';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { FilterDTO } from '@/application/dto/FilterDTO';
 import { IVerifyAccessTokenUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class ProblemController {
   constructor(
@@ -33,11 +34,13 @@ export class ProblemController {
       let sampleTestCasesOnlyData;
 
       if (!token && !refreshToken) {
+        logger.info('no token found in problem controller');
         sampleTestCasesOnlyData = await this.getAllProblemUseCase.execute(problemDto, difficulty, category, null);
         return res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', problemData: sampleTestCasesOnlyData });
 
       }
 
+      logger.info('token found in problem controller');
       const user = await this.verifyAccessTokenUseCase.execute(token ? token : refreshToken ? refreshToken : "");
 
       if (!user) {
@@ -51,7 +54,7 @@ export class ProblemController {
 
       logger.error('getting problems error', { error });
 
-      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     }
   };
@@ -79,7 +82,7 @@ export class ProblemController {
 
       logger.error('getting problem details error', { error });
 
-      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     }
   };
@@ -95,7 +98,7 @@ export class ProblemController {
     } catch (error) {
       logger.error('running problem error', { error });
 
-      next(new AppError('Something went wrong', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 
@@ -111,7 +114,7 @@ export class ProblemController {
 
       logger.error('getting accepted user problems error', { error });
 
-      next(new AppError('Something went wrong', HttpStatusCode.BAD_REQUEST));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.BAD_REQUEST));
 
     }
   };

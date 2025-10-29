@@ -19,7 +19,7 @@ export class ResendOtpController {
       await this.sendOtpUseCase.execute(resetData.email);
       res.status(HttpStatusCode.OK).json({ status: true, message: 'OTP sented' });
     } catch (error: any) {
-      next(new AppError(error.message, 500));
+      next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
     }
   };
 }

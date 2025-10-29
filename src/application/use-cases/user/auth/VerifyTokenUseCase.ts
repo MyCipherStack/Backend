@@ -16,6 +16,8 @@ export class VerifyAccessTokenUseCase implements IVerifyAccessTokenUseCase {
 
     async execute(token: string): Promise< User| null> {
 
+        
+
         const tokenData = this.jwtService.verifyAccessToken(token);
 
         const foundUser = null;

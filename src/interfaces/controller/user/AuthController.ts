@@ -8,6 +8,7 @@ import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { ISendOtpUseCase } from '@/application/interfaces/use-cases/IOtpUseCases';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { cookieData } from '@/shared/constants/cookieData';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 
 
@@ -41,7 +42,7 @@ export class AuthController {
 
         next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
       } else {
-        next(new AppError('Internal server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     }
   };

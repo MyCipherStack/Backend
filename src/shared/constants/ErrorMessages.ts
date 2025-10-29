@@ -15,11 +15,11 @@ export const ErrorMessages = {
         INVALID_OTP: "Invalid OTP",
     },
     SYSTEM:{
-        INTERNAL_SERVER_ERROR: "Internal server error",
+        INTERNAL_ERROR: "Internal server error",
         BAD_REQUEST: "Bad request",
         NOT_FOUND: "Not found",
         UNAUTHORIZED: "Unauthorized",
     }
 
-    
+
 };

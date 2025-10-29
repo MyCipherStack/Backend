@@ -5,8 +5,7 @@ import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { PremiumPlan } from '@/domain/entities/PremiumPlan';
 import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IGetRepositoryDataUseCase';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
-import { IRedisServices } from '@/domain/services/IRedisServices';
-import { RedisKeys } from '@/shared/constants/RedisKeys';
+
 
 export class PaymentController {
   constructor(

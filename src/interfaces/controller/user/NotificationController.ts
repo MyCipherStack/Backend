@@ -4,6 +4,7 @@ import { NotificationEntity } from '@/domain/entities/Notification';
 import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class NotificationController {
   constructor(
@@ -21,7 +22,7 @@ export class NotificationController {
       res.status(HttpStatusCode.OK).json({ status: true, message: 'problem submitted', allNotification });
     } catch (error) {
 
-      return next(new AppError('server error', 500));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 
@@ -35,7 +36,7 @@ export class NotificationController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'problem submitted', notification });
     } catch (error) {
-      return next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 }

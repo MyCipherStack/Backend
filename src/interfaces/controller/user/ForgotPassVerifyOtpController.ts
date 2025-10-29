@@ -6,6 +6,7 @@ import { env } from '@/config/env';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { AppError } from '@/shared/error/AppError';
 import { cookieData } from '@/shared/constants/cookieData';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class ForgotPassVerifyOtpController {
   constructor(
@@ -37,7 +38,7 @@ export class ForgotPassVerifyOtpController {
       if (error instanceof Error) {
         next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
       } else {
-        next(new AppError('Internal server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     }
   };

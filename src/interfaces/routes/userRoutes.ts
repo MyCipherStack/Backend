@@ -102,6 +102,7 @@ import { GetUserDataByNameUseCase } from '@/application/use-cases/user/user-mang
 import { GetAllProblemUseCase } from '@/application/use-cases/user/problem-mangement/GetAllProblemUseCase';
 import { verify } from 'crypto';
 import { VerifyAccessTokenUseCase } from '@/application/use-cases/user/auth/VerifyTokenUseCase';
+import { Interview } from '@/domain/entities/Interview';
 
 
 export const userRepository: IUserRepository = new UserRepository();
@@ -192,6 +193,8 @@ const updateNotificationDataUseCase = new UpdateRepositoryDataUseCase(notificati
 const getAllNotificaionDataUsingFieldUseCase = new GetAllRepoDataUsingFieldUseCase(notificationRepository);
 const updateChallengeRepositoryDataUseCase = new UpdateRepositoryDataUseCase(challengeRepository);
 
+const getAllInterviewDataUsingFieldUseCase = new GetAllRepoDataUsingFieldUseCase<Interview>(interViewRepository);
+
 // Bullmq-Queuing that leaderboard update after challenge time updated
 const evaluateWinnerUsecase = new EvaluateWinnerUsecase(leaderBoardRepository, challengeRepository);
 const evaluateWinnerWorker = new EvaluateWinnerWorker(evaluateWinnerUsecase);
@@ -239,7 +242,7 @@ const submissionController = new SubmissionController(
   runProblemUseCase,
 );
 const usersController = new UsersController(getFilteredUsersUseCase);
-const interviewController = new InterviewController(createRepoUseCase, scheduleInterviewUsecase, interViewRepository, joiinInterviewUsecase);
+const interviewController = new InterviewController(createRepoUseCase, scheduleInterviewUsecase, joiinInterviewUsecase,getAllInterviewDataUsingFieldUseCase);
 const subscriptionController = new SubscriptionController(getPremiumPlanUseCase, createSubscritionUseCase, updateUserUseCase, getSubcriptionUseCase, getUserRepositoryDataUseCase);
 const paymentController = new PaymentController(paymentUseCases, getPremiumPlanUseCase);
 const reportController = new ReportController(createResportUseCase, getUserDataByNameUseCase);

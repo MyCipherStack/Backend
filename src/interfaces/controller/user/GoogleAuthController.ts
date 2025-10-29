@@ -6,6 +6,7 @@ import { env } from '@/config/env';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { cookieData } from '@/shared/constants/cookieData';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class GoogleAuthController {
   constructor(
@@ -44,7 +45,7 @@ export class GoogleAuthController {
       if (error instanceof Error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
       } else {
-        next(new AppError('server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR , HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     }
   };

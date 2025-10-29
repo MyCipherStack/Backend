@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { IResetPasswordUseCase } from '@/application/interfaces/use-cases/IResetPasswordUseCase';
 import { AppError } from '@/shared/error/AppError';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class ResetPasswordController {
   constructor(
@@ -27,7 +28,7 @@ export class ResetPasswordController {
       if (error instanceof AppError) {
         next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
       } else {
-        next(new AppError('Internal server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     }
   };
