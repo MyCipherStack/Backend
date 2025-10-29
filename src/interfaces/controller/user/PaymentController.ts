@@ -15,10 +15,6 @@ export class PaymentController {
 
 
 
-
-
-
-
   createPaymentOrder = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.body;
@@ -42,6 +38,7 @@ export class PaymentController {
       return next(new AppError('Error on subscribe plan', HttpStatusCode.BAD_REQUEST));
     }
   };
+
 
   verifyPayment = async (req: Request, res: Response, next: NextFunction) => {
     try {

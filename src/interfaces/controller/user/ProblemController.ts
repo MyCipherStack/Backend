@@ -9,6 +9,8 @@ import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 import { FilterDTO } from '@/application/dto/FilterDTO';
 import { IVerifyAccessTokenUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { ErrorMessages } from '@/shared/constants/ErrorMessages';
+import { IGetAllRepoDataUsingFieldUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
+import { Problem } from '@/domain/entities/Problem';
 
 export class ProblemController {
   constructor(
@@ -17,6 +19,7 @@ export class ProblemController {
     private runProblemUseCase: IRunProblemUseCase,
     private acceptedUserProblemsUseCase: IAcceptedUserProblemsUseCase,
     private verifyAccessTokenUseCase: IVerifyAccessTokenUseCase,
+    private getAllproblemUsingFieldUseCase:IGetAllRepoDataUsingFieldUseCase<Problem>,
     private generatePrompt: IGeneratePrompt,
     private ollamaAi: ISendToOllama,
 
@@ -65,19 +68,24 @@ export class ProblemController {
       logger.info('problem details');
       const title = req.query.search as string;
 
-      let problem = await this.problemRepository.findByTittle(title);
+      // let problem = await this.problemRepository.findByTittle(title);
 
-      if (problem) {
+      let problems = await this.getAllproblemUsingFieldUseCase.execute({ title: title })
+      
+      
+
+      if (problems && problems.length > 0) {
+        let problem = problems[0];
+
         problem = {
           ...problem,
           testCases: problem.testCases.filter((tc) => tc.isSample),
         };
+        
+        res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', problem });
+      } else {
+        next(new AppError('Problem not found', HttpStatusCode.NOT_FOUND,));
       }
-      const sampleTestCasesOnlyData = { problem };
-
-      logger.info('problem', problem);
-
-      res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', problem });
     } catch (error) {
 
       logger.error('getting problem details error', { error });

@@ -194,7 +194,7 @@ const getAllNotificaionDataUsingFieldUseCase = new GetAllRepoDataUsingFieldUseCa
 const updateChallengeRepositoryDataUseCase = new UpdateRepositoryDataUseCase(challengeRepository);
 
 const getAllInterviewDataUsingFieldUseCase = new GetAllRepoDataUsingFieldUseCase<Interview>(interViewRepository);
-
+const getAllproblemUsingFieldUseCase = new GetAllRepoDataUsingFieldUseCase<Problem>(problemRepository);
 // Bullmq-Queuing that leaderboard update after challenge time updated
 const evaluateWinnerUsecase = new EvaluateWinnerUsecase(leaderBoardRepository, challengeRepository);
 const evaluateWinnerWorker = new EvaluateWinnerWorker(evaluateWinnerUsecase);
@@ -217,7 +217,7 @@ const googleAuthController = new GoogleAuthController(googleUserUseCase);
 const forgotPasswordVerify = new ForgotPassVerifyOtpController(resetPassverifyOtpUseCase);
 const resetPassword = new ResetPasswordController(resetPasswordUseCase);
 const forgotPasswordOtpController = new ForgotPasswordOtpController(resetPassswordOtpUseCase);
-const problemController = new ProblemController(getAllProblemUseCase, problemRepository, runProblemUseCase, acceptedUserProblems,verifyAccessTokenUseCase, generatePrompt, ollamaAi);
+const problemController = new ProblemController(getAllProblemUseCase, problemRepository, runProblemUseCase, acceptedUserProblems,verifyAccessTokenUseCase,getAllproblemUsingFieldUseCase generatePrompt, ollamaAi);
 const profileController = new ProfileController(updateUserUseCase, getUserRepositoryDataUseCase, verifyUserPasswordUseCase, resetPasswordUseCase, uploadImageUseCase);
 const arenaController = new ArenaController(
   createChallengeUseCase,
