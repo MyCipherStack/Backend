@@ -23,7 +23,7 @@ export class ProfileController {
   ) { }
 
 
-  update = async (req: Request, res: Response) => {
+  update = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user as { email: string };
 
@@ -34,7 +34,9 @@ export class ProfileController {
       const data = await this.updateUseCase.execute(user.email, profileData);
       if (data) { res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', user: { name: data.name, email: data.email, image: data.image } }); }
     } catch (error: any) {
-      res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
+      // res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
+      
     }
   };
 

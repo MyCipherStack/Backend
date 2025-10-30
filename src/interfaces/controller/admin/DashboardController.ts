@@ -3,6 +3,7 @@ import { IAdminDashBoardUseCase } from '@/application/interfaces/use-cases/IAdmi
 import { AppError } from '@/shared/error/AppError';
 import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class DashboardBoardController {
   constructor(
@@ -26,10 +27,10 @@ export class DashboardBoardController {
 
         });
       } else {
-        next(new AppError('server Error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     } catch (error) {
-      next(new AppError('server Error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 }

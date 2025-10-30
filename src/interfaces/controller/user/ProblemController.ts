@@ -11,6 +11,7 @@ import { IVerifyAccessTokenUseCase } from '@/application/interfaces/use-cases/IU
 import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 import { IGetAllRepoDataUsingFieldUseCase } from '@/application/interfaces/use-cases/ISharedUseCase';
 import { Problem } from '@/domain/entities/Problem';
+import { http } from 'winston';
 
 export class ProblemController {
   constructor(
@@ -146,7 +147,7 @@ export class ProblemController {
     } catch (error) {
       logger.error('gettiing solution errr', error);
 
-      next(new AppError('Something went wrong', 500));
+      next(new AppError('Something went wrong', HttpStatusCode.BAD_REQUEST));
 
     }
   };

@@ -9,6 +9,7 @@ import { AppError } from '@/shared/error/AppError';
 import { IUpdateUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { User } from '@/domain/entities/User';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class SubscriptionController {
   constructor(
@@ -31,7 +32,7 @@ export class SubscriptionController {
       }
     } catch (error) {
       console.log(error);
-      next(new AppError('create subcription failed', 500));
+      next(new AppError('create subcription failed',HttpStatusCode.BAD_REQUEST));
     }
   };
 
@@ -63,7 +64,8 @@ export class SubscriptionController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'create subscription' });
     } catch (error) {
-      next(new AppError('create subcription failed',HttpStatusCode.BAD_REQUEST));
+
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR,HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 

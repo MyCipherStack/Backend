@@ -23,20 +23,28 @@ export class GoogleAuthController {
    
       const createdUser = await this.googleUserUseCase.execute(name, email, image, googleId);
 
+
+      const isProduction = env.NODE_ENV === "production"
+
+      
       res.cookie('accessToken', createdUser.accessToken, {
         httpOnly: true,
-        secure: env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge:cookieData.MAX_AGE_ACCESS_TOKEN,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "strict",
+        maxAge: cookieData.MAX_AGE_ACCESS_TOKEN,
+        domain: isProduction ? env.COOKIE_DOMAIN : undefined,
         path: '/',
       });
       res.cookie('refreshToken', createdUser.refreshToken, {
         httpOnly: true,
-        secure: env.NODE_ENV === 'production',
-        sameSite: 'strict',
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "strict",
         maxAge: cookieData.MAX_AGE_REFRESH_TOKEN,
+        domain: isProduction ? env.COOKIE_DOMAIN : undefined,
         path: '/',
       });
+
+      
       res.redirect(`${env.FRONTEND_URL}/Google?name=${encodeURIComponent(createdUser.user.name)}&email=${encodeURIComponent(createdUser.user.email)}&id=${encodeURIComponent(createdUser.user._id?.toString()!)}`);
     } catch (error: unknown) {
 

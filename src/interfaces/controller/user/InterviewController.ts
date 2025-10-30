@@ -58,7 +58,7 @@ export class InterviewController {
       logger.info('interviewID', { InterviewId });
       const response = await this.joinInterViewUseCase.execute(user?.id.toString()!, InterviewId);
 
-      res.status(200).json({ status: true, message: 'joined interview', interview: response });
+      res.status(HttpStatusCode.OK).json({ status: true, message: 'joined interview', interview: response });
     } catch (error: unknown) {
       if (error instanceof Error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({ status: false, message: error.message });

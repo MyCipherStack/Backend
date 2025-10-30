@@ -4,6 +4,7 @@ import { env } from '../../../config/env';
 import { AppError } from '@/shared/error/AppError';
 import { ILoginAdminUsecase } from '@/application/interfaces/use-cases/IAdminUseCase';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class AdminAuthController {
   constructor(
@@ -43,7 +44,7 @@ export class AdminAuthController {
       if (error instanceof AppError) {
         next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
       } else {
-        next(new AppError('Internal server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }
     }
   };
@@ -72,7 +73,7 @@ export class AdminAuthController {
 
       return res.status(HttpStatusCode.OK).json({ message: 'Logged out successfully' });
     } catch (error) {
-      next(new AppError('err in logout', HttpStatusCode.BAD_REQUEST));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.BAD_REQUEST));
     }
   };
 }

@@ -13,7 +13,7 @@ export class PaginatedPairProgrammingDataUseCase implements IPaginatedPairProgra
     ) { }
 
     async execute(page: number, limit: number, status: string, search: string, isBlocked: string): Promise<{
-        datas: (PairProgramming | null)[];
+        data: (PairProgramming | null)[];
         totalCount: number;
         totalPages: number;
     } | null> {

@@ -28,9 +28,9 @@ export class AdminPremiumPlanController {
     } catch (error: unknown) {
       const err = error as { code: number };
       if (err.code == 11000) { // review this code later
-        return next(new AppError('plan name alreay exits',HttpStatusCode.CONFLICT));
+        return next(new AppError('plan name already exists',HttpStatusCode.CONFLICT));
       }
-      next(new AppError('erro in creating new plan', HttpStatusCode.BAD_REQUEST));
+      next(new AppError('error in creating new plan', HttpStatusCode.BAD_REQUEST));
     }
   };
 

@@ -5,6 +5,7 @@ import { logger } from '@/infrastructure/logger/WinstonLogger/logger';
 import { AppError } from '@/shared/error/AppError';
 import { IUpdateUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class UsersListController {
   constructor(
@@ -29,7 +30,7 @@ export class UsersListController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'user data fetched success', usersData: data });
     } catch (error) {
-      return next(new AppError('Internal server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 
@@ -48,7 +49,7 @@ export class UsersListController {
     } catch (err) {
       logger.error(err);
 
-      return next(new AppError('Internal server error', HttpStatusCode.INTERNAL_SERVER_ERROR));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 }

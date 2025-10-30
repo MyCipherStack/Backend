@@ -8,6 +8,8 @@ import { IGetRepositoryDataUseCase } from '@/application/interfaces/use-cases/IG
 import { Problem } from '@/domain/entities/Problem';
 import { IRunProblemUseCase, IsubmitProblemUseCase } from '@/application/interfaces/use-cases/IProblemUseCases';
 import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
+import { http } from 'winston';
+import { ErrorMessages } from '@/shared/constants/ErrorMessages';
 
 export class SubmissionController {
   constructor(
@@ -30,7 +32,7 @@ export class SubmissionController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'test submissiondata by problem', submissions });
     } catch (error) {
-      next(new AppError('Something went wrong', 500));
+      next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
 
     }
   };
@@ -46,7 +48,7 @@ export class SubmissionController {
     } catch (error) {
       logger.error('err', { error });
 
-      return next(new AppError('Something went wrong', 500));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 
@@ -61,7 +63,7 @@ export class SubmissionController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'all user Submission', submissions: recentSubmissions });
     } catch (error) {
-      return next(new AppError('Something went wrong', 500));
+      return next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
     }
   };
 
