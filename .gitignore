@@ -5,3 +5,5 @@ workd
 pending
 .env.production
 .env.development
+pending.ts
+.gitignore

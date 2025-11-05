@@ -67,12 +67,15 @@ export class ProblemController {
   problemDetails = async (req: Request, res: Response, next: NextFunction) => {
     try {
       logger.info('problem details');
+
       const title = req.query.search as string;
 
       // let problem = await this.problemRepository.findByTittle(title);
 
-      let problems = await this.getAllproblemUsingFieldUseCase.execute({ title: title })
       
+
+      let problems = await this.getAllproblemUsingFieldUseCase.execute({ title: title })
+
       
 
       if (problems && problems.length > 0) {
@@ -84,7 +87,8 @@ export class ProblemController {
         };
         
         res.status(HttpStatusCode.OK).json({ status: true, message: 'problems fetched success', problem });
-      } else {
+      } else {  
+
         next(new AppError('Problem not found', HttpStatusCode.NOT_FOUND,));
       }
     } catch (error) {

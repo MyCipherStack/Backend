@@ -7,7 +7,7 @@ export class GetAllRepoDataUsingFieldUseCase<Entity> implements IGetAllRepoDataU
   ) { }
 
   async execute(field: Partial<Entity>): Promise<Entity[] | null> {
-    const filterData = await this.repository.findAllwithField({ ...field, isRead: false });
+    const filterData = await this.repository.findAllwithField({ ...field});
 
     return filterData ?? null;
   }
