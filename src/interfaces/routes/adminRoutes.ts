@@ -49,7 +49,7 @@ import { LeaderBoardRepository } from '@/infrastructure/repositories/LeaderBoard
 import { TransactionUseCase } from '@/application/use-cases/admin/TransactionUseCase';
 import { UpdateRepositoryDataUseCase } from '@/application/use-cases/shared/UpdateRepositoryDataUseCase';
 import { PaginatedChallengeDataUseCase } from '@/application/use-cases/user/arena/PaginatedChallengeDataUseCase';
-import { PaginatedPairProgrammingDataUseCase } from '@/application/use-cases/user/arena/paginatedPariprogramDataUsecase';
+import { PaginatedPairProgrammingDataUseCase } from '@/application/use-cases/user/arena/PaginatedPariprogramDataUsecase';
 
 const router = express.Router();
 
