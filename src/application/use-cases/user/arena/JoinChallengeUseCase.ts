@@ -8,13 +8,13 @@ import { GroupChallenge } from '@/domain/entities/GroupChallenge';
 
 export class JoinChallengeUseCase implements IJoinChallengeUseCase {
   constructor(
-        private repository: IChallengeRepository,
+        private challengeRepository: IChallengeRepository,
         private leaderBoardRepository: ILeaderBoardRepository,
   ) { }
 
   async execute(joinCode: string, userId: string): Promise<GroupChallenge> {
     logger.info('joinCodeeeee', joinCode);
-    const RepositoryData = await this.repository.findOneChallenge({ joinCode });
+    const RepositoryData = await this.challengeRepository.findOneChallenge({ joinCode });
 
     console.log(RepositoryData, joinCode, 'joinedDATA');
 

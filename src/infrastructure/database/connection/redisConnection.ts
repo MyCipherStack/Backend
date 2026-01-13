@@ -4,9 +4,9 @@ import Redis, { RedisOptions } from 'ioredis';
 
 
 export const redisOptions: RedisOptions = {
-  host: env.REDIS_URL,
+  host: env.REDIS_HOST,
   // host: 'host',
-  port: 6379,
+  port: env.REDIS_PORT,
 };
 
 

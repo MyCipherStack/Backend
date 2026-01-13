@@ -31,5 +31,7 @@ export const env = {
   AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
   AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
   AWS_REGION: process.env.AWS_REGION,
-  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME
+  AWS_BUCKET_NAME: process.env.AWS_BUCKET_NAME,
+  REDIS_HOST: process.env.REDIS_HOST || 'redis',
+  REDIS_PORT: process.env.REDIS_PORT  ||  6379,
 };

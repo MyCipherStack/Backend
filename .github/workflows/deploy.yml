@@ -1,0 +1,36 @@
+name: Deploy Backend to EC2   # Workflow name
+
+on:
+  push:
+    branches: ["main"]        # Run when pushing to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest    # GitHub runner OS
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3  # Get latest code into runner
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh                        # Create SSH folder
+          echo "${{ secrets.EC2_KEY }}" > ~/.ssh/id_rsa   # Save private key
+          chmod 600 ~/.ssh/id_rsa                # Set key permission
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts  # Add server to known hosts
+
+      - name: Copy project files to EC2
+        run: |
+          rsync -avz --delete \                  # Sync files
+            -e "ssh -i ~/.ssh/id_rsa" \          # Use SSH key
+            ./ \                                 # Source: current repo
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/${{ secrets.EC2_USER }}/app  # Destination: EC2 app folder
+
+      - name: Restart Docker on EC2
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'  # SSH into EC2
+            cd ~/app                               # Go to app folder
+            docker-compose down                    # Stop old containers
+            docker-compose build --no-cache        # Rebuild fresh image
+            docker-compose up -d                   # Start new container
+          EOF

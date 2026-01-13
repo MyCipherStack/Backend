@@ -9,7 +9,7 @@ passport.use(new GoogleStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
   console.log('stategy working');
 
-  // This is where you'd check if the user exists, create them, etc.
+  // This is where  check if the user exists, create them, etc.
   const user = {
     googleid: profile.id,
     name: profile.displayName,

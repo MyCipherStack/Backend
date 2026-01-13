@@ -175,6 +175,7 @@ const getRecentSubmissionUseCase = new GetRecentSubmissionUseCase(submissionRepo
 const leaderBoardUseCase = new LeaderBoardUseCase(leaderBoardRepository);
 const acceptedUserProblems = new AcceptedUserProblemsUseCase(submissionRepository, problemRepository);
 
+
 // REUSABLE USECASES - GetRepositoryDataUseCase
 const getUserRepositoryDataUseCase = new GetRepositoryDataUseCase<User>(userRepository);
 const getProblemDataUseCase = new GetRepositoryDataUseCase<Problem>(problemRepository);
@@ -182,6 +183,7 @@ const getPremiumPlanUseCase = new GetRepositoryDataUseCase<PremiumPlan>(premiumP
 const getSubcriptionUseCase = new GetRepositoryDataUseCase<SubscriptionEntity>(subscriptionRepository);
 const getChallengeDataUseCase = new GetRepositoryDataUseCase<GroupChallenge>(challengeRepository);
 const verifyAccessTokenUseCase= new VerifyAccessTokenUseCase(jwtService,getUserRepositoryDataUseCase)
+
 
 // COMMON USECASES
 const getFilteredUsersUseCase = new GetFilteredUsersUseCase(userRepository);
@@ -246,9 +248,9 @@ const interviewController = new InterviewController(createRepoUseCase, scheduleI
 const subscriptionController = new SubscriptionController(getPremiumPlanUseCase, createSubscritionUseCase, updateUserUseCase, getSubcriptionUseCase, getUserRepositoryDataUseCase);
 const paymentController = new PaymentController(paymentUseCases, getPremiumPlanUseCase);
 const reportController = new ReportController(createResportUseCase, getUserDataByNameUseCase);
-const notificationController = new NotificationController(updateNotificationDataUseCase, getAllNotificaionDataUsingFieldUseCase);
 
 // Notification
+const notificationController = new NotificationController(updateNotificationDataUseCase, getAllNotificaionDataUsingFieldUseCase);
 
 // MIDDLEWARE--FOR AUTHENTICATION AND AUTHORIZE
 
