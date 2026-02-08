@@ -5,8 +5,7 @@ const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
 
 // Load the env file from the project root
 dotenv.config({ path: path.resolve(process.cwd(), envFile) });
-console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
+
 
 
 export const env = {

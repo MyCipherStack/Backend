@@ -5,6 +5,8 @@ import { IJwtService } from '@/domain/services/IJwtService';
 import { ILoginUserUseCase } from '@/application/interfaces/use-cases/IUserUseCase';
 import { UserMapper } from '@/application/mapper/UserMapper';
 import { User } from '@/domain/entities/User';
+import { AppError } from '@/shared/error/AppError';
+import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class LoginUserUseCase implements ILoginUserUseCase {
   constructor(
@@ -26,15 +28,15 @@ export class LoginUserUseCase implements ILoginUserUseCase {
 
 
     if (!foundUser?.password) {
-      throw new Error('User not found with this email or password');
+      throw new AppError('User not found with this email or username');
     }
 
-    if (foundUser.status == 'banned') { throw new Error('This account was banned'); }
+    if (foundUser.status == 'banned') { throw new AppError('This account was banned',HttpStatusCode.FORBIDDEN); }
 
     const passCheck = await this.hashService.compare(password, foundUser.password);
 
     if (!passCheck) {
-      throw new Error('Incorrect password. Please try again.');
+      throw new AppError('Incorrect password. Please try again.',HttpStatusCode.UNAUTHORIZED);
     }
 
     const accessToken = this.JwtService.signAccessToken({ userId: foundUser._id!.toString(), name: foundUser.name, role: 'user' });

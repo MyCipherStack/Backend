@@ -76,9 +76,13 @@ export class AuthController {
       });
 
       res.status(HttpStatusCode.OK).json({ status: true, message: 'user logged success', user: loginUserData.user });
-    } catch (error: any) {
-      logger.error(error.message);
-      next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
+    } catch (error) {
+
+      if (error instanceof AppError) {
+        next(new AppError(error.message,error.statusCode ?? HttpStatusCode.BAD_REQUEST));
+      } else {
+        next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
+      }
     }
   };
 }

@@ -41,8 +41,10 @@ export class AdminAuthController {
 
       res.status(HttpStatusCode.OK).json({ status: true, message: ' logged successfull', admin: adminData.admin });
     } catch (error) {
+      console.log(error);
+      
       if (error instanceof AppError) {
-        next(new AppError(error.message, HttpStatusCode.BAD_REQUEST));
+        next(new AppError(error.message,error.statusCode ?? HttpStatusCode.BAD_REQUEST));
       } else {
         next(new AppError(ErrorMessages.SYSTEM.INTERNAL_ERROR, HttpStatusCode.INTERNAL_SERVER_ERROR));
       }

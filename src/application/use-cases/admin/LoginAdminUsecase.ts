@@ -3,6 +3,8 @@ import { IAdminRepository } from '@/domain/repositories/IAdminRepository';
 import { IHashAlgorithm } from '@/domain/services/IHashAlgorithm'; 
 import { IJwtService } from '@/domain/services/IJwtService'; 
 import { ILoginAdminUsecase } from '@/application/interfaces/use-cases/IAdminUseCase'; 
+import { AppError } from '@/shared/error/AppError';
+import { HttpStatusCode } from '@/shared/constants/HttpStatusCode';
 
 export class LoginAdminUsecase implements ILoginAdminUsecase {
   constructor(
@@ -20,13 +22,13 @@ export class LoginAdminUsecase implements ILoginAdminUsecase {
     // await adminModel.create({name,password:hashedPassword})           tem create admin
 
     if (!foundAdmin) {
-      throw new Error('admin not found with this name or password');
+      throw new AppError('invalid admin id',HttpStatusCode.UNAUTHORIZED);
     }
 
     const passCheck = await this.hashService.compare(password, foundAdmin.password);
 
     if (!passCheck) {
-      throw new Error('Incorrect password. Please try again.');
+      throw new AppError('Incorrect password. Please try again.',HttpStatusCode.UNAUTHORIZED);
     }
 
     const accessToken = this.JwtService.signAccessToken({ name: foundAdmin.name, role: 'admin', userId: foundAdmin.id });
