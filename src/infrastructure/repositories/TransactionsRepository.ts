@@ -52,7 +52,7 @@ export class TransactionRepository extends BaseRepository<Transaction, ITransact
 
     logger.info('this month', thisMonth[0]);
 
-    return { transactionDetails: mapper(data), thisMonth: thisMonth[0].thisMonthRevenu };
+    return { transactionDetails: mapper(data), thisMonth: thisMonth[0]?.thisMonthRevenu };
   }
 
   async getFiltersTrasations(filters:Partial<FilterDTO>): Promise<{
