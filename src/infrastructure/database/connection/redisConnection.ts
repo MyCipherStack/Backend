@@ -4,7 +4,7 @@ import { RedisOptions } from 'ioredis';
 
 export const redisOptions: RedisOptions = {
   host: env.REDIS_HOST,
-  port: env.REDIS_PORT as number,
+  port: Number(env.REDIS_PORT) as number,
 };
 
 
